@@ -91,8 +91,8 @@ class _QuizHomePageState extends State<QuizHomePage> {
             label: 'Settings',
           ),
         ],
-        selectedItemColor: Colors.white, // Color for the selected icon
-        unselectedItemColor: navigationBottom, // Color for unselected icons
+        selectedItemColor: navigationBottom, // Color for the selected icon
+        unselectedItemColor: Colors.grey, // Color for unselected icons
         showUnselectedLabels: true, // Show labels for unselected tabs
       ),
 

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import '../../../util/app_constants.dart';
+import '../../widgets/common_widget.dart';
 
 class ExploreScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return   Padding(
+    return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -23,53 +25,92 @@ class ExploreScreen extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Daily Task', style: TextStyle(fontSize: 18)),
-                      Text('14 Questions'),
+                      smallLabel(context,'Daily Task',),
+                      smallLabel(context, '10 Questions'),
                       SizedBox(height: 8),
                       LinearProgressIndicator(
-                        value: 9 / 14,
+                        value: 7 / 10,
                         backgroundColor: Colors.grey[300],
                         color: Colors.orangeAccent,
                       ),
                       SizedBox(height: 8),
-                      Text('Progress: 9/14'),
+                      Row(
+
+                        children: [
+                          Expanded(flex: 1, child: smallLabel(context, 'Progress: ')),
+                          Expanded( flex: 1, child:  smallLabel(context, '7/10', alignment : TextAlign.end))
+
+
+                        ],
+                      ),
+
+
+
                     ],
                   ),
                 ),
               ],
             ),
           ),
-          SizedBox(height: 20),
+          SizedBox(height: sizeBox16),
 
           // Quiz Section
-          Text('Quiz', style: TextStyle(fontSize: 20)),
-          SizedBox(height: 10),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              QuizCategory(icon: Icons.sports_soccer, label: 'Football'),
-              QuizCategory(icon: Icons.science, label: 'Science'),
-              QuizCategory(icon: Icons.checkroom, label: 'Fashion'),
-              QuizCategory(icon: Icons.movie, label: 'Movie'),
-              QuizCategory(icon: Icons.music_note, label: 'Music'),
-            ],
-          ),
-          SizedBox(height: 20),
+          // Text('Quiz', style: TextStyle(fontSize: 20)),
+          // SizedBox(height: 10),
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //   children: [
+          //     QuizCategory(icon: Icons.sports_soccer, label: 'Football'),
+          //     QuizCategory(icon: Icons.science, label: 'Science'),
+          //     QuizCategory(icon: Icons.checkroom, label: 'Fashion'),
+          //     QuizCategory(icon: Icons.movie, label: 'Movie'),
+          //     QuizCategory(icon: Icons.music_note, label: 'Music'),
+          //   ],
+          // ),
 
+          Container(
+            padding: EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: Colors.amberAccent[100],
+              borderRadius: BorderRadius.circular(16),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              //Center Row contents horizontally,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Opacity(
+                  opacity: 0.3,
+                  child: Image.asset("assets/images/ic_premium.png",
+                      height: 20, width: 20, fit: BoxFit.cover),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(4, 4, 4, 4),
+                  child: Center(
+                      child: title15BoldColor(context, 'Unlock All Features')),
+                ),
+                Opacity(
+                  opacity: 0.3,
+                  child: Image.asset("assets/images/ic_premium.png",
+                      height: 20, width: 20, fit: BoxFit.cover),
+                ),
+              ],
+            ),
+          ),
           // More Games Section
-          Text('More Games', style: TextStyle(fontSize: 20)),
+          SizedBox(height: sizeBox16),
           Expanded(
             child: GridView.count(
               crossAxisCount: 2,
               mainAxisSpacing: 16,
               crossAxisSpacing: 16,
               children: [
-                GameCard(
+                QuizCard(
                     title: 'Language Quiz',
                     questions: '15 Questions',
                     players: '24.7K',
                     icon: Icons.language),
-                GameCard(
+                QuizCard(
                     title: 'Exam Quiz',
                     questions: '12 Questions',
                     players: '12.5K',
@@ -82,6 +123,7 @@ class ExploreScreen extends StatelessWidget {
     );
   }
 }
+
 class QuizCategory extends StatelessWidget {
   final IconData icon;
   final String label;
@@ -104,13 +146,13 @@ class QuizCategory extends StatelessWidget {
   }
 }
 
-class GameCard extends StatelessWidget {
+class QuizCard extends StatelessWidget {
   final String title;
   final String questions;
   final String players;
   final IconData icon;
 
-  GameCard({
+  QuizCard({
     required this.title,
     required this.questions,
     required this.players,
