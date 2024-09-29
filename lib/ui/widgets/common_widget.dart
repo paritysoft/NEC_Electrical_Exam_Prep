@@ -14,12 +14,12 @@ snackBar(BuildContext context, String message) {
 }
 
 smallLabel(BuildContext context, String title,
-        {Color? color, TextAlign? alignment}) =>
+        {Color? color, TextAlign? alignment, double? textSize}) =>
     Text(
       title,
       style: GoogleFonts.montserrat(
         textStyle: TextStyle(
-            fontSize: AdaptiveFontSize.getFontSize(context, 12),
+            fontSize: AdaptiveFontSize.getFontSize(context, textSize ?? 14),
             fontWeight: FontWeight.normal,
             color: color ?? Colors.black),
       ),

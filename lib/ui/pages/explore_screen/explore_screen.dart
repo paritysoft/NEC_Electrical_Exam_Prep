@@ -71,7 +71,7 @@ class ExploreScreen extends StatelessWidget {
           Container(
             padding: EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: Colors.amberAccent[100],
+              color: Colors.amber[600],
               borderRadius: BorderRadius.circular(16),
             ),
             child: Row(
@@ -80,7 +80,7 @@ class ExploreScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Opacity(
-                  opacity: 0.3,
+                  opacity: 0.5,
                   child: Image.asset("assets/images/ic_premium.png",
                       height: 20, width: 20, fit: BoxFit.cover),
                 ),
@@ -106,14 +106,34 @@ class ExploreScreen extends StatelessWidget {
               crossAxisSpacing: 16,
               children: [
                 QuizCard(
-                    title: 'Language Quiz',
-                    questions: '15 Questions',
-                    players: '24.7K',
+                    title: 'Random Question',
+                    questions: '10 Questions',
+                    isPremium: false,
                     icon: Icons.language),
                 QuizCard(
-                    title: 'Exam Quiz',
-                    questions: '12 Questions',
-                    players: '12.5K',
+                    title: 'Practice By Topic',
+                    questions: '1200 Questions',
+                    isPremium: true,
+                    icon: Icons.compass_calibration),
+                QuizCard(
+                    title: 'Mock Quiz',
+                    questions: 'Overcome your fears',
+                    isPremium: true,
+                    icon: Icons.language),
+                QuizCard(
+                    title: 'Time Quiz',
+                    questions: 'Beat the Clock',
+                    isPremium: true,
+                    icon: Icons.compass_calibration),
+                QuizCard(
+                    title: 'Your Questions',
+                    questions: 'Challenge Your Knowledge',
+                    isPremium: true,
+                    icon: Icons.compass_calibration),
+                QuizCard(
+                    title: 'Records',
+                    questions: 'Preserve Your Achievements',
+                    isPremium: true,
                     icon: Icons.compass_calibration),
               ],
             ),
@@ -149,37 +169,56 @@ class QuizCategory extends StatelessWidget {
 class QuizCard extends StatelessWidget {
   final String title;
   final String questions;
-  final String players;
+  final bool isPremium;
   final IconData icon;
 
   QuizCard({
     required this.title,
     required this.questions,
-    required this.players,
+    required this.isPremium,
     required this.icon,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(16),
+
+      padding: EdgeInsets.all(18),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
       ),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, size: 40, color: Colors.purple[800]),
-          SizedBox(height: 10),
-          Text(title, style: TextStyle(fontSize: 16)),
-          SizedBox(height: 10),
-          Text(questions),
-          Spacer(),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('$players Players'),
-              Icon(Icons.bolt, color: Colors.orangeAccent),
+              Icon(icon, size: 40, color: Colors.purple[800]),
+              if(isPremium) Container(
+                padding: EdgeInsets.all(4),
+                decoration: BoxDecoration(
+                  color: Colors.deepOrange,
+                  borderRadius: BorderRadius.circular(4),
+                ),
+                child:  smallLabel(context, "Premium", color: Colors.white, textSize: 6)
+              )
+            ],
+
+          ),
+          SizedBox(height: 10),
+          smallLabel(context,title),
+          SizedBox(height: 10),
+
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Flexible(
+              child: smallLabel(context, questions,textSize: 10),
+              ),
+              Icon(Icons.bolt, color: Colors.orangeAccent, size: 16),
             ],
           ),
         ],

@@ -1,16 +1,9 @@
+import 'package:commonquiz/util/app_constants.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
-import 'package:auto_size_text/auto_size_text.dart';
-
-import '../../models/category.dart';
 import '../../util/AppColors.dart';
-import '../widgets/quiz_options.dart';
-
-import 'package:flutter/material.dart';
-
-import 'bookmark_screen/bookmarks_screen.dart';
+import '../widgets/common_widget.dart';
+import 'analysis_screen/analysis_screen.dart';
 import 'explore_screen/explore_screen.dart';
-import 'leaderboard_screen/leaderboard_screen.dart';
 import 'settings_screen/settings_screen.dart';
 
 
@@ -25,8 +18,7 @@ class _QuizHomePageState extends State<QuizHomePage> {
  // Track the selected tab index
   final List<Widget> _pages = [
     ExploreScreen(),
-    LeaderboardScreen(),
-    BookmarksScreen(),
+    AnalysisScreen(),
     SettingsScreen(),
   ];
 
@@ -37,27 +29,25 @@ class _QuizHomePageState extends State<QuizHomePage> {
       appBar: AppBar(
         backgroundColor: primary,
         elevation: 0,
-        title: const Row(
+        title: Row(
           children: [
-            CircleAvatar(
+            const CircleAvatar(
               backgroundImage: AssetImage('assets/images/avatar.png'), // Replace with actual image asset
               radius: 20,
             ),
-            SizedBox(width: 10),
+            const SizedBox(width: 10),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Roxane Harley',
-                    style: TextStyle(color: Colors.white, fontSize: 18)),
-                Text('Expert',
-                    style: TextStyle(color: Colors.white70, fontSize: 14)),
+                smallLabel(context, app_title,
+                    color: Colors.white),
               ],
             ),
-            Spacer(),
-            Column(
+            const Spacer(),
+            const Column(
               children: [
                 Icon(Icons.bolt, color: Colors.orangeAccent, size: 20),
-                Text('1200', style: TextStyle(color: Colors.white)),
+               // Text('1200', style: TextStyle(color: Colors.white)),
               ],
             )
           ],
@@ -78,13 +68,13 @@ class _QuizHomePageState extends State<QuizHomePage> {
             icon: Icon(Icons.explore),
             label: 'Explore',
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.leaderboard),
-            label: 'Leaderboard',
-          ),
+          // BottomNavigationBarItem(
+          //   icon: Icon(Icons.leaderboard),
+          //   label: 'Leaderboard',
+          // ),
           BottomNavigationBarItem(
             icon: Icon(Icons.bookmark),
-            label: 'Bookmarks',
+            label: 'Analysis',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.settings),

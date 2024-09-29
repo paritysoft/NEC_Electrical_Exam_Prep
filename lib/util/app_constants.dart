@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 const app_title = "Electrician Test Prep 2025";
 const sizeBox16 = 16.0;
+const padding20 = 20.0;
 class AdaptiveFontSize {
   static double getFontSize(BuildContext context, double baseFontSize) {
     double screenWidth = MediaQuery.of(context).size.width;
@@ -10,3 +11,12 @@ class AdaptiveFontSize {
     return baseFontSize * scaleFactor;
   }
 }
+
+const onboardT1 = "Master Your Electrical Knowledge";
+const onboardD1 = "Get ready for your upcoming electrician certification with expertly crafted questions, detailed explanations, and real-time feedback to help you succeed.";
+const onboardT2 = "Personalized Study Plans";
+const onboardD2 = "Tailor your learning experience to your pace. Focus on the areas you need the most practice in and track your progress toward your goals.";
+const onboardT3 = "Realistic Exam Simulations";
+const onboardD3 = "Experience true-to-life exam simulations that mirror the actual test format, preparing you for success on the big day with ease.";
+const onboardT4 = "Track Your Progress";
+const onboardD4 = "Monitor your performance, identify areas for improvement, and celebrate your achievements as you advance through each stage of the quiz.";

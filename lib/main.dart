@@ -3,6 +3,8 @@ import 'package:commonquiz/util/app_constants.dart';
 import 'package:commonquiz/util/themes.dart';
 import 'package:flutter/material.dart';
 
+import 'ui/pages/onboarding/onboarding_screen.dart';
+
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
@@ -14,7 +16,7 @@ class MyApp extends StatelessWidget {
         themeMode: ThemeMode.system,
         theme: light,
         darkTheme: dark,
-        home: QuizHomePage(),
+        home: OnboardingScreen(),
 
     );
   }
