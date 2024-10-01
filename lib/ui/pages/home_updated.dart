@@ -1,3 +1,5 @@
+import 'package:commonquiz/ui/pages/upadansonghro/DatabaseHelper.dart';
+import 'package:commonquiz/ui/pages/upadansonghro/upadansonghro.dart';
 import 'package:commonquiz/util/app_constants.dart';
 import 'package:flutter/material.dart';
 import '../../util/AppColors.dart';
@@ -21,6 +23,19 @@ class _QuizHomePageState extends State<QuizHomePage> {
     AnalysisScreen(),
     SettingsScreen(),
   ];
+
+  @override
+  void initState() {
+    final UpadanSonghro upadansonghro = new UpadanSonghro();
+  //  upadansonghro.checkTables();
+    upadansonghro.getQuestions();
+    // DatabaseHelper.instance.deleteDatabase("");
+    // DatabaseHelper db =new DatabaseHelper();
+   // db.deleteDatabase("");
+  //  db.checkData();
+    // db.printDatabasePath();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
