@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:encrypt/encrypt.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
@@ -9,7 +10,9 @@ import 'package:encrypt/encrypt.dart' as encrypt;
 
 import 'model/ElectricianQuestion.dart';
 const secretKey = "yourgameyourgame";
-const myKey = "itmyloveitmylove";
+//const myKey = "itmyloveitmylove";
+String myKey = dotenv.env["API_KEY"]!;
+
 class UpadanSonghro {
 
 
