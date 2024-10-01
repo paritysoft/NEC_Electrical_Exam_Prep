@@ -4,6 +4,7 @@ import 'package:commonquiz/util/app_constants.dart';
 import 'package:flutter/material.dart';
 import '../../util/AppColors.dart';
 import '../widgets/common_widget.dart';
+import '../widgets/quiz_options.dart';
 import 'analysis_screen/analysis_screen.dart';
 import 'explore_screen/explore_screen.dart';
 import 'settings_screen/settings_screen.dart';
@@ -27,13 +28,7 @@ class _QuizHomePageState extends State<QuizHomePage> {
   @override
   void initState() {
     final UpadanSonghro upadansonghro = new UpadanSonghro();
-  //  upadansonghro.checkTables();
-    upadansonghro.getQuestions();
-    // DatabaseHelper.instance.deleteDatabase("");
-    // DatabaseHelper db =new DatabaseHelper();
-   // db.deleteDatabase("");
-  //  db.checkData();
-    // db.printDatabasePath();
+    upadansonghro.checkTables();
     super.initState();
   }
 
@@ -100,8 +95,8 @@ class _QuizHomePageState extends State<QuizHomePage> {
         unselectedItemColor: Colors.grey, // Color for unselected icons
         showUnselectedLabels: true, // Show labels for unselected tabs
       ),
-
     );
   }
 }
+
 

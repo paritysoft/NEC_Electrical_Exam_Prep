@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:commonquiz/ui/pages/upadansonghro/model/ElectricianQuestion.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -69,6 +70,8 @@ class DatabaseHelper {
       }
     }
   }
+
+
 
   // Insert new sample data into the database
   Future<void> insertSampleData(
@@ -154,10 +157,10 @@ class DatabaseHelper {
   }
 
   // Fetch all data from the table
-  Future<List<Map<String, dynamic>>> getAllData() async {
-    final db = await database;
-    return await db.query('tbl_electrician_questions');
-  }
+  // Future<List<Map<String, dynamic>>> getAllData() async {
+  //   final db = await database;
+  //   return await db.query('tbl_electrician_questions');
+  // }
 
   // Delete data by UUID
   Future<void> deleteDataByUuid(String uuid) async {
@@ -166,9 +169,91 @@ class DatabaseHelper {
     await db.delete('tbl_electrician_questions', where: 'uuid = ?', whereArgs: [uuid]);
     print('Delete result: $result'); // Should print number of affected rows
   }
+
   Future<void> deleteDatabase(String path) async {
     path = join(await getDatabasesPath(), "electrician.db");
     await deleteDatabase(path);
     print("Database deleted");
+  }
+
+  // Retrieve all questions from the database
+  Future<List<ElectricianQuestion>> getAllQuestions() async {
+    final db = await instance.database;
+    final result = await db.query('tbl_electrician_questions');
+
+    // Convert the List<Map<String, dynamic>> into a List<ElectricianQuestion>
+    return result.map((map) => ElectricianQuestion.fromMap(map)).toList();
+  }
+
+  // Method to fetch all questions filtered by category with null safety
+  Future<List<ElectricianQuestion>> getQuestionsByCategory(String category) async {
+    final List<Map<String, dynamic>>? maps = await _database?.query(
+      'tbl_electrician_questions',
+      where: 'category = ?', // SQL 'where' clause to filter by category
+      whereArgs: [category], // The actual category to filter by
+    );
+
+    // Ensure maps is not null and contains data
+    if (maps == null || maps.isEmpty) {
+      return [];
+    }
+
+    // Convert List<Map<String, dynamic>> to List<ElectricianQuestion>
+    return maps.map((map) => ElectricianQuestion.fromMap(map)).toList();
+  }
+
+  void fetchQuestionsByCategory(DatabaseHelper dbHelper, String category) async {
+    List<ElectricianQuestion> questions = await dbHelper.getQuestionsByCategory(category);
+
+    if (questions.isEmpty) {
+      print('No questions found for category: $category');
+    } else {
+      for (var question in questions) {
+        print('Question: ${question.question}, Category: ${question.category}');
+      }
+    }
+  }
+
+  // Retrieve a specific question by its UUID
+  Future<ElectricianQuestion?> getQuestionByUUID(String uuid) async {
+    final db = await instance.database;
+    final result = await db.query(
+      'tbl_electrician_questions',
+      where: 'uuid = ?',
+      whereArgs: [uuid],
+    );
+
+    if (result.isNotEmpty) {
+      return ElectricianQuestion.fromMap(result.first);
+    } else {
+      return null;
+    }
+  }
+
+  // Update an existing question
+  Future<void> updateQuestion(ElectricianQuestion question) async {
+    final db = await instance.database;
+    await db.update(
+      'tbl_electrician_questions',
+      question.toMap(),
+      where: 'uuid = ?',
+      whereArgs: [question.id],
+    );
+  }
+
+  // Delete a question by its ID
+  Future<void> deleteQuestion(int id) async {
+    final db = await instance.database;
+    await db.delete(
+      'tbl_electrician_questions',
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+  }
+
+  // Close the database
+  Future<void> close() async {
+    final db = await instance.database;
+    db.close();
   }
 }

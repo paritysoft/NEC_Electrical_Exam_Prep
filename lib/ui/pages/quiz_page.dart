@@ -1,14 +1,17 @@
+import 'dart:convert';
+
 import 'package:commonquiz/ui/pages/quiz_finished.dart';
+import 'package:commonquiz/ui/pages/upadansonghro/model/ElectricianQuestion.dart';
+import 'package:commonquiz/ui/widgets/common_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:html_unescape/html_unescape.dart';
 
-import '../../models/category.dart';
-import '../../models/question.dart';
+var isSetData = false;
 
 class QuizPage extends StatefulWidget {
-  final List<Question> questions;
-  final Category? category;
+  final List<ElectricianQuestion> questions;
+  final String? category;
 
   const QuizPage({Key? key, required this.questions, this.category})
       : super(key: key);
@@ -27,11 +30,18 @@ class _QuizPageState extends State<QuizPage> {
 
   @override
   Widget build(BuildContext context) {
-    Question question = widget.questions[_currentIndex];
-    final List<dynamic> options = question.incorrectAnswers!;
+    ElectricianQuestion question = widget.questions[_currentIndex];
+  //  final List<dynamic> options = question.incorrectAnswer as List;
+    List<dynamic> options = jsonDecode(question.incorrectAnswer);
+
+
     if (!options.contains(question.correctAnswer)) {
       options.add(question.correctAnswer);
-      options.shuffle();
+      if(!isSetData){
+        options.shuffle();
+        isSetData = true;
+      }
+
     }
 
     return WillPopScope(
@@ -39,7 +49,7 @@ class _QuizPageState extends State<QuizPage> {
       child: Scaffold(
         key: _key,
         appBar: AppBar(
-          title: Text(widget.category!.name),
+          title: Text(widget.category ?? ""),
           elevation: 0,
         ),
         body: Stack(
@@ -91,6 +101,7 @@ class _QuizPageState extends State<QuizPage> {
                               value: option,
                               onChanged: (dynamic value) {
                                 setState(() {
+
                                   _answers[_currentIndex] = option;
                                 });
                               },
@@ -108,13 +119,10 @@ class _QuizPageState extends State<QuizPage> {
                                   vertical: 20.0, horizontal: 64.0)
                               : null,
                         ),
-                        child: Text(
+                        child: smallLabel(context,
                           _currentIndex == (widget.questions.length - 1)
                               ? "Submit"
                               : "Next",
-                          style: MediaQuery.of(context).size.width > 800
-                              ? TextStyle(fontSize: 30.0)
-                              : null,
                         ),
                         onPressed: _nextSubmit,
                       ),
@@ -130,6 +138,7 @@ class _QuizPageState extends State<QuizPage> {
   }
 
   void _nextSubmit() {
+    isSetData == false;
     if (_answers[_currentIndex] == null) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text("You must select an answer to continue."),
@@ -141,9 +150,9 @@ class _QuizPageState extends State<QuizPage> {
         _currentIndex++;
       });
     } else {
-      Navigator.of(context).pushReplacement(MaterialPageRoute(
-          builder: (_) => QuizFinishedPage(
-              questions: widget.questions, answers: _answers)));
+      // Navigator.of(context).pushReplacement(MaterialPageRoute(
+      //     builder: (_) => QuizFinishedPage(
+      //         questions: widget.questions, answers: _answers)));
     }
   }
 

@@ -80,7 +80,9 @@ class HomePage extends StatelessWidget {
     return MaterialButton(
       elevation: 1.0,
       highlightElevation: 1.0,
-      onPressed: () => _categoryPressed(context, category),
+      onPressed: () {
+        //_categoryPressed(context, category)
+      },
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10.0),
       ),
@@ -103,15 +105,15 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  _categoryPressed(BuildContext context, Category category) {
-    showModalBottomSheet(
-      context: context,
-      builder: (sheetContext) => BottomSheet(
-        builder: (_) => QuizOptionsDialog(
-          category: category,
-        ),
-        onClosing: () {},
-      ),
-    );
-  }
+  // _categoryPressed(BuildContext context, Category category) {
+  //   showModalBottomSheet(
+  //     context: context,
+  //     builder: (sheetContext) => BottomSheet(
+  //       builder: (_) => QuizOptionsDialog(
+  //         category: category,
+  //       ),
+  //       onClosing: () {},
+  //     ),
+  //   );
+  // }
 }

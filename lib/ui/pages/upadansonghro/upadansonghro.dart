@@ -3,41 +3,52 @@ import 'dart:io';
 import 'package:encrypt/encrypt.dart';
 import 'package:flutter/services.dart';
 import 'package:path/path.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:encrypt/encrypt.dart' as encrypt;
 
-import 'DatabaseHelper.dart';
+import 'model/ElectricianQuestion.dart';
 const secretKey = "yourgameyourgame";
 const myKey = "itmyloveitmylove";
 class UpadanSonghro {
-  Future<Database> initializeDB() async {
-    // Get the database path
-    var databasesPath = await getDatabasesPath();
-    String path = join(databasesPath, 'mydb.db');
 
-    // Check if the database file exists
-    bool exists = await File(path).exists();
 
-    if (!exists) {
-      // If not, copy it from the assets
-      try {
-        print('Copying database from assets...');
-        ByteData data = await rootBundle.load('assets/db/mydb.db');
-        List<int> bytes =
-            data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
+  static Database? _database;
 
-        await File(path).writeAsBytes(bytes, flush: true);
-        print('Database copied.');
-      } catch (e) {
-        print('Error copying database: $e');
-      }
+  // Get database path and copy database from assets if needed
+  Future<Database> get database async {
+    if (_database != null) return _database!;
+
+    // If the database doesn't exist, copy it from assets
+    _database = await _initDatabase();
+    return _database!;
+  }
+
+  // Initialize the database
+  Future<Database> _initDatabase() async {
+    // Get the path to the app's document directory
+    Directory documentsDirectory = await getApplicationDocumentsDirectory();
+    String dbPath = join(documentsDirectory.path, 'electrician.db');
+
+    // Check if the database exists in the local storage
+    bool dbExists = await File(dbPath).exists();
+
+    if (!dbExists) {
+      // If the database doesn't exist, copy it from assets
+      ByteData data = await rootBundle.load('assets/db/electrician.db');
+      List<int> bytes = data.buffer.asUint8List();
+
+      // Write the copied database file to the device
+      await File(dbPath).writeAsBytes(bytes);
     }
 
-    return openDatabase(path);
+    // Open the database
+    return await openDatabase(dbPath);
   }
 
   Future<void> checkTables() async {
-    final db = await initializeDB();
+    final db = await database;
+
 
     // Query to list all tables
     List<Map<String, dynamic>> tables =
@@ -49,74 +60,14 @@ class UpadanSonghro {
     });
   }
 
-  // Future<List<Map<String, dynamic>>> getQuestions() async {
-  //   final db = await initializeDB();
-  //   // Query the t_pp_journeyman_electrician_questions table
-  //   final List<Map<String, dynamic>> maps = await db.query('t_pp_journeyman_electrician_questions');
-  //
-  //   debugPrint('electrician_questions: ${maps.length}');
-  //
-  //   return maps;
-  // }
 
-  Future<List<Map<String, dynamic>>> getAndInsertQuestions() async {
+
+  Future<List<Map<String, dynamic>>> getQuestions() async {
     try {
-      final db = await initializeDB();
-      final List<Map<String, dynamic>> maps =
-          await db.query('t_pp_journeyman_electrician_questions');
+      final db = await database;
 
-
-      //dbHelper.insertNewData();
-
-
-      for (var map in maps) {
-        print(map); // This prints the entire map
-
-        var question = "${map["question"]}";
-        final questionDec = aesDecrypt(question, secretKey);
-        final questionEnc = encryptAES(questionDec, myKey);
-
-        var explanation = "${map["explanation"]}";
-        final explanationAes = aesDecrypt(explanation, secretKey);
-        final explanationEnc = encryptAES(explanationAes, myKey);
-
-        var incorrect_answer = "${map["incorrect_answer"]}";
-        final incorrect_answerAes = aesDecrypt(incorrect_answer, secretKey);
-        final incorrect_answerEnc = encryptAES(incorrect_answerAes, myKey);
-
-        var correct_answer = "${map["correct_answer"]}";
-        final correct_answerAes = aesDecrypt(correct_answer, secretKey);
-        final correct_answerEnc = encryptAES(correct_answerAes, myKey);
-
-        var topic_name = "${map["topic_name"]}";
-       // final topic_nameAes = aesDecrypt(topic_name, secretKey);
-        final topic_nameEnc = encryptAES(topic_name, myKey);
-
-
-        var category = "${map["category"]}";
-       // final categoryAes = aesDecrypt(category, secretKey);
-        final categoryEnc = encryptAES(category, myKey);
-
-
-        DatabaseHelper.instance.insertSampleData(
-            map["uuid"],
-            questionEnc,
-            explanationEnc,
-            incorrect_answerEnc,
-            correct_answerEnc,
-            topic_nameEnc,
-            categoryEnc,
-            map["level"] ?? 0,
-            map["status"] ?? 0,
-            map["collected"] ?? 0,
-            map["reported"] ?? 0,
-            map["like_state"] ?? 0,
-            map["correct"] ?? 0,
-            map["incorrect_count"] ?? 0,
-            map["answer"] ?? "",
-            map["is_default"] ?? 0,
-            map["exam_name"] ?? "");
-      }
+      final List<Map<String, dynamic>> maps = await db.query('tbl_electrician_questions');
+      print('data: getQuestions ${maps.length}');
        return maps;
     } catch (e) {
       print('Error: getQuestions $e');
@@ -124,22 +75,86 @@ class UpadanSonghro {
     }
   }
 
+  // Retrieve all questions from the database
+  Future<List<ElectricianQuestion>> getAllQuestions() async {
+    final db = await database;
+
+    final result = await db.query('tbl_electrician_questions');
+
+    // Convert the List<Map<String, dynamic>> into a List<ElectricianQuestion>
+    return result.map((map) => ElectricianQuestion.fromMap(map)).toList();
+  }
+
+  // Method to fetch all questions filtered by category with null safety
+  Future<List<ElectricianQuestion>> getQuestionsByCategory(String category) async {
+    final db = await database;
+
+    final List<Map<String, dynamic>>? maps = await db.query(
+      'tbl_electrician_questions',
+      where: 'category = ?', // SQL 'where' clause to filter by category
+      whereArgs: [category], // The actual category to filter by
+    );
+
+    // Ensure maps is not null and contains data
+    if (maps == null || maps.isEmpty) {
+      return [];
+    }
+
+    // Convert List<Map<String, dynamic>> to List<ElectricianQuestion>
+    return maps.map((map) => ElectricianQuestion.fromMap(map)).toList();
+  }
+
+  void fetchQuestionsByCategory( String category) async {
+    final upadanSonghro = await  UpadanSonghro();
+  //  final db = await initializeDB();
+    List<ElectricianQuestion> questions = await upadanSonghro.getQuestionsByCategory(category);
+
+    if (questions.isEmpty) {
+      print('No questions found for category: $category');
+    } else {
+      for (var question in questions) {
+        print('Question: ${question.question}, Category: ${question.category}');
+      }
+    }
+  }
+
+  // Retrieve a specific question by its UUID
+  Future<ElectricianQuestion?> getQuestionByUUID(String uuid) async {
+    final db = await database;
+
+    final result = await db.query(
+      'tbl_electrician_questions',
+      where: 'uuid = ?',
+      whereArgs: [uuid],
+    );
+
+    if (result.isNotEmpty) {
+      return ElectricianQuestion.fromMap(result.first);
+    } else {
+      return null;
+    }
+  }
+
+  // Update an existing question
+  Future<void> updateQuestion(ElectricianQuestion question) async {
+    final db = await database;
+
+    await db.update(
+      'tbl_electrician_questions',
+      question.toMap(),
+      where: 'uuid = ?',
+      whereArgs: [question.id],
+    );
+  }
+
   Future<void> closeDB() async {
-    final db = await initializeDB();
+    final db = await database;
+
     await db.close();
   }
+
 }
 
-// String aesDecrypt(String encryptedText, String key) {
-//   final keyBytes = Key.fromUtf8(key); // 16-byte (128-bit) key
-//   final encrypter =
-//       Encrypter(AES(keyBytes, mode: AESMode.ecb, padding: 'PKCS7'));
-//
-//   final encrypted = Encrypted.fromBase64(encryptedText); // Base64 encoded input
-//   final decrypted = encrypter.decrypt(encrypted);
-//
-//   return decrypted;
-// }
 
 String aesDecrypt(String encryptedText, String key) {
   // Check if the input is null or empty

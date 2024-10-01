@@ -1,13 +1,17 @@
 import 'dart:io';
+import 'package:commonquiz/ui/widgets/common_widget.dart';
+import 'package:commonquiz/util/AppColors.dart';
 import 'package:flutter/material.dart';
-import '../../models/category.dart';
 import '../../models/question.dart';
 import '../../resources/api_provider.dart';
 import '../pages/error.dart';
 import '../pages/quiz_page.dart';
+import '../pages/upadansonghro/DatabaseHelper.dart';
+import '../pages/upadansonghro/model/ElectricianQuestion.dart';
+import '../pages/upadansonghro/upadansonghro.dart';
 
 class QuizOptionsDialog extends StatefulWidget {
-  final Category? category;
+  final String? category;
 
   const QuizOptionsDialog({super.key, this.category});
 
@@ -31,126 +35,132 @@ class _QuizOptionsDialogState extends State<QuizOptionsDialog> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      child: Column(
-        children: <Widget>[
-          Container(
-            width: double.infinity,
-            padding: const EdgeInsets.all(16.0),
-            color: Colors.grey.shade200,
-            child: Text(
-              widget.category!.name,
-              style: Theme.of(context).textTheme.headlineMedium!.copyWith(),
+      child: Container(
+        color: background,
+        child: Column(
+          children: <Widget>[
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(16.0),
+              color: Colors.grey.shade200,
+              child: title15BoldColor(context,
+                widget.category ?? "", color: Colors.black87
+              ),
             ),
-          ),
-          SizedBox(height: 10.0),
-          Text("Select Total Number of Questions"),
-          SizedBox(
-            width: double.infinity,
-            child: Wrap(
-              alignment: WrapAlignment.center,
-              runAlignment: WrapAlignment.center,
-              runSpacing: 16.0,
-              spacing: 16.0,
-              children: <Widget>[
-                SizedBox(width: 0.0),
-                ActionChip(
-                  label: Text("10"),
-                  labelStyle: TextStyle(color: Colors.white),
-                  backgroundColor: _noOfQuestions == 10
-                      ? Colors.indigo
-                      : Colors.grey.shade600,
-                  onPressed: () => _selectNumberOfQuestions(10),
-                ),
-                ActionChip(
-                  label: Text("20"),
-                  labelStyle: TextStyle(color: Colors.white),
-                  backgroundColor: _noOfQuestions == 20
-                      ? Colors.indigo
-                      : Colors.grey.shade600,
-                  onPressed: () => _selectNumberOfQuestions(20),
-                ),
-                ActionChip(
-                  label: Text("30"),
-                  labelStyle: TextStyle(color: Colors.white),
-                  backgroundColor: _noOfQuestions == 30
-                      ? Colors.indigo
-                      : Colors.grey.shade600,
-                  onPressed: () => _selectNumberOfQuestions(30),
-                ),
-                ActionChip(
-                  label: Text("40"),
-                  labelStyle: TextStyle(color: Colors.white),
-                  backgroundColor: _noOfQuestions == 40
-                      ? Colors.indigo
-                      : Colors.grey.shade600,
-                  onPressed: () => _selectNumberOfQuestions(40),
-                ),
-                ActionChip(
-                  label: Text("50"),
-                  labelStyle: TextStyle(color: Colors.white),
-                  backgroundColor: _noOfQuestions == 50
-                      ? Colors.indigo
-                      : Colors.grey.shade600,
-                  onPressed: () => _selectNumberOfQuestions(50),
-                ),
-              ],
+            SizedBox(height: 10.0),
+            smallLabel(context, "Select Total Number of Questions"),
+            SizedBox(
+              width: double.infinity,
+              child: Wrap(
+                alignment: WrapAlignment.center,
+                runAlignment: WrapAlignment.center,
+                runSpacing: 16.0,
+                spacing: 16.0,
+                children: <Widget>[
+                  SizedBox(width: 0.0),
+                  ActionChip(
+                    label: smallLabel(context,"10"),
+                    labelStyle: TextStyle(color: Colors.white),
+                    backgroundColor: _noOfQuestions == 10
+                        ? primary
+                        : Colors.grey.shade600,
+                    onPressed: () => _selectNumberOfQuestions(10),
+                  ),
+                  ActionChip(
+                    label: smallLabel(context,"20"),
+                    labelStyle: TextStyle(color: Colors.white),
+                    backgroundColor: _noOfQuestions == 20
+                        ? primary
+                        : Colors.grey.shade600,
+                    onPressed: () => _selectNumberOfQuestions(20),
+                  ),
+                  ActionChip(
+                    label: smallLabel(context,"30"),
+                    labelStyle: TextStyle(color: Colors.white),
+                    backgroundColor: _noOfQuestions == 30
+                        ? primary
+                        : Colors.grey.shade600,
+                    onPressed: () => _selectNumberOfQuestions(30),
+                  ),
+                  ActionChip(
+                    label: smallLabel(context,"40"),
+                    labelStyle: TextStyle(color: Colors.white),
+                    backgroundColor: _noOfQuestions == 40
+                        ? primary
+                        : Colors.grey.shade600,
+                    onPressed: () => _selectNumberOfQuestions(40),
+                  ),
+                  ActionChip(
+                    label: smallLabel(context,"50"),
+                    labelStyle: TextStyle(color: Colors.white),
+                    backgroundColor: _noOfQuestions == 50
+                        ? primary
+                        : Colors.grey.shade600,
+                    onPressed: () => _selectNumberOfQuestions(50),
+                  ),
+                ],
+              ),
             ),
-          ),
-          SizedBox(height: 20.0),
-          Text("Select Difficulty"),
-          SizedBox(
-            width: double.infinity,
-            child: Wrap(
-              alignment: WrapAlignment.center,
-              runAlignment: WrapAlignment.center,
-              runSpacing: 16.0,
-              spacing: 16.0,
-              children: <Widget>[
-                SizedBox(width: 0.0),
-                ActionChip(
-                  label: Text("Any"),
-                  labelStyle: TextStyle(color: Colors.white),
-                  backgroundColor: _difficulty == null
-                      ? Colors.indigo
-                      : Colors.grey.shade600,
-                  onPressed: () => _selectDifficulty(null),
-                ),
-                ActionChip(
-                  label: Text("Easy"),
-                  labelStyle: TextStyle(color: Colors.white),
-                  backgroundColor: _difficulty == "easy"
-                      ? Colors.indigo
-                      : Colors.grey.shade600,
-                  onPressed: () => _selectDifficulty("easy"),
-                ),
-                ActionChip(
-                  label: Text("Medium"),
-                  labelStyle: TextStyle(color: Colors.white),
-                  backgroundColor: _difficulty == "medium"
-                      ? Colors.indigo
-                      : Colors.grey.shade600,
-                  onPressed: () => _selectDifficulty("medium"),
-                ),
-                ActionChip(
-                  label: Text("Hard"),
-                  labelStyle: TextStyle(color: Colors.white),
-                  backgroundColor: _difficulty == "hard"
-                      ? Colors.indigo
-                      : Colors.grey.shade600,
-                  onPressed: () => _selectDifficulty("hard"),
-                ),
-              ],
+            SizedBox(height: 20.0),
+            smallLabel(context, "Select Difficulty"),
+            SizedBox(
+              width: double.infinity,
+              child: Wrap(
+                alignment: WrapAlignment.center,
+                runAlignment: WrapAlignment.center,
+                runSpacing: 16.0,
+                spacing: 16.0,
+                children: <Widget>[
+                  SizedBox(width: 0.0),
+                  ActionChip(
+                    label: smallLabel(context, "Any"),
+                    labelStyle: TextStyle(color: Colors.white),
+                    backgroundColor: _difficulty == null
+                        ? primary
+                        : Colors.grey.shade600,
+                    onPressed: () => _selectDifficulty(null),
+                  ),
+                  ActionChip(
+                    label: smallLabel(context,"Easy"),
+                    labelStyle: TextStyle(color: Colors.white),
+                    backgroundColor: _difficulty == "easy"
+                        ? primary
+                        : Colors.grey.shade600,
+                    onPressed: () => _selectDifficulty("easy"),
+                  ),
+                  ActionChip(
+                    label: smallLabel(context, "Medium"),
+                    labelStyle: TextStyle(color: Colors.white),
+                    backgroundColor: _difficulty == "medium"
+                        ? primary
+                        : Colors.grey.shade600,
+                    onPressed: () => _selectDifficulty("medium"),
+                  ),
+                  ActionChip(
+                    label: smallLabel(context, "Hard"),
+                    labelStyle: TextStyle(color: Colors.white),
+                    backgroundColor: _difficulty == "hard"
+                        ? primary
+                        : Colors.grey.shade600,
+                    onPressed: () => _selectDifficulty("hard"),
+                  ),
+                ],
+              ),
             ),
-          ),
-          SizedBox(height: 20.0),
-          processing
-              ? CircularProgressIndicator()
-              : ElevatedButton(
-                  child: Text("Start Quiz"),
-                  onPressed: _startQuiz,
+            SizedBox(height: 20.0),
+            processing
+                ? CircularProgressIndicator()
+                : ElevatedButton(
+                    child: title15BoldColor(context, "Start Quiz", color: Colors.white),
+                    onPressed: _startQuiz,
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all<Color>(Colors.amber[600]!),
+                  ),
+
                 ),
-          SizedBox(height: 20.0),
-        ],
+            SizedBox(height: 20.0),
+          ],
+        ),
       ),
     );
   }
@@ -172,8 +182,9 @@ class _QuizOptionsDialogState extends State<QuizOptionsDialog> {
       processing = true;
     });
     try {
-      List<Question> questions =
-          await getQuestions(widget.category!, _noOfQuestions, _difficulty);
+      List<ElectricianQuestion> questions =
+          await UpadanSonghro().getAllQuestions();
+      print("questions  ${questions.length}    ${questions.last.incorrectAnswer} ");
       Navigator.pop(context);
       if (questions.length < 1) {
         Navigator.of(context).push(MaterialPageRoute(
@@ -188,7 +199,7 @@ class _QuizOptionsDialogState extends State<QuizOptionsDialog> {
           MaterialPageRoute(
               builder: (_) => QuizPage(
                     questions: questions,
-                    category: widget.category,
+                    category: widget.category ?? "",
                   )));
     } on SocketException catch (_) {
       Navigator.pushReplacement(
