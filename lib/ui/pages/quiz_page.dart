@@ -1,11 +1,11 @@
 import 'dart:convert';
-
 import 'package:commonquiz/ui/pages/quiz_finished.dart';
-import 'package:commonquiz/ui/pages/upadansonghro/model/ElectricianQuestion.dart';
 import 'package:commonquiz/ui/widgets/common_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:html_unescape/html_unescape.dart';
+
+import 'data/model/ElectricianQuestion.dart';
 
 var isSetData = false;
 
@@ -150,9 +150,9 @@ class _QuizPageState extends State<QuizPage> {
         _currentIndex++;
       });
     } else {
-      // Navigator.of(context).pushReplacement(MaterialPageRoute(
-      //     builder: (_) => QuizFinishedPage(
-      //         questions: widget.questions, answers: _answers)));
+      Navigator.of(context).pushReplacement(MaterialPageRoute(
+          builder: (_) => QuizFinishedPage(
+              questions: widget.questions, answers: _answers)));
     }
   }
 

@@ -1,5 +1,3 @@
-import 'package:commonquiz/ui/pages/home_updated.dart';
-import 'package:commonquiz/ui/pages/upadansonghro/DatabaseHelper.dart';
 import 'package:commonquiz/util/app_constants.dart';
 import 'package:commonquiz/util/themes.dart';
 import 'package:flutter/material.dart';

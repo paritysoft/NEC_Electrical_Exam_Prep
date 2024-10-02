@@ -3,9 +3,10 @@ import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:html_unescape/html_unescape.dart';
 
 import '../../models/question.dart';
+import 'data/model/ElectricianQuestion.dart';
 
 class CheckAnswersPage extends StatelessWidget {
-  final List<Question> questions;
+  final List<ElectricianQuestion> questions;
   final Map<int,dynamic> answers;
 
   const CheckAnswersPage({Key? key, required this.questions, required this.answers}) : super(key: key);
@@ -47,7 +48,7 @@ class CheckAnswersPage extends StatelessWidget {
         },
       );
     }
-    Question question = questions[index];
+    ElectricianQuestion question = questions[index];
     bool correct = question.correctAnswer == answers[index];
     return Card(
       child: Padding(

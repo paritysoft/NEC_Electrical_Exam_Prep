@@ -1,7 +1,8 @@
 import 'dart:async';
-import 'package:commonquiz/ui/pages/upadansonghro/model/ElectricianQuestion.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
+
+import 'model/ElectricianQuestion.dart';
 
 class DatabaseHelper {
   static final _databaseName = "electrician.db";

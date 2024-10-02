@@ -153,6 +153,19 @@ class UpadanSonghro {
     await db.close();
   }
 
+  // Function to retrieve unique categories
+  Future<List<String>> getUniqueCategories() async {
+    final db = await database;
+
+    // Perform a distinct query to get unique categories
+    List<Map<String, dynamic>> result = await db.rawQuery('SELECT DISTINCT category FROM tbl_electrician_questions');
+
+    // Convert the result into a list of category strings
+    List<String> categories = result.map((row) => aesDecrypt(row['category'], myKey) as String).toList();
+
+    return categories;
+  }
+
 }
 
 

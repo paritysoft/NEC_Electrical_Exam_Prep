@@ -2,17 +2,15 @@ import 'dart:io';
 import 'package:commonquiz/ui/widgets/common_widget.dart';
 import 'package:commonquiz/util/AppColors.dart';
 import 'package:flutter/material.dart';
-import '../../models/question.dart';
-import '../../resources/api_provider.dart';
+import '../../util/app_constants.dart';
+import '../pages/data/QuestionCache.dart';
+import '../pages/data/model/ElectricianQuestion.dart';
 import '../pages/error.dart';
 import '../pages/quiz_page.dart';
-import '../pages/upadansonghro/DatabaseHelper.dart';
-import '../pages/upadansonghro/model/ElectricianQuestion.dart';
-import '../pages/upadansonghro/upadansonghro.dart';
+
 
 class QuizOptionsDialog extends StatefulWidget {
   final String? category;
-
   const QuizOptionsDialog({super.key, this.category});
 
   @override
@@ -20,14 +18,14 @@ class QuizOptionsDialog extends StatefulWidget {
 }
 
 class _QuizOptionsDialogState extends State<QuizOptionsDialog> {
-  int? _noOfQuestions;
+  int? noOfQuestions;
   String? _difficulty;
   late bool processing;
 
   @override
   void initState() {
     super.initState();
-    _noOfQuestions = 10;
+    noOfQuestions = 5;
     _difficulty = "easy";
     processing = false;
   }
@@ -59,45 +57,45 @@ class _QuizOptionsDialogState extends State<QuizOptionsDialog> {
                 children: <Widget>[
                   SizedBox(width: 0.0),
                   ActionChip(
+                    label: smallLabel(context,"5"),
+                    labelStyle: TextStyle(color: Colors.white),
+                    backgroundColor: noOfQuestions == 5
+                        ? primary
+                        : Colors.grey.shade600,
+                    onPressed: () => _selectNumberOfQuestions(5),
+                  ),
+                  ActionChip(
                     label: smallLabel(context,"10"),
                     labelStyle: TextStyle(color: Colors.white),
-                    backgroundColor: _noOfQuestions == 10
+                    backgroundColor: noOfQuestions == 10
                         ? primary
                         : Colors.grey.shade600,
                     onPressed: () => _selectNumberOfQuestions(10),
                   ),
                   ActionChip(
+                    label: smallLabel(context,"15"),
+                    labelStyle: TextStyle(color: Colors.white),
+                    backgroundColor: noOfQuestions == 15
+                        ? primary
+                        : Colors.grey.shade600,
+                    onPressed: () => _selectNumberOfQuestions(15),
+                  ),
+                  ActionChip(
                     label: smallLabel(context,"20"),
                     labelStyle: TextStyle(color: Colors.white),
-                    backgroundColor: _noOfQuestions == 20
+                    backgroundColor: noOfQuestions == 20
                         ? primary
                         : Colors.grey.shade600,
                     onPressed: () => _selectNumberOfQuestions(20),
                   ),
-                  ActionChip(
-                    label: smallLabel(context,"30"),
-                    labelStyle: TextStyle(color: Colors.white),
-                    backgroundColor: _noOfQuestions == 30
-                        ? primary
-                        : Colors.grey.shade600,
-                    onPressed: () => _selectNumberOfQuestions(30),
-                  ),
-                  ActionChip(
-                    label: smallLabel(context,"40"),
-                    labelStyle: TextStyle(color: Colors.white),
-                    backgroundColor: _noOfQuestions == 40
-                        ? primary
-                        : Colors.grey.shade600,
-                    onPressed: () => _selectNumberOfQuestions(40),
-                  ),
-                  ActionChip(
-                    label: smallLabel(context,"50"),
-                    labelStyle: TextStyle(color: Colors.white),
-                    backgroundColor: _noOfQuestions == 50
-                        ? primary
-                        : Colors.grey.shade600,
-                    onPressed: () => _selectNumberOfQuestions(50),
-                  ),
+                  // ActionChip(
+                  //   label: smallLabel(context,"50"),
+                  //   labelStyle: TextStyle(color: Colors.white),
+                  //   backgroundColor: _noOfQuestions == 50
+                  //       ? primary
+                  //       : Colors.grey.shade600,
+                  //   onPressed: () => _selectNumberOfQuestions(50),
+                  // ),
                 ],
               ),
             ),
@@ -167,7 +165,7 @@ class _QuizOptionsDialogState extends State<QuizOptionsDialog> {
 
   _selectNumberOfQuestions(int i) {
     setState(() {
-      _noOfQuestions = i;
+      noOfQuestions = i;
     });
   }
 
@@ -181,12 +179,13 @@ class _QuizOptionsDialogState extends State<QuizOptionsDialog> {
     setState(() {
       processing = true;
     });
+
     try {
-      List<ElectricianQuestion> questions =
-          await UpadanSonghro().getAllQuestions();
-      print("questions  ${questions.length}    ${questions.last.incorrectAnswer} ");
+      List<ElectricianQuestion>? questions = QuestionCache().getQuestions();
+
+      print("questions  ${questions?.length}    ${questions?.last.incorrectAnswer} ");
       Navigator.pop(context);
-      if (questions.length < 1) {
+      if ((questions?.length ?? 0)< 1) {
         Navigator.of(context).push(MaterialPageRoute(
             builder: (_) => ErrorPage(
                   message:
@@ -194,13 +193,9 @@ class _QuizOptionsDialogState extends State<QuizOptionsDialog> {
                 )));
         return;
       }
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (_) => QuizPage(
-                    questions: questions,
-                    category: widget.category ?? "",
-                  )));
+      if(questions != null) {
+        loadRandomQuestions(questions, noOfQuestions ?? 5);
+      }
     } on SocketException catch (_) {
       Navigator.pushReplacement(
           context,
@@ -221,5 +216,16 @@ class _QuizOptionsDialogState extends State<QuizOptionsDialog> {
     setState(() {
       processing = false;
     });
+  }
+  void loadRandomQuestions(List<ElectricianQuestion> questions, int count) async {
+    List<ElectricianQuestion> randomQuestions = await getRandomQuestions(questions, count);
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (_) => QuizPage(
+              questions: randomQuestions,
+              category: widget.category ?? "",
+            )));
+    print(randomQuestions);
   }
 }

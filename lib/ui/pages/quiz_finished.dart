@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 
 import '../../models/question.dart';
 import 'check_answers.dart';
+import 'data/model/ElectricianQuestion.dart';
 
 class QuizFinishedPage extends StatefulWidget {
-  final List<Question> questions;
+  final List<ElectricianQuestion> questions;
   final Map<int, dynamic> answers;
 
   QuizFinishedPage({Key? key, required this.questions, required this.answers})

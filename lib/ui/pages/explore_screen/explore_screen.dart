@@ -1,11 +1,16 @@
+import 'package:commonquiz/ui/pages/explore_screen/PracticeByTopic.dart';
 import 'package:flutter/material.dart';
 import '../../../util/app_constants.dart';
 import '../../widgets/common_widget.dart';
 import '../../widgets/quiz_options.dart';
+import '../data/QuestionCache.dart';
 
 class ExploreScreen extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
+
+
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Column(
@@ -110,42 +115,48 @@ class ExploreScreen extends StatelessWidget {
               children: [
                 QuizCard(
                     title: 'Random Question',
-                    questions: '10 Questions',
+                    questions: 'Unlimited Questions',
                     isPremium: false,
-                    icon: Icons.language,
+                    icon: Icons.question_mark_sharp,
                     onTap: () {
                       _categoryPressed(context, "Random Question");
 
                     }),
                 QuizCard(
                     title: 'Practice By Topic',
-                    questions: '1200 Questions',
+                    questions: '1000+ Questions',
                     isPremium: true,
-                    icon: Icons.compass_calibration,
-                    onTap: () {}),
+                    icon: Icons.topic,
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (_) => PracticeByTopic()));
+
+                    }),
                 QuizCard(
                     title: 'Mock Quiz',
                     questions: 'Overcome your fears',
                     isPremium: true,
-                    icon: Icons.language,
+                    icon: Icons.quiz_rounded,
                     onTap: () {}),
                 QuizCard(
                     title: 'Time Quiz',
                     questions: 'Beat the Clock',
                     isPremium: true,
-                    icon: Icons.compass_calibration,
+                    icon: Icons.timelapse,
                     onTap: () {}),
                 QuizCard(
                     title: 'Your Questions',
                     questions: 'Challenge Your Knowledge',
                     isPremium: true,
-                    icon: Icons.compass_calibration,
+                    icon: Icons.personal_injury,
                     onTap: () {}),
                 QuizCard(
                     title: 'Records',
                     questions: 'Preserve Your Achievements',
                     isPremium: true,
-                    icon: Icons.compass_calibration,
+                    icon: Icons.fiber_smart_record_sharp,
                     onTap: () {}),
               ],
             ),

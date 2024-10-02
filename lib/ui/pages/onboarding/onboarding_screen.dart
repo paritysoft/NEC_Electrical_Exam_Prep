@@ -6,6 +6,7 @@ import 'package:introduction_screen/introduction_screen.dart';
 
 import '../../../util/AppColors.dart';
 import '../../widgets/common_widget.dart';
+import '../data/QuestionCache.dart';
 import '../home_updated.dart';
 import 'custom_onboarding_page_view_model.dart';
 
@@ -53,9 +54,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           rawPages: getPages(),
           onDone: () {
           //  SharedPreferenceHelper.setSplashVisit(true);
+
             Navigator.of(context).pushReplacement(MaterialPageRoute(
               builder: (context) => QuizHomePage(),
             ));
+
+            loadQuestions();
           } ,
           done:  Container(
             padding: const EdgeInsets.fromLTRB(16, 4, 16, 4),
