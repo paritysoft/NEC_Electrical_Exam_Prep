@@ -4,7 +4,6 @@ import 'package:commonquiz/ui/widgets/common_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:html_unescape/html_unescape.dart';
-
 import 'data/model/ElectricianQuestion.dart';
 
 var isSetData = false;
@@ -141,7 +140,7 @@ class _QuizPageState extends State<QuizPage> {
     isSetData == false;
     if (_answers[_currentIndex] == null) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text("You must select an answer to continue."),
+        content: smallLabel(context, "You must select an answer to continue."),
       ));
       return;
     }
@@ -161,18 +160,18 @@ class _QuizPageState extends State<QuizPage> {
         context: context,
         builder: (_) {
           return AlertDialog(
-            content: Text(
+            content: smallLabel(context,
                 "Are you sure you want to quit the quiz? All your progress will be lost."),
-            title: Text("Warning!"),
+            title: smallLabel(context,"Warning!"),
             actions: <Widget>[
               TextButton(
-                child: Text("Yes"),
+                child: smallLabel(context, "Yes"),
                 onPressed: () {
                   Navigator.pop(context, true);
                 },
               ),
               TextButton(
-                child: Text("No"),
+                child: smallLabel(context, "No"),
                 onPressed: () {
                   Navigator.pop(context, false);
                 },

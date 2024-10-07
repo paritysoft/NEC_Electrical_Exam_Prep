@@ -1,4 +1,5 @@
-import 'package:commonquiz/ui/pages/explore_screen/PracticeByTopic.dart';
+import 'package:commonquiz/ui/pages/explore_screen/mock_quiz_screen.dart';
+import 'package:commonquiz/ui/pages/explore_screen/practice_by_topic_screen.dart';
 import 'package:flutter/material.dart';
 import '../../../util/app_constants.dart';
 import '../../widgets/common_widget.dart';
@@ -139,7 +140,12 @@ class ExploreScreen extends StatelessWidget {
                     questions: 'Overcome your fears',
                     isPremium: true,
                     icon: Icons.quiz_rounded,
-                    onTap: () {}),
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (_) => MockQuizScreen()));
+                    }),
                 QuizCard(
                     title: 'Time Quiz',
                     questions: 'Beat the Clock',
