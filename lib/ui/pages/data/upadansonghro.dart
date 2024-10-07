@@ -9,8 +9,6 @@ import 'package:sqflite/sqflite.dart';
 import 'package:encrypt/encrypt.dart' as encrypt;
 
 import 'model/ElectricianQuestion.dart';
-const secretKey = "yourgameyourgame";
-//const myKey = "itmyloveitmylove";
 String myKey = dotenv.env["API_KEY"]!;
 
 class UpadanSonghro {

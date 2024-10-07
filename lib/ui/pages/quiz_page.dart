@@ -70,7 +70,7 @@ class _QuizPageState extends State<QuizPage> {
                     children: <Widget>[
                       CircleAvatar(
                         backgroundColor: Colors.white70,
-                        child: Text("${_currentIndex + 1}"),
+                        child: smallLabel(context, "${_currentIndex + 1}/${widget.questions.length}"),
                       ),
                       SizedBox(width: 16.0),
                       Expanded(

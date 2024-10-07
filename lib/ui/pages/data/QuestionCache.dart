@@ -28,6 +28,12 @@ class QuestionCache {
   void clearCache() {
     _cachedQuestions = null;
   }
+
+
+  List<ElectricianQuestion> filterQuestionsByCategory(List<ElectricianQuestion> questions, String category) {
+    // Use the .where() method to filter by category
+    return questions.where((question) => question.category == category).toList();
+  }
 }
 
 // Usage in your app
