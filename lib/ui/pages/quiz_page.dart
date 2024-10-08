@@ -1,9 +1,10 @@
-import 'dart:convert';
 import 'package:commonquiz/ui/pages/quiz_finished.dart';
 import 'package:commonquiz/ui/widgets/common_widget.dart';
+import 'package:commonquiz/util/AppColors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:html_unescape/html_unescape.dart';
+import 'data/QuestionCache.dart';
 import 'data/model/ElectricianQuestion.dart';
 
 var isSetData = false;
@@ -27,30 +28,36 @@ class _QuizPageState extends State<QuizPage> {
   final Map<int, dynamic> _answers = {};
   final GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
 
+  List<String> options = [];
+  String? selectedAnswer;
+
+  @override
+  void initState() {
+    super.initState();
+    // Load and shuffle the options only once in initState
+    options = getShuffledOptions(widget.questions[_currentIndex]);
+  }
+
+
   @override
   Widget build(BuildContext context) {
-    ElectricianQuestion question = widget.questions[_currentIndex];
-  //  final List<dynamic> options = question.incorrectAnswer as List;
-    List<dynamic> options = jsonDecode(question.incorrectAnswer);
-
-
-    if (!options.contains(question.correctAnswer)) {
-      options.add(question.correctAnswer);
-      if(!isSetData){
-        options.shuffle();
-        isSetData = true;
-      }
-
-    }
+  //   ElectricianQuestion question = widget.questions[_currentIndex];
+  // //  final List<dynamic> options = question.incorrectAnswer as List;
+  //   List<dynamic> options = jsonDecode(question.incorrectAnswer);
+  //
+  //
+  //   if (!options.contains(question.correctAnswer)) {
+  //     options.add(question.correctAnswer);
+  //       options.shuffle();
+  //       isSetData = true;
+  //
+  //   }
 
     return WillPopScope(
       onWillPop: _onWillPop,
       child: Scaffold(
         key: _key,
-        appBar: AppBar(
-          title: Text(widget.category ?? ""),
-          elevation: 0,
-        ),
+        appBar: appBarCustom(context, widget.category ?? ""),
         body: Stack(
           children: <Widget>[
             ClipPath(
@@ -69,7 +76,7 @@ class _QuizPageState extends State<QuizPage> {
                     children: <Widget>[
                       CircleAvatar(
                         backgroundColor: Colors.white70,
-                        child: smallLabel(context, "${_currentIndex + 1}/${widget.questions.length}"),
+                        child: smallLabel(context, "${_currentIndex + 1}/${widget.questions.length}", color: Colors.black, textSize: 10),
                       ),
                       SizedBox(width: 16.0),
                       Expanded(
@@ -90,12 +97,7 @@ class _QuizPageState extends State<QuizPage> {
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
                         ...options.map((option) => RadioListTile(
-                              title: Text(
-                                HtmlUnescape().convert("$option"),
-                                style: MediaQuery.of(context).size.width > 800
-                                    ? TextStyle(fontSize: 30.0)
-                                    : null,
-                              ),
+                              title: smallLabel(context, option ),
                               groupValue: _answers[_currentIndex],
                               value: option,
                               onChanged: (dynamic value) {
@@ -121,7 +123,7 @@ class _QuizPageState extends State<QuizPage> {
                         child: smallLabel(context,
                           _currentIndex == (widget.questions.length - 1)
                               ? "Submit"
-                              : "Next",
+                              : "Next", color: primary
                         ),
                         onPressed: _nextSubmit,
                       ),
@@ -137,7 +139,7 @@ class _QuizPageState extends State<QuizPage> {
   }
 
   void _nextSubmit() {
-    isSetData == false;
+
     if (_answers[_currentIndex] == null) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: smallLabel(context, "You must select an answer to continue."),
@@ -147,7 +149,9 @@ class _QuizPageState extends State<QuizPage> {
     if (_currentIndex < (widget.questions.length - 1)) {
       setState(() {
         _currentIndex++;
+        options = getShuffledOptions(widget.questions[_currentIndex]);
       });
+
     } else {
       Navigator.of(context).pushReplacement(MaterialPageRoute(
           builder: (_) => QuizFinishedPage(

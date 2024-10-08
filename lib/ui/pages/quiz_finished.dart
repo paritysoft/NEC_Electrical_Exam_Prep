@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 
 import '../../models/question.dart';
+import '../../util/AppColors.dart';
+import '../widgets/common_widget.dart';
 import 'check_answers.dart';
+import 'data/QuestionCache.dart';
 import 'data/model/ElectricianQuestion.dart';
 
 class QuizFinishedPage extends StatefulWidget {
@@ -22,28 +25,16 @@ class _QuizFinishedPageState extends State<QuizFinishedPage> {
   Widget build(BuildContext context) {
     int correct = 0;
     this.widget.answers.forEach((index, value) {
-      if (this.widget.questions[index].correctAnswer == value) correct++;
+      if (cleanedString(this.widget.questions[index].correctAnswer).replaceAll('"', '') == value) correct++;
     });
-    final TextStyle titleStyle = TextStyle(
-        color: Colors.black87, fontSize: 16.0, fontWeight: FontWeight.w500);
-    final TextStyle trailingStyle = TextStyle(
-        color: Theme.of(context).primaryColor,
-        fontSize: 20.0,
-        fontWeight: FontWeight.bold);
+
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Result'),
-        elevation: 0,
-      ),
+      appBar: appBarCustom(context, 'Result') ,
       body: Container(
         height: double.infinity,
         width: double.infinity,
-        decoration: BoxDecoration(
-            gradient: LinearGradient(colors: [
-          Theme.of(context).primaryColor,
-          Theme.of(context).colorScheme.secondary
-        ], begin: Alignment.topCenter, end: Alignment.bottomCenter)),
+        color: background,
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(16.0),
           child: Column(
@@ -53,9 +44,9 @@ class _QuizFinishedPageState extends State<QuizFinishedPage> {
                     borderRadius: BorderRadius.circular(10.0)),
                 child: ListTile(
                   contentPadding: const EdgeInsets.all(16.0),
-                  title: Text("Total Questions", style: titleStyle),
+                  title: smallLabel(context, "Total Questions"),
                   trailing:
-                      Text("${widget.questions.length}", style: trailingStyle),
+                  trailingStyle(context, "${widget.questions.length}", ),
                 ),
               ),
               SizedBox(height: 10.0),
@@ -63,10 +54,10 @@ class _QuizFinishedPageState extends State<QuizFinishedPage> {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10.0)),
                 child: ListTile(
-                  contentPadding: const EdgeInsets.all(16.0),
-                  title: Text("Score", style: titleStyle),
-                  trailing: Text("${correct / widget.questions.length * 100}%",
-                      style: trailingStyle),
+                  contentPadding:  EdgeInsets.all(16.0),
+                  title: smallLabel(context, "Score",),
+                  trailing: trailingStyle(context, "${(correct / widget.questions.length * 100).toInt()}%",
+                     ),
                 ),
               ),
               SizedBox(height: 10.0),
@@ -74,10 +65,9 @@ class _QuizFinishedPageState extends State<QuizFinishedPage> {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10.0)),
                 child: ListTile(
-                  contentPadding: const EdgeInsets.all(16.0),
-                  title: Text("Correct Answers", style: titleStyle),
-                  trailing: Text("$correct/${widget.questions.length}",
-                      style: trailingStyle),
+                  contentPadding:  EdgeInsets.all(16.0),
+                  title: smallLabel(context, "Correct Answers", ),
+                  trailing: trailingStyle(context, "$correct/${widget.questions.length}",),
                 ),
               ),
               SizedBox(height: 10.0),
@@ -85,11 +75,11 @@ class _QuizFinishedPageState extends State<QuizFinishedPage> {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10.0)),
                 child: ListTile(
-                  contentPadding: const EdgeInsets.all(16.0),
-                  title: Text("Incorrect Answers", style: titleStyle),
-                  trailing: Text(
+                  contentPadding: EdgeInsets.all(16.0),
+                  title: smallLabel(context, "Incorrect Answers",),
+                  trailing: trailingStyle(context,
                       "${widget.questions.length - correct}/${widget.questions.length}",
-                      style: trailingStyle),
+                  ),
                 ),
               ),
               SizedBox(height: 20.0),
@@ -106,7 +96,7 @@ class _QuizFinishedPageState extends State<QuizFinishedPage> {
                     ),
                     backgroundColor: Theme.of(context).colorScheme.secondary.withOpacity(0.8),
                     ),
-                    child: Text("Goto Home"),
+                    child: smallLabel(context, "Goto Home", color: Colors.white),
                     onPressed: () => Navigator.pop(context),
                   ),
                   ElevatedButton(
@@ -119,7 +109,7 @@ class _QuizFinishedPageState extends State<QuizFinishedPage> {
                     ),
                     backgroundColor: Theme.of(context).primaryColor,
                     ),
-                    child: Text("Check Answers"),
+                    child: smallLabel(context, "Check Answers", color: Colors.white),
                     onPressed: () {
                       Navigator.of(context).push(MaterialPageRoute(
                           builder: (_) => CheckAnswersPage(

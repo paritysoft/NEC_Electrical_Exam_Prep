@@ -1,8 +1,10 @@
+import 'package:commonquiz/ui/widgets/common_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:html_unescape/html_unescape.dart';
 
 import '../../models/question.dart';
+import 'data/QuestionCache.dart';
 import 'data/model/ElectricianQuestion.dart';
 
 class CheckAnswersPage extends StatelessWidget {
@@ -14,10 +16,7 @@ class CheckAnswersPage extends StatelessWidget {
   @override
   Widget build(BuildContext context){
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Check Answers'),
-        elevation: 0,
-      ),
+      appBar: appBarCustom(context, "Check Answers"),
       body: Stack(
         children: <Widget>[
           ClipPath(
@@ -49,14 +48,14 @@ class CheckAnswersPage extends StatelessWidget {
       );
     }
     ElectricianQuestion question = questions[index];
-    bool correct = question.correctAnswer == answers[index];
+    bool correct = cleanedString(question.correctAnswer).replaceAll('"', '') == answers[index];
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text(HtmlUnescape().convert(question.question!), style: TextStyle(
+            Text(HtmlUnescape().convert(question.question), style: TextStyle(
               color: Colors.black,
               fontWeight: FontWeight.w500,
               fontSize: 16.0
@@ -71,7 +70,7 @@ class CheckAnswersPage extends StatelessWidget {
             correct ? Container(): Text.rich(TextSpan(
               children: [
                 TextSpan(text: "Answer: "),
-                TextSpan(text: HtmlUnescape().convert(question.correctAnswer!) , style: TextStyle(
+                TextSpan(text: HtmlUnescape().convert(cleanedString(question.correctAnswer).replaceAll('"', '')) , style: TextStyle(
                   fontWeight: FontWeight.w500
                 ))
               ]

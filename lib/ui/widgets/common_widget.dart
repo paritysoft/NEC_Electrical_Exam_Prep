@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../../util/AppColors.dart';
 import '../../util/app_constants.dart';
 
 snackBar(BuildContext context, String message) {
@@ -97,6 +98,20 @@ bigTitle(BuildContext context, String title, {Color? color}) => Text(
       ),
       textAlign: TextAlign.start,
     );
+final TextStyle titleStyle = TextStyle(
+    color: Colors.black87, fontSize: 16.0, fontWeight: FontWeight.w500);
+
+trailingStyle(BuildContext context, String title, {Color? color}) => Text(
+  title,
+  style: GoogleFonts.montserrat(
+    textStyle: TextStyle(
+        fontSize: AdaptiveFontSize.getFontSize(context, 20),
+        fontWeight: FontWeight.bold,
+        color: color ?? Theme.of(context).primaryColor),
+  ),
+  textAlign: TextAlign.start,
+);
+
 
 class Countdown extends AnimatedWidget {
   Countdown({Key? key, required this.animation})
@@ -125,4 +140,15 @@ class Countdown extends AnimatedWidget {
       )),
     );
   }
+}
+
+appBarCustom(BuildContext context, String message) {
+  return AppBar(
+    backgroundColor: primary,
+    elevation: 0,
+    title: title15BoldColor(context, message, color: Colors.white),
+    iconTheme: const IconThemeData(
+      color: Colors.white, // <= You can change your color here.
+    ),
+  );
 }

@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 class AppColors {
@@ -24,3 +26,8 @@ MaterialColor bottomNav = MaterialColor(0xFFFFFFFF, AppColors.color);
 
 const Color white = Color(0xFFFFFFFF);
 const Color bgColor = Color(0xFF4448FF);
+
+
+Color randomColor() {
+  return Color(0xFFFFFFFF & Random().nextInt(0xFFFFFFFF)).withOpacity(0.4);
+}

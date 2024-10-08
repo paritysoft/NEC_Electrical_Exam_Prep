@@ -27,29 +27,3 @@ const onboardD4 = "Monitor your performance, identify areas for improvement, and
 
 
 
-// Assuming ElectricianQuestion is your model class and db.getAllQuestions() returns a Future<List<ElectricianQuestion>>
-Future<List<ElectricianQuestion>> getRandomQuestions(List<ElectricianQuestion> questions, int count) async {
-  // Fetch all the questions
- // List<ElectricianQuestion> questions = await db.getAllQuestions();
-
-  // Check if there are fewer than 10 questions
-  if (questions.length <= count) {
-    return questions; // Return all if there are 10 or fewer
-  }
-
-  // Create a Random instance
-  Random random = Random();
-
-  // Create an empty set to store unique indices
-  Set<int> selectedIndices = {};
-
-  // Randomly select 10 unique indices
-  while (selectedIndices.length < count) {
-    selectedIndices.add(random.nextInt(questions.length));
-  }
-
-  // Get the random 10 questions
-  List<ElectricianQuestion> randomQuestions = selectedIndices.map((index) => questions[index]).toList();
-
-  return randomQuestions;
-}
