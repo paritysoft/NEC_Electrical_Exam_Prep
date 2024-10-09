@@ -1,9 +1,10 @@
 import 'package:commonquiz/ui/pages/explore_screen/mock_quiz_screen.dart';
 import 'package:commonquiz/ui/pages/explore_screen/practice_by_topic_screen.dart';
+import 'package:commonquiz/ui/widgets/quiz_options_timer_dialog.dart';
 import 'package:flutter/material.dart';
 import '../../../util/app_constants.dart';
 import '../../widgets/common_widget.dart';
-import '../../widgets/quiz_options.dart';
+import '../../widgets/quiz_options_dialog.dart';
 import '../data/QuestionCache.dart';
 
 class ExploreScreen extends StatelessWidget {
@@ -151,7 +152,10 @@ class ExploreScreen extends StatelessWidget {
                     questions: 'Beat the Clock',
                     isPremium: true,
                     icon: Icons.timelapse,
-                    onTap: () {}),
+                    onTap: () {
+                      _categoryPressed(context, "Time Quiz");
+
+                    }),
                 QuizCard(
                     title: 'Your Questions',
                     questions: 'Challenge Your Knowledge',
@@ -263,7 +267,9 @@ _categoryPressed(BuildContext context, String category) {
   showModalBottomSheet(
     context: context,
     builder: (sheetContext) => BottomSheet(
-      builder: (_) => QuizOptionsDialog(
+      builder: (_) => category != "Time Quiz" ? QuizOptionsDialog(
+        category: category,
+      ): QuizOptionsTimerDialog(
         category: category,
       ),
       onClosing: () {},

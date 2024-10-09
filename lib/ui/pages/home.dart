@@ -4,7 +4,7 @@ import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 
 import '../../models/category.dart';
-import '../widgets/quiz_options.dart';
+import '../widgets/quiz_options_dialog.dart';
 
 class HomePage extends StatelessWidget {
   final List<Color> tileColors = [

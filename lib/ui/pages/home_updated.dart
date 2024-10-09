@@ -2,7 +2,7 @@ import 'package:commonquiz/util/app_constants.dart';
 import 'package:flutter/material.dart';
 import '../../util/AppColors.dart';
 import '../widgets/common_widget.dart';
-import '../widgets/quiz_options.dart';
+import '../widgets/quiz_options_dialog.dart';
 import 'analysis_screen/analysis_screen.dart';
 import 'data/upadansonghro.dart';
 import 'explore_screen/explore_screen.dart';
