@@ -1,5 +1,6 @@
 import 'package:commonquiz/ui/pages/explore_screen/mock_quiz_screen.dart';
 import 'package:commonquiz/ui/pages/explore_screen/practice_by_topic_screen.dart';
+import 'package:commonquiz/ui/pages/explore_screen/your_questions_screen.dart';
 import 'package:commonquiz/ui/widgets/quiz_options_timer_dialog.dart';
 import 'package:flutter/material.dart';
 import '../../../util/app_constants.dart';
@@ -161,13 +162,21 @@ class ExploreScreen extends StatelessWidget {
                     questions: 'Challenge Your Knowledge',
                     isPremium: true,
                     icon: Icons.personal_injury,
-                    onTap: () {}),
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (_) => YourQuestionsScreen()));
+
+                    }),
                 QuizCard(
                     title: 'Records',
                     questions: 'Preserve Your Achievements',
                     isPremium: true,
                     icon: Icons.fiber_smart_record_sharp,
-                    onTap: () {}),
+                    onTap: () {
+
+                    }),
               ],
             ),
           ),

@@ -55,7 +55,7 @@ class _TimerWidgetState extends State<TimerWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: 160, // Set the height of the TimerWidget
       width: 150, // Set the width of the TimerWidget
       child: Column(
@@ -64,7 +64,6 @@ class _TimerWidgetState extends State<TimerWidget> {
           CircularPercentIndicator(
             radius: 65.0, // Match the height and width for a circular effect
             lineWidth: 13.0,
-            animation: true,
             percent: _percent,
             center: Column(
               mainAxisAlignment: MainAxisAlignment.center,

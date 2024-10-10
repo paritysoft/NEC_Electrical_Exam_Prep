@@ -1,10 +1,8 @@
 import 'dart:async';
-
 import 'package:commonquiz/ui/pages/quiz_finished.dart';
 import 'package:commonquiz/ui/widgets/common_widget.dart';
 import 'package:commonquiz/util/AppColors.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:html_unescape/html_unescape.dart';
 import '../widgets/TimerScreen.dart';
 import 'data/QuestionCache.dart';
@@ -28,8 +26,7 @@ class QuizPageTimer extends StatefulWidget {
 class _QuizPageTimerState extends State<QuizPageTimer> {
   final TextStyle _questionStyle = TextStyle(
       fontSize: 18.0, fontWeight: FontWeight.w500, color: Colors.black);
-  late Timer _timer;
-  int remainingTime = 10;
+
   int _currentIndex = 0;
   final Map<int, dynamic> _answers = {};
   final GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
@@ -37,55 +34,24 @@ class _QuizPageTimerState extends State<QuizPageTimer> {
   List<String> options = [];
   String? selectedAnswer;
 
-  String formatTime(int seconds) {
-    int minutes = seconds ~/ 60;
-    int remainingSeconds = seconds % 60;
-    return '$minutes:${remainingSeconds.toString().padLeft(2, '0')}';
-  }
+
 
   @override
   void dispose() {
-    _timer.cancel(); // Stop the timer when widget is disposed
     super.dispose();
   }
 
   @override
   void initState() {
     // Load and shuffle the options only once in initState
-
     options = getShuffledOptions(widget.questions[_currentIndex]);
-    startTimer();
-    remainingTime = widget.playTime ?? 120;
+
     super.initState();
   }
 
-  void startTimer() {
-    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
-      setState(() {
-        if (remainingTime > 0) {
-          remainingTime--;
-        } else {
-          _timer.cancel();
-          // You can also add logic to auto-submit the quiz or show a message.
-          print("Time's up!");
-        }
-      });
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
-    //   ElectricianQuestion question = widget.questions[_currentIndex];
-    // //  final List<dynamic> options = question.incorrectAnswer as List;
-    //   List<dynamic> options = jsonDecode(question.incorrectAnswer);
-    //
-    //
-    //   if (!options.contains(question.correctAnswer)) {
-    //     options.add(question.correctAnswer);
-    //       options.shuffle();
-    //       isSetData = true;
-    //
-    //   }
 
     return WillPopScope(
       onWillPop: _onWillPop,
@@ -94,24 +60,12 @@ class _QuizPageTimerState extends State<QuizPageTimer> {
         appBar: appBarCustom(context, widget.category ?? ""),
         body: Stack(
           children: <Widget>[
-            // ClipPath(
-            //   clipper: WaveClipperTwo(),
-            //   child: Container(
-            //     decoration:
-            //         BoxDecoration(color: Theme.of(context).primaryColor),
-            //     height: 300,
-            //   ),
-            // ),
 
-            // Text(
-            //   formatTime(_remainingTime),
-            //   style: const TextStyle(fontSize: 24),
-            // ),
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 children: <Widget>[
-                  TimerWidget(initialTime: remainingTime),
+                  TimerWidget(initialTime: widget.playTime ?? 0),
                   Card(
                     child: Row(
                       children: <Widget>[
@@ -195,7 +149,7 @@ class _QuizPageTimerState extends State<QuizPageTimer> {
         options = getShuffledOptions(widget.questions[_currentIndex]);
       });
     } else {
-      _timer.cancel();
+    //  _timer.cancel();
       Navigator.of(context).pushReplacement(MaterialPageRoute(
           builder: (_) => QuizFinishedPage(
               questions: widget.questions, answers: _answers)));
