@@ -10,7 +10,7 @@ import 'package:flutter/services.dart';  // For loading assets
 import 'package:path_provider/path_provider.dart';  // For getting the directory
 import 'dart:io';
 
-
+String yourKey = dotenv.env["YOUR_KEY"]!;
 class YourQuestionsScreen extends StatefulWidget {
   @override
   _YourQuestionsScreenState createState() => _YourQuestionsScreenState();
@@ -27,37 +27,37 @@ class _YourQuestionsScreenState extends State<YourQuestionsScreen> {
   ]; // List to store categories
 
   bool _isLoading = false; // Loading state
-  String yourKey = dotenv.env["YOUR_KEY"]!;
+
 
   @override
   void initState() {
     super.initState();
   }
 
-  String? _pdfPath;
-
-  Future<void> openDecryptedPDF() async {
-    // Decrypt the password-protected PDF
-    File decryptedPDF = await decryptPasswordProtectedPDFFromAssets(
-      'assets/pdf/electrical_safe_questions_pass.pdf',
-      // Replace with your actual file path
-      yourKey, // Replace with your PDF password
-    );
-    print("decryptedPDF  ${decryptedPDF}");
-    setState(() {
-      _pdfPath = decryptedPDF.path;
-    });
-
-    // Navigate to PDF Viewer
-    if (_pdfPath != null) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => PDFViewerPage(pdfPath: _pdfPath!),
-        ),
-      );
-    }
-  }
+  // String? _pdfPath;
+  //
+  // Future<void> openDecryptedPDF() async {
+  //   // Decrypt the password-protected PDF
+  //   File decryptedPDF = await decryptPasswordProtectedPDFFromAssets(
+  //     'assets/pdf/st1.pdf',
+  //     // Replace with your actual file path
+  //     yourKey, // Replace with your PDF password
+  //   );
+  //   print("decryptedPDF  ${decryptedPDF}");
+  //   setState(() {
+  //     _pdfPath = decryptedPDF.path;
+  //   });
+  //
+  //   // Navigate to PDF Viewer
+  //   if (_pdfPath != null) {
+  //     Navigator.push(
+  //       context,
+  //       MaterialPageRoute(
+  //         builder: (context) => PDFViewerPage(pdfPath: _pdfPath!),
+  //       ),
+  //     );
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -89,23 +89,14 @@ class _YourQuestionsScreenState extends State<YourQuestionsScreen> {
                         title: smallLabel(context, _categories[index]),
                         trailing: Icon(Icons.arrow_forward_ios),
                         onTap: () {
-                          openDecryptedPDF();
 
-                          // Handle on tap
-                          // List<ElectricianQuestion>? questions =
-                          //     QuestionCache().getQuestions();
-                          // if (questions != null) {
-                          //   List<ElectricianQuestion>? filterQuestions =
-                          //       QuestionCache().filterQuestionsByCategory(
-                          //           questions, _categories[index]);
-                          //   Navigator.push(
-                          //       context,
-                          //       MaterialPageRoute(
-                          //           builder: (_) => QuizPage(
-                          //                 questions: filterQuestions,
-                          //                 category: _categories[index],
-                          //               )));
-                          // }
+                          Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => PDFViewerPage(pdfPath: "assets/pdf/st${index+1}.pdf", title: _categories[index],),
+                                    ));
+
+
                         },
                       ),
                     );
@@ -119,40 +110,3 @@ class _YourQuestionsScreenState extends State<YourQuestionsScreen> {
 
 
 
-
-Future<File> decryptPasswordProtectedPDFFromAssets(String assetPath, String password) async {
-  // Load the PDF file from assets
-  final ByteData bytes = await rootBundle.load(assetPath);
-  final Uint8List pdfBytes = bytes.buffer.asUint8List();
-
-  PdfDocument document;
-
-  try {
-    // Try to open and decrypt the PDF using Syncfusion
-    document = PdfDocument(inputBytes: pdfBytes, password: password);
-
-    // If decryption fails, it will throw an exception
-    if (document.pages == 0) {
-      throw Exception("The decrypted PDF document has no pages.");
-    }
-
-    // Get the application's document directory
-    final Directory appDocDir = await getApplicationDocumentsDirectory();
-    final String outputPath = "${appDocDir.path}/decrypted_pdf.pdf"; // Append the filename to the directory
-    final File file = File(outputPath);
-
-    // Write the decrypted content to the file
-    await file.writeAsBytes(document.saveSync());
-
-    // Dispose of the document to free up resources
-    document.dispose();
-
-    // Return the file path for use in the PDF viewer
-    return file;
-  } catch (e) {
-    // Handle exceptions related to PDF opening or password issues
-    print("Error decrypting PDF: $e");
-
-    throw Exception("PDF decryption failed. Please check the password or file integrity.");
-  }
-}
