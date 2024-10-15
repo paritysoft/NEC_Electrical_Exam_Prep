@@ -4,23 +4,24 @@ import 'package:commonquiz/util/AppColors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:html_unescape/html_unescape.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'data/QuestionCache.dart';
 import 'data/model/ElectricianQuestion.dart';
+import 'data/today_questions_service.dart';
 
 var isSetData = false;
 
-class QuizPage extends StatefulWidget {
-  final List<ElectricianQuestion> questions;
+class QuizPageToday extends StatefulWidget {
   final String? category;
 
-  const QuizPage({Key? key, required this.questions, this.category})
+  const QuizPageToday({Key? key, this.category})
       : super(key: key);
 
   @override
-  _QuizPageState createState() => _QuizPageState();
+  _QuizPageTodayState createState() => _QuizPageTodayState();
 }
 
-class _QuizPageState extends State<QuizPage> {
+class _QuizPageTodayState extends State<QuizPageToday> {
   final TextStyle _questionStyle = TextStyle(
       fontSize: 18.0, fontWeight: FontWeight.w500, color: Colors.white);
 
@@ -30,15 +31,38 @@ class _QuizPageState extends State<QuizPage> {
 
   List<String> options = [];
   String? selectedAnswer;
+  TodayQuestionsService? questionService;
+  int questionsReadToday = 0;
+  List<ElectricianQuestion> questions10 = [];
 
   @override
   void initState() {
     super.initState();
     // Load and shuffle the options only once in initState
-    options = getShuffledOptions(widget.questions[_currentIndex]);
+    _loadData();
+
 
   }
 
+  Future<void> _loadData() async {
+    final prefs = await SharedPreferences.getInstance();
+    questionsReadToday = prefs.getInt('questions_read_today') ?? 0;
+
+    QuestionCache questionCache = QuestionCache();
+    List<ElectricianQuestion>? questionList = questionCache.getQuestions();
+    print("questionList  ${questionList?.length}");
+    if (questionList != null) {
+      questionService = TodayQuestionsService();
+      questions10 = (await questionService?.getTodaysQuestions(questionList))!;
+    }
+
+    _currentIndex == questionsReadToday;
+
+    if (!(questions10.isEmpty ?? true)) {
+      options = getShuffledOptions(questions10[_currentIndex]);
+    }
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -77,13 +101,13 @@ class _QuizPageState extends State<QuizPage> {
                     children: <Widget>[
                       CircleAvatar(
                         backgroundColor: Colors.white70,
-                        child: smallLabel(context, "${_currentIndex + 1}/${widget.questions.length}", color: Colors.black, textSize: 10),
+                        child: smallLabel(context, "${_currentIndex + 1}/${questions10.length}", color: Colors.black, textSize: 10),
                       ),
                       SizedBox(width: 16.0),
                       Expanded(
                         child: Text(
                           HtmlUnescape().convert(
-                              widget.questions[_currentIndex].question!),
+                              questions10[_currentIndex].question ?? ""),
                           softWrap: true,
                           style: MediaQuery.of(context).size.width > 800
                               ? _questionStyle.copyWith(fontSize: 30.0)
@@ -122,7 +146,7 @@ class _QuizPageState extends State<QuizPage> {
                               : null,
                         ),
                         child: smallLabel(context,
-                          _currentIndex == (widget.questions.length - 1)
+                          _currentIndex == ((questions10?.length ?? 0)- 1)
                               ? "Submit"
                               : "Next", color: primary
                         ),
@@ -147,16 +171,16 @@ class _QuizPageState extends State<QuizPage> {
       ));
       return;
     }
-    if (_currentIndex < (widget.questions.length - 1)) {
+    if (_currentIndex < (questions10.length - 1)) {
       setState(() {
         _currentIndex++;
-        options = getShuffledOptions(widget.questions[_currentIndex]);
+        options = getShuffledOptions(questions10[_currentIndex]);
       });
 
     } else {
       Navigator.of(context).pushReplacement(MaterialPageRoute(
           builder: (_) => QuizFinishedPage(
-              questions: widget.questions, answers: _answers)));
+              questions: questions10, answers: _answers)));
     }
   }
 

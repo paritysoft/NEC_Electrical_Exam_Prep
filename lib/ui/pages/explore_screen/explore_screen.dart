@@ -3,64 +3,109 @@ import 'package:commonquiz/ui/pages/explore_screen/practice_by_topic_screen.dart
 import 'package:commonquiz/ui/pages/explore_screen/your_questions_screen.dart';
 import 'package:commonquiz/ui/widgets/quiz_options_timer_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../../util/app_constants.dart';
 import '../../widgets/common_widget.dart';
 import '../../widgets/quiz_options_dialog.dart';
 import '../data/QuestionCache.dart';
+import '../data/model/ElectricianQuestion.dart';
+import '../data/today_questions_service.dart';
+import '../data/upadansonghro.dart';
+import '../quiz_page.dart';
+import '../quiz_page_today.dart';
 
-class ExploreScreen extends StatelessWidget {
+class ExploreScreen extends StatefulWidget {
+  @override
+  State<ExploreScreen> createState() => _ExploreScreenState();
+}
+
+//TodayQuestionsService? questionService;
+int questionsReadToday = 0;
+//List<ElectricianQuestion>? questions10 = [];
+class _ExploreScreenState extends State<ExploreScreen> {
+
+
+  @override
+  void initState() {
+    super.initState();
+    _loadData(); // Call the async function without `await`
+  }
+
+  Future<void> _loadData() async {
+    final prefs = await SharedPreferences.getInstance();
+    questionsReadToday = prefs.getInt('questions_read_today') ?? 0;
+
+ //   QuestionCache questionCache = QuestionCache();
+ //   List<ElectricianQuestion>? questionList = questionCache.getQuestions();
+    // if (questionList != null) {
+    //   questionService = TodayQuestionsService();
+    //   questions10 = await questionService?.getTodaysQuestions(questionList);
+    // }
+  }
 
   @override
   Widget build(BuildContext context) {
-
-
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Daily Task Card
-          Container(
-            padding: EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(16),
-            ),
-            child: Row(
-              children: [
-                Icon(Icons.anchor, color: Colors.purple, size: 40),
-                SizedBox(width: 16),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      smallLabel(
-                        context,
-                        'Daily Task',
-                      ),
-                      smallLabel(context, '10 Questions'),
-                      SizedBox(height: 8),
-                      LinearProgressIndicator(
-                        value: 7 / 10,
-                        backgroundColor: Colors.grey[300],
-                        color: Colors.orangeAccent,
-                      ),
-                      SizedBox(height: 8),
-                      Row(
-                        children: [
-                          Expanded(
-                              flex: 1,
-                              child: smallLabel(context, 'Progress: ')),
-                          Expanded(
-                              flex: 1,
-                              child: smallLabel(context, '7/10',
-                                  alignment: TextAlign.end))
-                        ],
-                      ),
-                    ],
+          InkWell(
+            onTap: () {
+              //
+              // // Fetch today's 10 questions
+              //List<ElectricianQuestion> todaysQuestions = questionService!.getTodaysQuestions();
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (_) => QuizPageToday(
+                        category: "TodayQuiz",
+                      )));
+            },
+            child: Container(
+              padding: EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: Row(
+                children: [
+                  Icon(Icons.anchor, color: Colors.purple, size: 40),
+                  SizedBox(width: 16),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        smallLabel(
+                          context,
+                          'Daily Task',
+                        ),
+                        smallLabel(context, '10 Questions'),
+                        SizedBox(height: 8),
+                        LinearProgressIndicator(
+                          value: questionsReadToday / 10,
+                          backgroundColor: Colors.grey[300],
+                          color: Colors.orangeAccent,
+                        ),
+                        SizedBox(height: 8),
+                        Row(
+                          children: [
+                            Expanded(
+                                flex: 1,
+                                child: smallLabel(context, 'Progress: ')),
+                            Expanded(
+                                flex: 1,
+                                child: smallLabel(
+                                    context, '$questionsReadToday/10',
+                                    alignment: TextAlign.end))
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
           SizedBox(height: sizeBox16),
@@ -91,9 +136,9 @@ class ExploreScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Opacity(
-                  opacity: 0.5,
+                  opacity: 0.6,
                   child: Image.asset("assets/images/ic_premium.png",
-                      height: 20, width: 20, fit: BoxFit.cover),
+                      height: 30, width: 30, fit: BoxFit.cover),
                 ),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(4, 4, 4, 4),
@@ -101,9 +146,9 @@ class ExploreScreen extends StatelessWidget {
                       child: title15BoldColor(context, 'Unlock All Features')),
                 ),
                 Opacity(
-                  opacity: 0.3,
+                  opacity: 0.6,
                   child: Image.asset("assets/images/ic_premium.png",
-                      height: 20, width: 20, fit: BoxFit.cover),
+                      height: 30, width: 30, fit: BoxFit.cover),
                 ),
               ],
             ),
@@ -123,7 +168,6 @@ class ExploreScreen extends StatelessWidget {
                     icon: Icons.question_mark_sharp,
                     onTap: () {
                       _categoryPressed(context, "Random Question");
-
                     }),
                 QuizCard(
                     title: 'Practice By Topic',
@@ -131,11 +175,8 @@ class ExploreScreen extends StatelessWidget {
                     isPremium: true,
                     icon: Icons.topic,
                     onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (_) => PracticeByTopic()));
-
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (_) => PracticeByTopic()));
                     }),
                 QuizCard(
                     title: 'Mock Quiz',
@@ -143,10 +184,8 @@ class ExploreScreen extends StatelessWidget {
                     isPremium: true,
                     icon: Icons.quiz_rounded,
                     onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (_) => MockQuizScreen()));
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (_) => MockQuizScreen()));
                     }),
                 QuizCard(
                     title: 'Time Quiz',
@@ -155,7 +194,6 @@ class ExploreScreen extends StatelessWidget {
                     icon: Icons.timelapse,
                     onTap: () {
                       _categoryPressed(context, "Time Quiz");
-
                     }),
                 QuizCard(
                     title: 'Your Questions',
@@ -167,16 +205,13 @@ class ExploreScreen extends StatelessWidget {
                           context,
                           MaterialPageRoute(
                               builder: (_) => YourQuestionsScreen()));
-
                     }),
                 QuizCard(
                     title: 'Records',
                     questions: 'Preserve Your Achievements',
                     isPremium: true,
                     icon: Icons.fiber_smart_record_sharp,
-                    onTap: () {
-
-                    }),
+                    onTap: () {}),
               ],
             ),
           ),
@@ -276,11 +311,13 @@ _categoryPressed(BuildContext context, String category) {
   showModalBottomSheet(
     context: context,
     builder: (sheetContext) => BottomSheet(
-      builder: (_) => category != "Time Quiz" ? QuizOptionsDialog(
-        category: category,
-      ): QuizOptionsTimerDialog(
-        category: category,
-      ),
+      builder: (_) => category != "Time Quiz"
+          ? QuizOptionsDialog(
+              category: category,
+            )
+          : QuizOptionsTimerDialog(
+              category: category,
+            ),
       onClosing: () {},
     ),
   );
