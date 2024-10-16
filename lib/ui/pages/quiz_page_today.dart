@@ -38,52 +38,61 @@ class _QuizPageTodayState extends State<QuizPageToday> {
   @override
   void initState() {
     super.initState();
-    // Load and shuffle the options only once in initState
     _loadData();
-
-
   }
 
-  Future<void> _loadData() async {
-    final prefs = await SharedPreferences.getInstance();
-    questionsReadToday = prefs.getInt('questions_read_today') ?? 0;
 
+  Future<void> _loadData() async {
     QuestionCache questionCache = QuestionCache();
     List<ElectricianQuestion>? questionList = questionCache.getQuestions();
-    print("questionList  ${questionList?.length}");
-    if (questionList != null) {
-      questionService = TodayQuestionsService();
-      questions10 = (await questionService?.getTodaysQuestions(questionList))!;
+
+    print("questionList length: ${questionList?.length}");
+
+    if (questionList == null || questionList.isEmpty) {
+      print("No questions available to load.");
+      return;
     }
 
-    _currentIndex == questionsReadToday;
+    questionService = TodayQuestionsService();
 
-    if (!(questions10.isEmpty ?? true)) {
-      options = getShuffledOptions(questions10[_currentIndex]);
+    try {
+      // Fetch today's questions
+      List<ElectricianQuestion>? loadedQuestions = await questionService?.getTodaysQuestions(questionList);
+
+      // Ensure state is updated with the loaded questions
+      setState(() {
+        questions10 = loadedQuestions ?? [];
+      });
+
+      // Log the result
+      if (questions10.isEmpty) {
+        print("No questions available for today.");
+      } else {
+        print("Loaded ${questions10.length} questions for today.");
+      }
+    } catch (e) {
+      print("Error loading questions: $e");
     }
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      questionsReadToday = prefs.getInt('questions_read_today') ?? 0;
+      _currentIndex = questionsReadToday;
+    });
+    options = getShuffledOptions(questions10[_currentIndex]);
 
   }
 
   @override
   Widget build(BuildContext context) {
-  //   ElectricianQuestion question = widget.questions[_currentIndex];
-  // //  final List<dynamic> options = question.incorrectAnswer as List;
-  //   List<dynamic> options = jsonDecode(question.incorrectAnswer);
-  //
-  //
-  //   if (!options.contains(question.correctAnswer)) {
-  //     options.add(question.correctAnswer);
-  //       options.shuffle();
-  //       isSetData = true;
-  //
-  //   }
 
     return WillPopScope(
       onWillPop: _onWillPop,
       child: Scaffold(
         key: _key,
         appBar: appBarCustom(context, widget.category ?? ""),
-        body: Stack(
+        body: questions10.isEmpty
+            ? Center(child: Text('No questions available.'))
+            : Stack(
           children: <Widget>[
             ClipPath(
               clipper: WaveClipperTwo(),
@@ -176,7 +185,7 @@ class _QuizPageTodayState extends State<QuizPageToday> {
         _currentIndex++;
         options = getShuffledOptions(questions10[_currentIndex]);
       });
-
+      questionService?.updateQuestionsReadToday(_currentIndex);
     } else {
       Navigator.of(context).pushReplacement(MaterialPageRoute(
           builder: (_) => QuizFinishedPage(

@@ -26,8 +26,6 @@ class _QuizHomePageState extends State<QuizHomePage> {
 
   @override
   void initState() {
-    // final UpadanSonghro upadansonghro = new UpadanSonghro();
-    // upadansonghro.checkTables();
     super.initState();
   }
 

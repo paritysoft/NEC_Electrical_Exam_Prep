@@ -33,7 +33,11 @@ class _ExploreScreenState extends State<ExploreScreen> {
 
   Future<void> _loadData() async {
     final prefs = await SharedPreferences.getInstance();
-    questionsReadToday = prefs.getInt('questions_read_today') ?? 0;
+    setState(() {
+      questionsReadToday = prefs.getInt('questions_read_today') ?? 0;
+
+    });
+
 
  //   QuestionCache questionCache = QuestionCache();
  //   List<ElectricianQuestion>? questionList = questionCache.getQuestions();
@@ -60,7 +64,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
                   context,
                   MaterialPageRoute(
                       builder: (_) => QuizPageToday(
-                        category: "TodayQuiz",
+                        category: "Today Quiz",
                       )));
             },
             child: Container(

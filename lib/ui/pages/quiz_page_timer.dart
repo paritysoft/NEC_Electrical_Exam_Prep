@@ -43,10 +43,9 @@ class _QuizPageTimerState extends State<QuizPageTimer> {
 
   @override
   void initState() {
+    super.initState();
     // Load and shuffle the options only once in initState
     options = getShuffledOptions(widget.questions[_currentIndex]);
-
-    super.initState();
   }
 
 

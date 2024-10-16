@@ -22,12 +22,12 @@ class _PDFViewerPageState extends State<PDFViewerPage> {
 
   @override
   void initState() {
+    super.initState();
     Timer(Duration(microseconds: 300), () {
       setState(() {
         _isLoading = false;
       });
     });
-    super.initState();
   }
 
   @override
