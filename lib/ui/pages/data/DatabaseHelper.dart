@@ -1,17 +1,20 @@
 import 'dart:async';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:path/path.dart';
-import 'package:sqflite/sqflite.dart';
+import 'package:sqflite_sqlcipher/sqflite.dart';
 
+import '../../../util/util.dart';
 import 'model/ElectricianQuestion.dart';
 
 class DatabaseHelper {
-  static final _databaseName = "electrician.db";
-  static final _databaseVersion = 2; // Increment this when upgrading schema
+  static final _databaseName = "electrician_update.db";
+  static final _databaseVersion = 1; // Increment this when upgrading schema
 
   // Singleton pattern
   DatabaseHelper._privateConstructor();
   static final DatabaseHelper instance = DatabaseHelper._privateConstructor();
-
+  final _secureStorage = const FlutterSecureStorage();
   static Database? _database;
 
   // Access the database, create it if it doesn't exist
@@ -22,15 +25,29 @@ class DatabaseHelper {
   }
 
   // Initialize the database
+
+  // Initialize the encrypted database
   Future<Database> _initDatabase() async {
+    // Fetch the encryption password securely
+    String? password = await _secureStorage.read(key: your_db_pass);
+
+    // If no password exists, generate and store one securely
+    if (password == null) {
+      password = yourDBKey; // Replace with a generated one
+      await _secureStorage.write(key: your_db_pass, value: password);
+    }
+
+    // Open the encrypted database with the password
     String path = join(await getDatabasesPath(), _databaseName);
     return await openDatabase(
       path,
+      password: password, // Use encrypted database
       version: _databaseVersion,
       onCreate: _onCreate,
       onUpgrade: _onUpgrade,
     );
   }
+
 
   // Create the initial database schema
   Future<void> _onCreate(Database db, int version) async {
@@ -172,7 +189,7 @@ class DatabaseHelper {
   }
 
   Future<void> deleteDatabase(String path) async {
-    path = join(await getDatabasesPath(), "electrician.db");
+    path = join(await getDatabasesPath(), "electrician_update.db");
     await deleteDatabase(path);
     print("Database deleted");
   }

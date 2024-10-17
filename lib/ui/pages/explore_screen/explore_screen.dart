@@ -39,12 +39,13 @@ class _ExploreScreenState extends State<ExploreScreen> {
     });
 
 
- //   QuestionCache questionCache = QuestionCache();
- //   List<ElectricianQuestion>? questionList = questionCache.getQuestions();
-    // if (questionList != null) {
-    //   questionService = TodayQuestionsService();
-    //   questions10 = await questionService?.getTodaysQuestions(questionList);
-    // }
+   QuestionCache questionCache = QuestionCache();
+   //questionCache.loadQuestions();
+   //List<ElectricianQuestion>? questionList = questionCache.getQuestions();
+   //  if (questionList != null) {
+   //    questionService = TodayQuestionsService();
+   //    questions10 = await questionService?.getTodaysQuestions(questionList);
+   //  }
   }
 
   @override

@@ -1,3 +1,4 @@
+import 'package:commonquiz/ui/pages/data/upadansonghro.dart';
 import 'package:commonquiz/ui/pages/home.dart';
 import 'package:commonquiz/util/app_constants.dart';
 import 'package:flutter/material.dart';
@@ -46,7 +47,14 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    // UpadanSonghro upadanSonghro = new UpadanSonghro();
+    // upadanSonghro.getAndInsertQuestions();
+  }
+  @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -54,12 +62,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           rawPages: getPages(),
           onDone: () {
           //  SharedPreferenceHelper.setSplashVisit(true);
+            loadQuestions();
 
             Navigator.of(context).pushReplacement(MaterialPageRoute(
               builder: (context) => QuizHomePage(),
             ));
 
-            loadQuestions();
           } ,
           done:  Container(
             padding: const EdgeInsets.fromLTRB(16, 4, 16, 4),

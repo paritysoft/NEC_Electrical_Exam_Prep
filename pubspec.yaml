@@ -49,6 +49,11 @@ dependencies:
   syncfusion_flutter_pdfviewer: ^27.1.50
   device_info_plus: ^10.1.0
   shared_preferences: ^2.0.13
+  sqflite_sqlcipher: ^2.0.0+3
+  flutter_secure_storage: ^9.2.2
+  uuid: ^4.5.1
+
+
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -79,7 +84,9 @@ flutter:
 
   assets:
      - assets/images/
-     - assets/db/electrician.db
+     - assets/db/
+     - assets/db/mydb.db
+     - assets/db/electrician_update.db
      - .env
      - assets/pdf/
 
