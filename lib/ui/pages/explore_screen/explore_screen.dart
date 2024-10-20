@@ -8,10 +8,6 @@ import '../../../util/app_constants.dart';
 import '../../widgets/common_widget.dart';
 import '../../widgets/quiz_options_dialog.dart';
 import '../data/QuestionCache.dart';
-import '../data/model/ElectricianQuestion.dart';
-import '../data/today_questions_service.dart';
-import '../data/upadansonghro.dart';
-import '../quiz_page.dart';
 import '../quiz_page_today.dart';
 
 class ExploreScreen extends StatefulWidget {

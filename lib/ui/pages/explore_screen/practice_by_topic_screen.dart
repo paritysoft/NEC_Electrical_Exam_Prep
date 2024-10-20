@@ -1,8 +1,6 @@
 import 'package:commonquiz/ui/pages/data/upadansonghro.dart';
 import 'package:commonquiz/ui/widgets/common_widget.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
 import '../../../util/AppColors.dart';
 import '../data/QuestionCache.dart';
 import '../data/model/ElectricianQuestion.dart';
@@ -36,11 +34,7 @@ class _PracticeByTopicState extends State<PracticeByTopic> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: primary,
-        elevation: 0,
-        title: title15BoldColor(context, 'Topics List', color: Colors.white),
-      ),
+      appBar: appBarCustom(context, 'Topics List'),
       body: _isLoading
           ? const Center(
               child:

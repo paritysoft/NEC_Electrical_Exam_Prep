@@ -52,6 +52,11 @@ dependencies:
   sqflite_sqlcipher: ^2.0.0+3
   flutter_secure_storage: ^9.2.2
   uuid: ^4.5.1
+  webview_flutter: ^4.10.0
+  share_plus: ^10.1.0
+  in_app_review: ^2.0.9
+  url_launcher: ^6.3.1
+
 
 
 

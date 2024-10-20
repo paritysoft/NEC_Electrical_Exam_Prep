@@ -1,7 +1,4 @@
 import 'dart:io';
-import 'dart:math';
-
-import 'package:encrypt/encrypt.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -9,11 +6,9 @@ import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:encrypt/encrypt.dart' as encrypt;
 import 'package:sqflite_sqlcipher/sqflite.dart';
-import 'package:uuid/uuid.dart';
-
 import '../../../util/util.dart';
-import 'DatabaseHelper.dart';
 import 'model/ElectricianQuestion.dart';
+
 String myKey = dotenv.env["API_KEY"]!;
 const secretKey = "yourgameyourgame";
 
@@ -133,7 +128,6 @@ class UpadanSonghro {
 
   Future<void> checkTables() async {
     final db = await database;
-
 
     // Query to list all tables
     List<Map<String, dynamic>> tables =

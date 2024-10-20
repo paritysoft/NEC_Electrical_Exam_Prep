@@ -62,11 +62,7 @@ class _YourQuestionsScreenState extends State<YourQuestionsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: primary,
-        elevation: 0,
-        title: title15BoldColor(context, 'Your Questions', color: Colors.white),
-      ),
+      appBar: appBarCustom(context, 'Your Questions'),
       body: _isLoading
           ? const Center(
               child:
