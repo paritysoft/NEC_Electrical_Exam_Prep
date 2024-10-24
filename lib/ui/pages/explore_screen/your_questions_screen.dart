@@ -1,14 +1,9 @@
-import 'dart:io';
 import 'package:commonquiz/ui/pages/explore_screen/pdf_viewer.dart';
 import 'package:commonquiz/ui/widgets/common_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:syncfusion_flutter_pdf/pdf.dart';
 import '../../../util/AppColors.dart';
-import 'package:flutter/services.dart';  // For loading assets
 
-import 'package:path_provider/path_provider.dart';  // For getting the directory
-import 'dart:io';
 
 String yourKey = dotenv.env["YOUR_KEY"]!;
 class YourQuestionsScreen extends StatefulWidget {
@@ -63,6 +58,7 @@ class _YourQuestionsScreenState extends State<YourQuestionsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: appBarCustom(context, 'Your Questions'),
+
       body: _isLoading
           ? const Center(
               child:

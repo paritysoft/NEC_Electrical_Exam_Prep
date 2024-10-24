@@ -22,7 +22,7 @@ class QuizPage extends StatefulWidget {
 
 class _QuizPageState extends State<QuizPage> {
   final TextStyle _questionStyle = TextStyle(
-      fontSize: 18.0, fontWeight: FontWeight.w500, color: Colors.white);
+      fontSize: 14.0, fontWeight: FontWeight.normal, color: Colors.white);
 
   int _currentIndex = 0;
   final Map<int, dynamic> _answers = {};
@@ -83,7 +83,7 @@ class _QuizPageState extends State<QuizPage> {
                       Expanded(
                         child: Text(
                           HtmlUnescape().convert(
-                              widget.questions[_currentIndex].question!),
+                              widget.questions[_currentIndex].question),
                           softWrap: true,
                           style: MediaQuery.of(context).size.width > 800
                               ? _questionStyle.copyWith(fontSize: 30.0)

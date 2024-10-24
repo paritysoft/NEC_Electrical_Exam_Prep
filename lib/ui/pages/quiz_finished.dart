@@ -22,15 +22,25 @@ class _QuizFinishedPageState extends State<QuizFinishedPage> {
   int? correctAnswers;
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+  }
+  @override
   Widget build(BuildContext context) {
     int correct = 0;
     this.widget.answers.forEach((index, value) {
-      if (cleanedString(this.widget.questions[index].correctAnswer).replaceAll('"', '') == value) correct++;
+      if (cleanedString(this.widget.questions[index].correctAnswer)
+              .replaceAll('"', '') ==
+          value) {
+        correct++;
+        print("correctAnswers ${this.widget.answers[index]}");
+      }
     });
 
-
     return Scaffold(
-      appBar: appBarCustom(context, 'Result') ,
+      appBar: appBarCustom(context, 'Result'),
       body: Container(
         height: double.infinity,
         width: double.infinity,
@@ -45,29 +55,10 @@ class _QuizFinishedPageState extends State<QuizFinishedPage> {
                 child: ListTile(
                   contentPadding: const EdgeInsets.all(16.0),
                   title: smallLabel(context, "Total Questions"),
-                  trailing:
-                  trailingStyle(context, "${widget.questions.length}", ),
-                ),
-              ),
-              SizedBox(height: 10.0),
-              Card(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10.0)),
-                child: ListTile(
-                  contentPadding:  EdgeInsets.all(16.0),
-                  title: smallLabel(context, "Score",),
-                  trailing: trailingStyle(context, "${(correct / widget.questions.length * 100).toInt()}%",
-                     ),
-                ),
-              ),
-              SizedBox(height: 10.0),
-              Card(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10.0)),
-                child: ListTile(
-                  contentPadding:  EdgeInsets.all(16.0),
-                  title: smallLabel(context, "Correct Answers", ),
-                  trailing: trailingStyle(context, "$correct/${widget.questions.length}",),
+                  trailing: trailingStyle(
+                    context,
+                    "${widget.questions.length}",
+                  ),
                 ),
               ),
               SizedBox(height: 10.0),
@@ -76,9 +67,45 @@ class _QuizFinishedPageState extends State<QuizFinishedPage> {
                     borderRadius: BorderRadius.circular(10.0)),
                 child: ListTile(
                   contentPadding: EdgeInsets.all(16.0),
-                  title: smallLabel(context, "Incorrect Answers",),
-                  trailing: trailingStyle(context,
-                      "${widget.questions.length - correct}/${widget.questions.length}",
+                  title: smallLabel(
+                    context,
+                    "Score",
+                  ),
+                  trailing: trailingStyle(
+                    context,
+                    "${(correct / widget.questions.length * 100).toInt()}%",
+                  ),
+                ),
+              ),
+              SizedBox(height: 10.0),
+              Card(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0)),
+                child: ListTile(
+                  contentPadding: EdgeInsets.all(16.0),
+                  title: smallLabel(
+                    context,
+                    "Correct Answers",
+                  ),
+                  trailing: trailingStyle(
+                    context,
+                    "$correct/${widget.questions.length}",
+                  ),
+                ),
+              ),
+              SizedBox(height: 10.0),
+              Card(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0)),
+                child: ListTile(
+                  contentPadding: EdgeInsets.all(16.0),
+                  title: smallLabel(
+                    context,
+                    "Incorrect Answers",
+                  ),
+                  trailing: trailingStyle(
+                    context,
+                    "${widget.questions.length - correct}/${widget.questions.length}",
                   ),
                 ),
               ),
@@ -88,28 +115,31 @@ class _QuizFinishedPageState extends State<QuizFinishedPage> {
                 children: <Widget>[
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
-
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 16.0, vertical: 20.0),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16.0, vertical: 20.0),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      backgroundColor: Theme.of(context)
+                          .colorScheme
+                          .secondary
+                          .withOpacity(0.8),
                     ),
-                    backgroundColor: Theme.of(context).colorScheme.secondary.withOpacity(0.8),
-                    ),
-                    child: smallLabel(context, "Goto Home", color: Colors.white),
+                    child:
+                        smallLabel(context, "Goto Home", color: Colors.white),
                     onPressed: () => Navigator.pop(context),
                   ),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
-
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 16.0, vertical: 20.0),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16.0, vertical: 20.0),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      backgroundColor: Theme.of(context).primaryColor,
                     ),
-                    backgroundColor: Theme.of(context).primaryColor,
-                    ),
-                    child: smallLabel(context, "Check Answers", color: Colors.white),
+                    child: smallLabel(context, "Check Answers",
+                        color: Colors.white),
                     onPressed: () {
                       Navigator.of(context).push(MaterialPageRoute(
                           builder: (_) => CheckAnswersPage(

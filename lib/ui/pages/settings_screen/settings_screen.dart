@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:commonquiz/ui/pages/settings_screen/exam_date_screen.dart';
 import 'package:commonquiz/ui/pages/settings_screen/privacy_policy_screen.dart';
 import 'package:commonquiz/ui/widgets/common_widget.dart';
 import 'package:flutter/material.dart';
@@ -56,35 +57,39 @@ class _SettingsScreenState extends State<SettingsScreen> {
             smallLabel(context, 'October 17, 2024', color: Colors.orange),
             onTap: () {
               // Action on tap
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (_) => CalendarPage()));
             },
           ),
         ),
 
         // Dark Mode switch
-        Card(
-          color: Colors.white,
-          child: ListTile(
-            leading: Icon(Icons.brightness_6),
-            title: smallLabel(context, 'Dark Mode'),
-            trailing: Switch(
-              value: darkMode,
-              onChanged: (value) {
-                setState(() {
-                  darkMode = value;
-                });
-              },
-            ),
-          ),
-        ),
+        // Card(
+        //   color: Colors.white,
+        //   child: ListTile(
+        //     leading: Icon(Icons.brightness_6),
+        //     title: smallLabel(context, 'Dark Mode'),
+        //     trailing: Switch(
+        //       value: darkMode,
+        //       onChanged: (value) {
+        //         setState(() {
+        //           darkMode = value;
+        //         });
+        //       },
+        //     ),
+        //   ),
+        // ),
 
-        // Notification section header
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 5),
-          child: title15BoldColor(context,
-            'NOTIFICATION',
-           color: Colors.grey,
-          ),
-        ),
+        // // Notification section header
+        // Padding(
+        //   padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 5),
+        //   child: title15BoldColor(context,
+        //     'NOTIFICATION',
+        //    color: Colors.grey,
+        //   ),
+        // ),
 
         // Turn on Notifications switch
         Card(

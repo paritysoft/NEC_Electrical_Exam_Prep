@@ -33,7 +33,7 @@ class _PDFViewerPageState extends State<PDFViewerPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: smallLabel(context, widget.title)),
+        appBar: appBarCustom(context,  widget.title),
         body: Center(
             child: _isLoading
                 ? Center(child: CircularProgressIndicator())

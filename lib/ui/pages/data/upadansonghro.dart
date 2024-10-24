@@ -10,7 +10,6 @@ import '../../../util/util.dart';
 import 'model/ElectricianQuestion.dart';
 
 String myKey = dotenv.env["API_KEY"]!;
-const secretKey = "yourgameyourgame";
 
 class UpadanSonghro {
 

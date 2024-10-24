@@ -56,7 +56,10 @@ dependencies:
   share_plus: ^10.1.0
   in_app_review: ^2.0.9
   url_launcher: ^6.3.1
-
+  syncfusion_flutter_calendar: ^27.1.53
+  flutter_local_notifications: ^17.2.3
+  timezone: ^0.9.4 # Add this package for timezone support
+  permission_handler: ^11.3.1
 
 
 
