@@ -1,3 +1,4 @@
+import 'dart:ffi';
 import 'dart:io';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -213,16 +214,55 @@ class UpadanSonghro {
     }
   }
 
-  // Update an existing question
-  Future<void> updateQuestion(ElectricianQuestion question) async {
-    final db = await database;
+// Update an existing question
+  Future<void> updateQuestion(
+      ElectricianQuestion question, String givenAnswer, int correctCount, int incorrectCount) async {
+    try {
+      final db = await database;
 
-    await db.update(
+      // Fetch existing data for the specific question by uuid
+      final existingData = await db.query(
+        'tbl_electrician_questions',
+        where: 'uuid = ?',
+        whereArgs: [question.uuid],
+      );
+
+      if (existingData.isEmpty) {
+        print("Error: No question found with uuid ${question.id}");
+        return;
+      }
+
+      // Merge current data with the new update values
+      final currentData = existingData.first;
+      final updatedData = {
+        ...currentData,
+        'given_answer': givenAnswer,
+        'correct_count': correctCount,
+        'incorrect_count': incorrectCount,
+      };
+
+      // Update only the row with the specified uuid
+      final updatedCount = await db.update(
+        'tbl_electrician_questions',
+        updatedData,
+        where: 'uuid = ?',
+        whereArgs: [question.uuid],
+      );
+
+      print("Rows updated: $updatedCount");
+    } catch (e) {
+      print("Error updating question: $e");
+    }
+  }
+
+  Future<bool> checkIfQuestionExists(String uuid) async {
+    final db = await database;
+    final result = await db.query(
       'tbl_electrician_questions',
-      question.toMap(),
       where: 'uuid = ?',
-      whereArgs: [question.id],
+      whereArgs: [uuid],
     );
+    return result.isNotEmpty;
   }
 
   Future<void> closeDB() async {

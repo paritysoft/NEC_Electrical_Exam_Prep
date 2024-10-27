@@ -1,5 +1,6 @@
 import 'package:commonquiz/ui/pages/explore_screen/mock_quiz_screen.dart';
 import 'package:commonquiz/ui/pages/explore_screen/practice_by_topic_screen.dart';
+import 'package:commonquiz/ui/pages/explore_screen/records_screen.dart';
 import 'package:commonquiz/ui/pages/explore_screen/your_questions_screen.dart';
 import 'package:commonquiz/ui/widgets/quiz_options_timer_dialog.dart';
 import 'package:flutter/material.dart';
@@ -172,7 +173,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
                     }),
                 QuizCard(
                     title: 'Practice By Topic',
-                    questions: '1000+ Questions',
+                    questions: '1500+ Questions',
                     isPremium: true,
                     icon: Icons.topic,
                     onTap: () {
@@ -212,7 +213,13 @@ class _ExploreScreenState extends State<ExploreScreen> {
                     questions: 'Preserve Your Achievements',
                     isPremium: true,
                     icon: Icons.fiber_smart_record_sharp,
-                    onTap: () {}),
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (_) => RecordsScreen()));
+
+                    }),
               ],
             ),
           ),

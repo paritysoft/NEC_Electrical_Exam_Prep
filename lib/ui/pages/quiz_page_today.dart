@@ -23,7 +23,7 @@ class QuizPageToday extends StatefulWidget {
 
 class _QuizPageTodayState extends State<QuizPageToday> {
   final TextStyle _questionStyle = TextStyle(
-      fontSize: 18.0, fontWeight: FontWeight.w500, color: Colors.white);
+      fontSize: 14.0, fontWeight: FontWeight.w500, color: Colors.white);
 
   int _currentIndex = 0;
   final Map<int, dynamic> _answers = {};

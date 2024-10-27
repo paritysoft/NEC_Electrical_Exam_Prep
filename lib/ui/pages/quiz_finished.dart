@@ -1,3 +1,4 @@
+import 'package:commonquiz/ui/pages/explore_screen/explore_screen.dart';
 import 'package:flutter/material.dart';
 
 import '../../models/question.dart';
@@ -6,6 +7,7 @@ import '../widgets/common_widget.dart';
 import 'check_answers.dart';
 import 'data/QuestionCache.dart';
 import 'data/model/ElectricianQuestion.dart';
+import 'data/upadansonghro.dart';
 
 class QuizFinishedPage extends StatefulWidget {
   final List<ElectricianQuestion> questions;
@@ -23,19 +25,29 @@ class _QuizFinishedPageState extends State<QuizFinishedPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
+
+  }
+
+  Future<void> saveAddData(ElectricianQuestion question, String givenAnswer, int correctCount, int incorrectCount) async {
+    final upadanSonghro = await  UpadanSonghro();
+    upadanSonghro.updateQuestion(question, givenAnswer,correctCount, incorrectCount );
 
   }
   @override
   Widget build(BuildContext context) {
+
     int correct = 0;
     this.widget.answers.forEach((index, value) {
       if (cleanedString(this.widget.questions[index].correctAnswer)
               .replaceAll('"', '') ==
           value) {
         correct++;
-        print("correctAnswers ${this.widget.answers[index]}");
+        print("Answers correct  ${this.widget.answers[index]}");
+        saveAddData(this.widget.questions[index], value, 1, 0);
+      }else{
+        print("Answers incorrect Answers ${this.widget.answers[index]}");
+        saveAddData(this.widget.questions[index], value, 0, 1);
       }
     });
 

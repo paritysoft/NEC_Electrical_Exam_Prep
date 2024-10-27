@@ -25,7 +25,7 @@ class QuizPageTimer extends StatefulWidget {
 
 class _QuizPageTimerState extends State<QuizPageTimer> {
   final TextStyle _questionStyle = TextStyle(
-      fontSize: 18.0, fontWeight: FontWeight.w500, color: Colors.black);
+      fontSize: 14.0, fontWeight: FontWeight.w500, color: Colors.black);
 
   int _currentIndex = 0;
   final Map<int, dynamic> _answers = {};
