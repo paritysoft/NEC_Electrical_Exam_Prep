@@ -62,8 +62,6 @@ dependencies:
   permission_handler: ^11.3.1
 
 
-
-
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
@@ -94,7 +92,7 @@ flutter:
      - assets/images/
      - assets/db/
      - assets/db/mydb.db
-     - assets/db/electrician_update.db
+     - assets/db/electrician.db
      - .env
      - assets/pdf/
 

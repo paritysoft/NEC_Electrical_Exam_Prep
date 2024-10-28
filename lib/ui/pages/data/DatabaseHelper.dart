@@ -8,8 +8,9 @@ import '../../../util/util.dart';
 import 'model/ElectricianQuestion.dart';
 
 class DatabaseHelper {
-  static final _databaseName = "electrician_update.db";
+  static final _databaseName = "electrician.db";
   static final _databaseVersion = 1; // Increment this when upgrading schema
+  static final tblName = "tbl_electrician_questions";
 
   // Singleton pattern
   DatabaseHelper._privateConstructor();
@@ -52,7 +53,7 @@ class DatabaseHelper {
   // Create the initial database schema
   Future<void> _onCreate(Database db, int version) async {
     await db.execute('''
-      CREATE TABLE tbl_electrician_questions (
+      CREATE TABLE $tblName (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         uuid TEXT,
         question TEXT,
@@ -70,7 +71,8 @@ class DatabaseHelper {
         incorrect_count INTEGER,
         given_answer TEXT,
         is_default INTEGER,
-        exam_title TEXT
+        exam_title TEXT,
+        answered_date TEXT
       )
     ''');
     print("Table created successfully.");
@@ -82,7 +84,7 @@ class DatabaseHelper {
       // Example of adding new columns or handling migrations
       if (oldVersion == 1 && newVersion == 2) {
         await db.execute('''
-          ALTER TABLE tbl_electrician_questions ADD COLUMN new_column_name TEXT
+          ALTER TABLE $tblName ADD COLUMN new_column_name TEXT
         ''');
         print("Database upgraded from version $oldVersion to $newVersion");
       }
@@ -109,9 +111,12 @@ class DatabaseHelper {
       int incorrect_count,
       String given_answer,
       int is_default,
-      String exam_title) async {
+      String exam_title,
+      String answered_date
+      ) async {
     final db = await database;
-    int result = await db.insert('tbl_electrician_questions', {
+
+    int result = await db.insert('$tblName', {
       'uuid': uuid,
       'topic_name': topic_name,
       'category': category,
@@ -128,7 +133,9 @@ class DatabaseHelper {
       'incorrect_count': incorrect_count,
       'given_answer': given_answer,
       'is_default': is_default,
-      'exam_title': exam_title
+      'exam_title': exam_title,
+      'answered_date': answered_date
+
     });
     print('Insert result: $result'); // Should print the row ID
   }
@@ -151,9 +158,11 @@ class DatabaseHelper {
       int incorrect_count,
       String given_answer,
       int is_default,
-      String exam_title) async {
+      String exam_title,
+      String answered_date
+      ) async {
     final db = await database;
-    int result = await db.update('tbl_electrician_questions', {
+    int result = await db.update('$tblName', {
       'question': question,
       'explanation': explanation,
       'incorrect_answer': incorrect_answer,
@@ -169,7 +178,8 @@ class DatabaseHelper {
       'incorrect_count': incorrect_count,
       'given_answer': given_answer,
       'is_default': is_default,
-      'exam_title': exam_title
+      'exam_title': exam_title,
+      'answered_date': answered_date
     }, where: 'uuid = ?', whereArgs: [uuid]);
     print('Update result: $result'); // Should print number of affected rows
   }
@@ -184,7 +194,7 @@ class DatabaseHelper {
   Future<void> deleteDataByUuid(String uuid) async {
     final db = await database;
     int result =
-    await db.delete('tbl_electrician_questions', where: 'uuid = ?', whereArgs: [uuid]);
+    await db.delete('$tblName', where: 'uuid = ?', whereArgs: [uuid]);
     print('Delete result: $result'); // Should print number of affected rows
   }
 
@@ -197,7 +207,7 @@ class DatabaseHelper {
   // Retrieve all questions from the database
   Future<List<ElectricianQuestion>> getAllQuestions() async {
     final db = await instance.database;
-    final result = await db.query('tbl_electrician_questions');
+    final result = await db.query('$tblName');
 
     // Convert the List<Map<String, dynamic>> into a List<ElectricianQuestion>
     return result.map((map) => ElectricianQuestion.fromMap(map)).toList();
@@ -206,7 +216,7 @@ class DatabaseHelper {
   // Method to fetch all questions filtered by category with null safety
   Future<List<ElectricianQuestion>> getQuestionsByCategory(String category) async {
     final List<Map<String, dynamic>>? maps = await _database?.query(
-      'tbl_electrician_questions',
+      '$tblName',
       where: 'category = ?', // SQL 'where' clause to filter by category
       whereArgs: [category], // The actual category to filter by
     );
@@ -236,7 +246,7 @@ class DatabaseHelper {
   Future<ElectricianQuestion?> getQuestionByUUID(String uuid) async {
     final db = await instance.database;
     final result = await db.query(
-      'tbl_electrician_questions',
+      '$tblName',
       where: 'uuid = ?',
       whereArgs: [uuid],
     );
@@ -252,18 +262,19 @@ class DatabaseHelper {
   Future<void> updateQuestion(ElectricianQuestion question) async {
     final db = await instance.database;
     await db.update(
-      'tbl_electrician_questions',
+      '$tblName',
       question.toMap(),
       where: 'uuid = ?',
       whereArgs: [question.id],
     );
   }
 
+
   // Delete a question by its ID
   Future<void> deleteQuestion(int id) async {
     final db = await instance.database;
     await db.delete(
-      'tbl_electrician_questions',
+      '$tblName',
       where: 'id = ?',
       whereArgs: [id],
     );

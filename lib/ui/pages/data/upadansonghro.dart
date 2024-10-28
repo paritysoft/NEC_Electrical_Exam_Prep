@@ -1,5 +1,6 @@
 import 'dart:ffi';
 import 'dart:io';
+import 'dart:math';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -7,14 +8,19 @@ import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:encrypt/encrypt.dart' as encrypt;
 import 'package:sqflite_sqlcipher/sqflite.dart';
+import 'package:uuid/uuid.dart';
 import '../../../util/util.dart';
+import 'DatabaseHelper.dart';
+import 'model/CategoryQuestionData.dart';
 import 'model/ElectricianQuestion.dart';
 
 String myKey = dotenv.env["API_KEY"]!;
+const secretKey = "yourgameyourgame";
 
 class UpadanSonghro {
 
-  static final _databaseName = "electrician_update.db";
+  static final _databaseName = "electrician.db";
+  static final tblName = "tbl_electrician_questions";
   static final _databaseVersion = 2;
   static Database? _database;
 
@@ -54,7 +60,7 @@ class UpadanSonghro {
   // Create the initial database schema
   Future<void> _onCreate(Database db, int version) async {
     await db.execute('''
-      CREATE TABLE tbl_electrician_questions (
+      CREATE TABLE $tblName (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         uuid TEXT,
         question TEXT,
@@ -72,7 +78,8 @@ class UpadanSonghro {
         incorrect_count INTEGER,
         given_answer TEXT,
         is_default INTEGER,
-        exam_title TEXT
+        exam_title TEXT,
+        answered_date TEXT
       )
     ''');
     print("Table created successfully.");
@@ -84,7 +91,7 @@ class UpadanSonghro {
       // Example of adding new columns or handling migrations
       if (oldVersion == 1 && newVersion == 2) {
         await db.execute('''
-          ALTER TABLE tbl_electrician_questions ADD COLUMN new_column_name TEXT
+          ALTER TABLE $tblName ADD COLUMN new_column_name TEXT
         ''');
         print("Database upgraded from version $oldVersion to $newVersion");
       }
@@ -102,14 +109,14 @@ class UpadanSonghro {
         await _secureStorage.write(key: your_db_pass, value: password);
       }
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
-    String dbPath = join(documentsDirectory.path, 'electrician_update.db');
+    String dbPath = join(documentsDirectory.path, tblName);
 
     // Check if the database exists in the local storage
     bool dbExists = await File(dbPath).exists();
 
     if (!dbExists) {
       // If the database doesn't exist, copy it from assets
-      ByteData data = await rootBundle.load('assets/db/electrician_update.db');
+      ByteData data = await rootBundle.load('assets/db/electrician.db');
       List<int> bytes = data.buffer.asUint8List();
 
       // Write the copied database file to the device
@@ -145,7 +152,7 @@ class UpadanSonghro {
     try {
       final db = await database;
 
-      final List<Map<String, dynamic>> maps = await db.query('tbl_electrician_questions');
+      final List<Map<String, dynamic>> maps = await db.query('$tblName');
       print('data: getQuestions ${maps.length}');
        return maps;
     } catch (e) {
@@ -158,7 +165,7 @@ class UpadanSonghro {
   Future<List<ElectricianQuestion>> getAllQuestions() async {
     final db = await database;
 
-    final result = await db.query('tbl_electrician_questions');
+    final result = await db.query('$tblName');
 
     // Convert the List<Map<String, dynamic>> into a List<ElectricianQuestion>
     return result.map((map) => ElectricianQuestion.fromMap(map)).toList();
@@ -169,7 +176,7 @@ class UpadanSonghro {
     final db = await database;
 
     final List<Map<String, dynamic>>? maps = await db.query(
-      'tbl_electrician_questions',
+      '$tblName',
       where: 'category = ?', // SQL 'where' clause to filter by category
       whereArgs: [category], // The actual category to filter by
     );
@@ -202,7 +209,7 @@ class UpadanSonghro {
     final db = await database;
 
     final result = await db.query(
-      'tbl_electrician_questions',
+      '$tblName',
       where: 'uuid = ?',
       whereArgs: [uuid],
     );
@@ -222,7 +229,7 @@ class UpadanSonghro {
 
       // Fetch existing data for the specific question by uuid
       final existingData = await db.query(
-        'tbl_electrician_questions',
+        '$tblName',
         where: 'uuid = ?',
         whereArgs: [question.uuid],
       );
@@ -231,7 +238,8 @@ class UpadanSonghro {
         print("Error: No question found with uuid ${question.id}");
         return;
       }
-
+      // Get the current date
+      String currentDate = DateTime.now().toIso8601String().split('T').first;
       // Merge current data with the new update values
       final currentData = existingData.first;
       final updatedData = {
@@ -239,11 +247,13 @@ class UpadanSonghro {
         'given_answer': givenAnswer,
         'correct_count': correctCount,
         'incorrect_count': incorrectCount,
+        'answered_date': currentDate, // Store the date in answered_date
+
       };
 
       // Update only the row with the specified uuid
       final updatedCount = await db.update(
-        'tbl_electrician_questions',
+        '$tblName',
         updatedData,
         where: 'uuid = ?',
         whereArgs: [question.uuid],
@@ -258,11 +268,20 @@ class UpadanSonghro {
   Future<bool> checkIfQuestionExists(String uuid) async {
     final db = await database;
     final result = await db.query(
-      'tbl_electrician_questions',
+      '$tblName',
       where: 'uuid = ?',
       whereArgs: [uuid],
     );
     return result.isNotEmpty;
+  }
+
+  Future<int> getAnsweredCount(int days) async {
+    final db = await database;
+    final result = await db.rawQuery('''
+    SELECT COUNT(*) as count FROM $tblName
+    WHERE answered_date >= date('now', '-$days day')
+  ''');
+    return result.first['count'] as int;
   }
 
   Future<void> closeDB() async {
@@ -276,7 +295,7 @@ class UpadanSonghro {
     final db = await database;
 
     // Perform a distinct query to get unique categories
-    List<Map<String, dynamic>> result = await db.rawQuery('SELECT DISTINCT category FROM tbl_electrician_questions');
+    List<Map<String, dynamic>> result = await db.rawQuery('SELECT DISTINCT category FROM $tblName');
 
     // Convert the result into a list of category strings
     List<String> categories = result.map((row) => aesDecrypt(row['category'], myKey) as String).toList();
@@ -284,90 +303,116 @@ class UpadanSonghro {
     return categories;
   }
 
+  Future<List<CategoryQuestionData>> getCategoryQuestionData() async {
+    final db = await database;
 
-//   Future<Database> initializeDB() async {
-//     // Get the database path
-//     var databasesPath = await getDatabasesPath();
-//     String path = join(databasesPath, 'mydb.db');
-//     // Check if the database file exists
-//     bool exists = await File(path).exists();
-//     if (!exists) {
-//       // If not, copy it from the assets
-//       try {
-//         print('Copying database from assets...');
-//         ByteData data = await rootBundle.load('assets/db/mydb.db');
-//         List<int> bytes =
-//         data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
-//         await File(path).writeAsBytes(bytes, flush: true);
-//         print('Database copied.');
-//       } catch (e) {
-//         print('Error copying database: $e');
-//       }
-//     }
-//     return openDatabase(path);
-//   }
-//
-//   Future<List<Map<String, dynamic>>> getAndInsertQuestions() async {
-//     try {
-//       final db = await initializeDB();
-//       List<Map<String, dynamic>> maps =
-//       await db.query('t_pp_journeyman_electrician_questions');
-//       //dbHelper.insertNewData();
-//       print("maps journeyman ${maps}");
-//       List<Map<String, dynamic>> modifiableMaps = List.from(maps);
-//
-// // Shuffle the modifiable list
-//       modifiableMaps.shuffle(Random());
-//       print("maps journeyman Random ${modifiableMaps}");
-//
-//       for (var map in modifiableMaps) {
-//         print(map); // This prints the entire map
-//         var question = "${map["question"]}";
-//         final questionDec = aesDecrypt(question, secretKey);
-//         final questionEnc = encryptAES(questionDec, myKey);
-//         var explanation = "${map["explanation"]}";
-//         final explanationAes = aesDecrypt(explanation, secretKey);
-//         final explanationEnc = encryptAES(explanationAes, myKey);
-//         var incorrect_answer = "${map["incorrect_answer"]}";
-//         final incorrect_answerAes = aesDecrypt(incorrect_answer, secretKey);
-//         final incorrect_answerEnc = encryptAES(incorrect_answerAes, myKey);
-//         var correct_answer = "${map["correct_answer"]}";
-//         final correct_answerAes = aesDecrypt(correct_answer, secretKey);
-//         final correct_answerEnc = encryptAES(correct_answerAes, myKey);
-//         var topic_name = "${map["topic_name"]}";
-//         // final topic_nameAes = aesDecrypt(topic_name, secretKey);
-//         final topic_nameEnc = encryptAES(topic_name, myKey);
-//         var category = "${map["category"]}";
-//         // final categoryAes = aesDecrypt(category, secretKey);
-//         final categoryEnc = encryptAES(category, myKey);
-//
-//         var uuid = Uuid().v4();
-//
-//         DatabaseHelper.instance.insertSampleData(
-//             uuid,
-//             questionEnc,
-//             explanationEnc,
-//             incorrect_answerEnc,
-//             correct_answerEnc,
-//             topic_nameEnc,
-//             categoryEnc,
-//             map["level"] ?? 0,
-//             map["status"] ?? 0,
-//             map["collected"] ?? 0,
-//             map["reported"] ?? 0,
-//             map["like_state"] ?? 0,
-//             map["correct"] ?? 0,
-//             map["incorrect_count"] ?? 0,
-//             map["answer"] ?? "",
-//             map["is_default"] ?? 0,
-//             map["exam_name"] ?? "");
-//       }
-//       return maps;
-//     } catch (e) {
-//       print('Error: getQuestions $e');
-//       return [];
-//     }
-//   }
+    final List<Map<String, dynamic>> queryResult = await db.rawQuery('''
+    SELECT 
+      category,
+      SUM(correct_count) as correctCount,
+      SUM(incorrect_count) as incorrectCount,
+      COUNT(*) - SUM(correct_count + incorrect_count) as unansweredCount
+    FROM 
+      $tblName
+    GROUP BY 
+      category
+  ''');
+
+    return queryResult.map((row) {
+      return CategoryQuestionData(
+        category: row['category'] as String,
+        correctCount: row['correctCount'] as int,
+        incorrectCount: row['incorrectCount'] as int,
+        unansweredCount: row['unansweredCount'] as int,
+      );
+    }).toList();
+  }
+
+  Future<Database> initializeDB() async {
+    // Get the database path
+    var databasesPath = await getDatabasesPath();
+    String path = join(databasesPath, 'mydb.db');
+    // Check if the database file exists
+    bool exists = await File(path).exists();
+    if (!exists) {
+      // If not, copy it from the assets
+      try {
+        print('Copying database from assets...');
+        ByteData data = await rootBundle.load('assets/db/mydb.db');
+        List<int> bytes =
+        data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
+        await File(path).writeAsBytes(bytes, flush: true);
+        print('Database copied.');
+      } catch (e) {
+        print('Error copying database: $e');
+      }
+    }
+    return openDatabase(path);
+  }
+
+  Future<List<Map<String, dynamic>>> getAndInsertQuestions() async {
+    try {
+      final db = await initializeDB();
+      List<Map<String, dynamic>> maps =
+      await db.query('t_pp_journeyman_electrician_questions');
+      //dbHelper.insertNewData();
+      print("maps journeyman ${maps}");
+
+      List<Map<String, dynamic>> modifiableMaps = List.from(maps);
+
+// Shuffle the modifiable list
+      modifiableMaps.shuffle(Random());
+      print("maps journeyman Random ${modifiableMaps}");
+
+      for (var map in modifiableMaps) {
+        print(map); // This prints the entire map
+        var question = "${map["question"]}";
+        final questionDec = aesDecrypt(question, secretKey);
+        final questionEnc = encryptAES(questionDec, myKey);
+        var explanation = "${map["explanation"]}";
+        final explanationAes = aesDecrypt(explanation, secretKey);
+        final explanationEnc = encryptAES(explanationAes, myKey);
+        var incorrect_answer = "${map["incorrect_answer"]}";
+        final incorrect_answerAes = aesDecrypt(incorrect_answer, secretKey);
+        final incorrect_answerEnc = encryptAES(incorrect_answerAes, myKey);
+        var correct_answer = "${map["correct_answer"]}";
+        final correct_answerAes = aesDecrypt(correct_answer, secretKey);
+        final correct_answerEnc = encryptAES(correct_answerAes, myKey);
+        var topic_name = "${map["topic_name"]}";
+        // final topic_nameAes = aesDecrypt(topic_name, secretKey);
+        final topic_nameEnc = encryptAES(topic_name, myKey);
+        var category = "${map["category"]}";
+        // final categoryAes = aesDecrypt(category, secretKey);
+        final categoryEnc = encryptAES(category, myKey);
+        print('incorrect_answer: getQuestions $incorrect_answerAes  $correct_answerAes');
+        var uuid = Uuid().v4();
+        String currentDate = DateTime.now().toIso8601String().split('T').first;
+        DatabaseHelper.instance.insertSampleData(
+            uuid,
+            questionEnc,
+            explanationEnc,
+            incorrect_answerEnc,
+            correct_answerEnc,
+            topic_nameEnc,
+            categoryEnc,
+            map["level"] ?? 0,
+            map["status"] ?? 0,
+            map["collected"] ?? 0,
+            map["reported"] ?? 0,
+            map["like_state"] ?? 0,
+            map["correct"] ?? 0,
+            map["incorrect_count"] ?? 0,
+            map["answer"] ?? "",
+            map["is_default"] ?? 0,
+            map["exam_name"] ?? "",
+            currentDate);
+      }
+      return maps;
+    } catch (e) {
+      print('Error: getQuestions $e');
+      return [];
+    }
+  }
 }
 
 

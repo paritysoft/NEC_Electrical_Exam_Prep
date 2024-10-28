@@ -49,8 +49,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   @override
   void initState() {
     super.initState();
-    // UpadanSonghro upadanSonghro = new UpadanSonghro();
-    // upadanSonghro.getAndInsertQuestions();
+    UpadanSonghro upadanSonghro = new UpadanSonghro();
+    upadanSonghro.getAndInsertQuestions();
   }
   @override
   Widget build(BuildContext context) {

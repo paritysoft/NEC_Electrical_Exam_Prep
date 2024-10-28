@@ -1,5 +1,8 @@
+import 'package:commonquiz/ui/pages/analysis_screen/quiz_activity_graph.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+
+import 'CategoryQuestionDataList.dart';
 
 class AnalysisScreen extends StatelessWidget {
   @override
@@ -26,7 +29,9 @@ class AnalysisScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
+
                 // Circular Accuracy Chart
+                QuizActivityGraph(),
                 SizedBox(
                   height: 120,
                   width: 120,
@@ -119,6 +124,7 @@ class AnalysisScreen extends StatelessWidget {
                 ),
                 SizedBox(height: 16),
                 // Graph
+
                 SizedBox(
                   height: 150,
                   child: LineChart(
@@ -148,44 +154,45 @@ class AnalysisScreen extends StatelessWidget {
           ),
           SizedBox(height: 16),
 
+          Container(height: 600, child: CategoryQuestionDataList()),
           // Subject Analysis Section
-          Text('Subject Analysis', style: TextStyle(fontWeight: FontWeight.bold)),
-          SizedBox(height: 8),
-          SubjectCard(
-            title: 'Definitions, Calculations, Theory, and Plans',
-            correct: 0,
-            missed: 0,
-            unanswered: 218,
-            accuracy: 0,
-          ),
-          SubjectCard(
-            title: 'Electrical Services, Service Equipment, and Derived Systems',
-            correct: 0,
-            missed: 0,
-            unanswered: 175,
-            accuracy: 0,
-          ),
-          SubjectCard(
-            title: 'Electrical Feeders',
-            correct: 0,
-            missed: 0,
-            unanswered: 161,
-            accuracy: 0,
-          ),
-          SubjectCard(
-            title: 'Branch Circuit Calculations and Conductors',
-            correct: 0,
-            missed: 0,
-            unanswered: 204,
-            accuracy: 0,
-          ),
-          SubjectCard(
-            title: 'Electrical Wiring Methods and Materials',
-            correct: 0,
-            missed: 0,
-            unanswered: 174,
-            accuracy: 0,
-          ),
+          // Text('Subject Analysis', style: TextStyle(fontWeight: FontWeight.bold)),
+          // SizedBox(height: 8),
+          // SubjectCard(
+          //   title: 'Definitions, Calculations, Theory, and Plans',
+          //   correct: 0,
+          //   missed: 0,
+          //   unanswered: 218,
+          //   accuracy: 0,
+          // ),
+          // SubjectCard(
+          //   title: 'Electrical Services, Service Equipment, and Derived Systems',
+          //   correct: 0,
+          //   missed: 0,
+          //   unanswered: 175,
+          //   accuracy: 0,
+          // ),
+          // SubjectCard(
+          //   title: 'Electrical Feeders',
+          //   correct: 0,
+          //   missed: 0,
+          //   unanswered: 161,
+          //   accuracy: 0,
+          // ),
+          // SubjectCard(
+          //   title: 'Branch Circuit Calculations and Conductors',
+          //   correct: 0,
+          //   missed: 0,
+          //   unanswered: 204,
+          //   accuracy: 0,
+          // ),
+          // SubjectCard(
+          //   title: 'Electrical Wiring Methods and Materials',
+          //   correct: 0,
+          //   missed: 0,
+          //   unanswered: 174,
+          //   accuracy: 0,
+          // ),
         ],
       ),
     );
