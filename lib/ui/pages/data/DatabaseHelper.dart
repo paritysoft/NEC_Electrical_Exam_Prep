@@ -116,7 +116,7 @@ class DatabaseHelper {
       ) async {
     final db = await database;
 
-    int result = await db.insert('$tblName', {
+    int result = await db.insert(tblName, {
       'uuid': uuid,
       'topic_name': topic_name,
       'category': category,

@@ -92,7 +92,7 @@ flutter:
      - assets/images/
      - assets/db/
      - assets/db/mydb.db
-     - assets/db/electrician.db
+     #- assets/db/electrician.db
      - .env
      - assets/pdf/
 

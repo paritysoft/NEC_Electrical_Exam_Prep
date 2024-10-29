@@ -18,7 +18,6 @@ String myKey = dotenv.env["API_KEY"]!;
 const secretKey = "yourgameyourgame";
 
 class UpadanSonghro {
-
   static final _databaseName = "electrician.db";
   static final tblName = "tbl_electrician_questions";
   static final _databaseVersion = 2;
@@ -32,8 +31,8 @@ class UpadanSonghro {
     _database = await _initDatabase();
     return _database!;
   }
-  final _secureStorage = const FlutterSecureStorage();
 
+  final _secureStorage = const FlutterSecureStorage();
 
   // Future<Database> _initDatabase() async {
   //   // Fetch the encryption password securely
@@ -55,7 +54,6 @@ class UpadanSonghro {
   //     onUpgrade: _onUpgrade,
   //   );
   // }
-
 
   // Create the initial database schema
   Future<void> _onCreate(Database db, int version) async {
@@ -97,17 +95,18 @@ class UpadanSonghro {
       }
     }
   }
+
   // Initialize the database
   Future<Database> _initDatabase() async {
     // Get the path to the app's document directory
 
-      String? password = await _secureStorage.read(key: your_db_pass);
+    String? password = await _secureStorage.read(key: your_db_pass);
 
-      // If no password exists, generate and store one securely
-      if (password == null) {
-        password = yourDBKey; // Replace with a generated one
-        await _secureStorage.write(key: your_db_pass, value: password);
-      }
+    // If no password exists, generate and store one securely
+    if (password == null) {
+      password = yourDBKey; // Replace with a generated one
+      await _secureStorage.write(key: your_db_pass, value: password);
+    }
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
     String dbPath = join(documentsDirectory.path, tblName);
 
@@ -124,13 +123,13 @@ class UpadanSonghro {
     }
 
     // Open the database
-   return await openDatabase(
-        dbPath,
-        password: password, // Use encrypted database
-        version: _databaseVersion,
-        onCreate: _onCreate,
-        onUpgrade: _onUpgrade,
-      );
+    return await openDatabase(
+      dbPath,
+      password: password, // Use encrypted database
+      version: _databaseVersion,
+      onCreate: _onCreate,
+      onUpgrade: _onUpgrade,
+    );
   }
 
   Future<void> checkTables() async {
@@ -146,15 +145,13 @@ class UpadanSonghro {
     });
   }
 
-
-
   Future<List<Map<String, dynamic>>> getQuestions() async {
     try {
       final db = await database;
 
       final List<Map<String, dynamic>> maps = await db.query('$tblName');
       print('data: getQuestions ${maps.length}');
-       return maps;
+      return maps;
     } catch (e) {
       print('Error: getQuestions $e');
       return [];
@@ -172,7 +169,8 @@ class UpadanSonghro {
   }
 
   // Method to fetch all questions filtered by category with null safety
-  Future<List<ElectricianQuestion>> getQuestionsByCategory(String category) async {
+  Future<List<ElectricianQuestion>> getQuestionsByCategory(
+      String category) async {
     final db = await database;
 
     final List<Map<String, dynamic>>? maps = await db.query(
@@ -190,10 +188,11 @@ class UpadanSonghro {
     return maps.map((map) => ElectricianQuestion.fromMap(map)).toList();
   }
 
-  void fetchQuestionsByCategory( String category) async {
-    final upadanSonghro = await  UpadanSonghro();
-  //  final db = await initializeDB();
-    List<ElectricianQuestion> questions = await upadanSonghro.getQuestionsByCategory(category);
+  void fetchQuestionsByCategory(String category) async {
+    final upadanSonghro = await UpadanSonghro();
+    //  final db = await initializeDB();
+    List<ElectricianQuestion> questions =
+        await upadanSonghro.getQuestionsByCategory(category);
 
     if (questions.isEmpty) {
       print('No questions found for category: $category');
@@ -222,8 +221,8 @@ class UpadanSonghro {
   }
 
 // Update an existing question
-  Future<void> updateQuestion(
-      ElectricianQuestion question, String givenAnswer, int correctCount, int incorrectCount) async {
+  Future<void> updateQuestion(ElectricianQuestion question, String givenAnswer,
+      int correctCount, int incorrectCount) async {
     try {
       final db = await database;
 
@@ -248,7 +247,6 @@ class UpadanSonghro {
         'correct_count': correctCount,
         'incorrect_count': incorrectCount,
         'answered_date': currentDate, // Store the date in answered_date
-
       };
 
       // Update only the row with the specified uuid
@@ -295,10 +293,13 @@ class UpadanSonghro {
     final db = await database;
 
     // Perform a distinct query to get unique categories
-    List<Map<String, dynamic>> result = await db.rawQuery('SELECT DISTINCT category FROM $tblName');
+    List<Map<String, dynamic>> result =
+        await db.rawQuery('SELECT DISTINCT category FROM $tblName');
 
     // Convert the result into a list of category strings
-    List<String> categories = result.map((row) => aesDecrypt(row['category'], myKey) as String).toList();
+    List<String> categories = result
+        .map((row) => aesDecrypt(row['category'], myKey) as String)
+        .toList();
 
     return categories;
   }
@@ -340,7 +341,7 @@ class UpadanSonghro {
         print('Copying database from assets...');
         ByteData data = await rootBundle.load('assets/db/mydb.db');
         List<int> bytes =
-        data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
+            data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
         await File(path).writeAsBytes(bytes, flush: true);
         print('Database copied.');
       } catch (e) {
@@ -350,11 +351,64 @@ class UpadanSonghro {
     return openDatabase(path);
   }
 
+  Future<List<Map<String, dynamic>>> insertDataFromJson() async {
+    try {
+      //dbHelper.insertNewData();
+      print("maps journeyman ${quizzesJsonList}");
+      List<Map<String, dynamic>> modifiableMaps = List.from(quizzesJsonList);
+
+// Shuffle the modifiable list
+      modifiableMaps.shuffle(Random());
+      print("maps journeyman insertDataFromJson ${modifiableMaps}");
+
+      for (var map in modifiableMaps) {
+        print(map); // This prints the entire map
+        var question = "${map["question"]}";
+        final questionEnc = encryptAES(question, myKey);
+        var explanation = "${map["explanation"]}";
+        final explanationEnc = encryptAES(explanation, myKey);
+        String incorrect_answer = "${map["incorrect_answer"]}";
+        final incorrect_answerEnc = encryptAES(incorrect_answer, myKey);
+        String correct_answer = "${map["correct_answer"]}";
+        final correct_answerEnc = encryptAES(correct_answer, myKey);
+        var topic_name = "${map["topic_name"]}";
+        final topic_nameEnc = encryptAES(topic_name, myKey);
+
+        print('incorrect_answer: getQuestions $question  $incorrect_answer');
+        var uuid = Uuid().v4();
+        String currentDate = DateTime.now().toIso8601String().split('T').first;
+        DatabaseHelper.instance.insertSampleData(
+            uuid,
+            questionEnc,
+            explanationEnc,
+            incorrect_answerEnc,
+            correct_answerEnc,
+            topic_nameEnc,
+            topic_nameEnc,
+            map["level"] ?? 0,
+            map["status"] ?? 0,
+            map["collected"] ?? 0,
+            map["reported"] ?? 0,
+            map["like_state"] ?? 0,
+            map["correct"] ?? 0,
+            map["incorrect_count"] ?? 0,
+            map["answer"] ?? "",
+            map["is_default"] ?? 0,
+            map["exam_name"] ?? "",
+            currentDate);
+      }
+      return modifiableMaps;
+    } catch (e) {
+      print('Error: getQuestions $e');
+      return [];
+    }
+  }
+
   Future<List<Map<String, dynamic>>> getAndInsertQuestions() async {
     try {
       final db = await initializeDB();
       List<Map<String, dynamic>> maps =
-      await db.query('t_pp_journeyman_electrician_questions');
+          await db.query('t_pp_journeyman_electrician_questions');
       //dbHelper.insertNewData();
       print("maps journeyman ${maps}");
 
@@ -384,7 +438,8 @@ class UpadanSonghro {
         var category = "${map["category"]}";
         // final categoryAes = aesDecrypt(category, secretKey);
         final categoryEnc = encryptAES(category, myKey);
-        print('incorrect_answer: getQuestions $incorrect_answerAes  $correct_answerAes');
+        print(
+            'incorrect_answer: getQuestions $incorrect_answerAes  $correct_answerAes');
         var uuid = Uuid().v4();
         String currentDate = DateTime.now().toIso8601String().split('T').first;
         DatabaseHelper.instance.insertSampleData(
@@ -414,5 +469,3 @@ class UpadanSonghro {
     }
   }
 }
-
-

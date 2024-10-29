@@ -45,12 +45,12 @@ void loadQuestions() async {
   // If questions are already cached, use them
   if (questionCache.getQuestions() != null) {
     var questions = questionCache.getQuestions();
-    print('Using cached questions');
+    print('Using cached questions ${questions?.length}');
   } else {
     // Otherwise, fetch from the database and cache them
     List<ElectricianQuestion> questions = await UpadanSonghro().getAllQuestions();
     questionCache.cacheQuestions(questions);
-    print('Caching new questions');
+    print('Caching new questions  ${questions.length}');
   }
 }
 
@@ -89,21 +89,45 @@ Future<List<ElectricianQuestion>> getRandomQuestions(List<ElectricianQuestion> q
 
 List<String> getShuffledOptions(ElectricianQuestion question) {
   // Decode incorrect answers
-  print("incorrectAnswer  ${question.incorrectAnswer}  ${question.correctAnswer}");
-  List<String> options = cleanQuizOptions(question.incorrectAnswer +","+ question.correctAnswer);
+  List<String> options = cleanQuizOptions(question.incorrectAnswer +","+" "+ question.correctAnswer);
   // Shuffle the options
   options.shuffle();
+  print("incorrectAnswer  ${question.incorrectAnswer}  ${question.correctAnswer}   $options");
 
   return options;
 }
-List<String> cleanQuizOptions(String optionsString) {
-  // Remove unwanted characters 【0】, 【1】, etc., as well as quotes and brackets
+// List<String> cleanQuizOptions(String optionsString) {
+//   // Remove unwanted characters 【0】, 【1】, etc., as well as quotes and brackets
+//
+//   print("cleanedString $optionsString      after clean data  ${cleanedString(optionsString)}");
+//   // Split the cleaned string by commas to get a list of options
+//   List<String> optionsList = cleanedString(optionsString).split('","').map((option) => option.replaceAll('"', '').trim()).toList();
+//   return optionsList;
+// }
+// String cleanedString(String optionsString){
+//   return optionsString.replaceAll(RegExp(r'【\d+】'), '').replaceAll('[', '').replaceAll(']', '').trim();
+// }
 
-  // Split the cleaned string by commas to get a list of options
-  List<String> optionsList = cleanedString(optionsString).split('","').map((option) => option.replaceAll('"', '').trim()).toList();
+List<String> cleanQuizOptions(String optionsString) {
+    print("cleanedString $optionsString      after clean data  ${cleanedString(optionsString)}");
+
+  // Clean the string using the helper function
+  String cleaned = cleanedString(optionsString);
+
+  // Remove enclosing brackets if they are present
+  if (cleaned.startsWith('[') && cleaned.endsWith(']')) {
+    cleaned = cleaned.substring(1, cleaned.length - 1);
+  }
+
+  // Split by the comma, then clean up extra whitespace and quotes
+  List<String> optionsList = cleaned.split(RegExp(r'","|", "'))
+      .map((option) => option.replaceAll('"', '').trim())
+      .toList();
+
   return optionsList;
 }
-String cleanedString(String optionsString){
-  return optionsString.replaceAll(RegExp(r'【\d+】'), '').replaceAll('[', '').replaceAll(']', '').trim();
 
+String cleanedString(String optionsString) {
+  // Remove unwanted characters 【0】, 【1】, etc., as well as quotes and brackets
+  return optionsString.replaceAll(RegExp(r'【\d+】'), '').replaceAll('[', '').replaceAll(']', '').trim();
 }

@@ -36,6 +36,7 @@ class _QuizPageState extends State<QuizPage> {
     super.initState();
     // Load and shuffle the options only once in initState
     options = getShuffledOptions(widget.questions[_currentIndex]);
+    print("questions options   $options  ${options.length}");
 
   }
 
@@ -95,20 +96,16 @@ class _QuizPageState extends State<QuizPage> {
                   SizedBox(height: 20.0),
                   Card(
                     child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        ...options.map((option) => RadioListTile(
-                              title: smallLabel(context, option ),
-                              groupValue: _answers[_currentIndex],
-                              value: option,
-                              onChanged: (dynamic value) {
-                                setState(() {
-
-                                  _answers[_currentIndex] = option;
-                                });
-                              },
-                            )),
-                      ],
+                      children: options.map((option) => RadioListTile(
+                        title: Text(option),
+                        groupValue: _answers[_currentIndex],
+                        value: option,
+                        onChanged: (dynamic value) {
+                          setState(() {
+                            _answers[_currentIndex] = option;
+                          });
+                        },
+                      )).toList(), // Convert the map result to a list
                     ),
                   ),
                   Expanded(
