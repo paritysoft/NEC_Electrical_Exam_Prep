@@ -49,9 +49,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   @override
   void initState() {
     super.initState();
-   // UpadanSonghro upadanSonghro = new UpadanSonghro();
-   // upadanSonghro.getAndInsertQuestions();
-   // upadanSonghro.insertDataFromJson();
+   UpadanSonghro upadanSonghro = new UpadanSonghro();
+   upadanSonghro.getAndInsertQuestions();
+   upadanSonghro.insertDataFromJson();
 
   }
   @override

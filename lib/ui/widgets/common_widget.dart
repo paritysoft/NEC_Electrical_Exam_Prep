@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../../subscription/presentation/subscription/screen/subscription_page.dart';
 import '../../util/AppColors.dart';
 import '../../util/app_constants.dart';
 
@@ -151,4 +152,14 @@ appBarCustom(BuildContext context, String message) {
       color: Colors.white, // <= You can change your color here.
     ),
   );
+}
+void gotToSubscriptionPage(BuildContext context) {
+
+  Future.delayed(const Duration(seconds: 1)).then((val) {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => SubscriptionPage()));
+  });
+
 }

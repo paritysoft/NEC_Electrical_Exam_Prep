@@ -1,5 +1,7 @@
 import 'package:commonquiz/util/app_constants.dart';
 import 'package:flutter/material.dart';
+import '../../subscription/core/sharepref_helper.dart';
+import '../../subscription/presentation/subscription/screen/subscription_page.dart';
 import '../../util/AppColors.dart';
 import '../widgets/common_widget.dart';
 import '../widgets/quiz_options_dialog.dart';
@@ -27,6 +29,9 @@ class _QuizHomePageState extends State<QuizHomePage> {
   @override
   void initState() {
     super.initState();
+    if (SharedPreferenceHelper.getSubscription() == false) {
+      gotToSubscriptionPage(context);
+    }
   }
 
   @override

@@ -5,6 +5,7 @@ import 'package:commonquiz/ui/pages/explore_screen/your_questions_screen.dart';
 import 'package:commonquiz/ui/widgets/quiz_options_timer_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../../subscription/core/sharepref_helper.dart';
 import '../../../util/app_constants.dart';
 import '../../widgets/common_widget.dart';
 import '../../widgets/quiz_options_dialog.dart';
@@ -18,10 +19,9 @@ class ExploreScreen extends StatefulWidget {
 
 //TodayQuestionsService? questionService;
 int questionsReadToday = 0;
+
 //List<ElectricianQuestion>? questions10 = [];
 class _ExploreScreenState extends State<ExploreScreen> {
-
-
   @override
   void initState() {
     super.initState();
@@ -32,17 +32,15 @@ class _ExploreScreenState extends State<ExploreScreen> {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
       questionsReadToday = prefs.getInt('questions_read_today') ?? 0;
-
     });
 
-
-   QuestionCache questionCache = QuestionCache();
-   //questionCache.loadQuestions();
-   //List<ElectricianQuestion>? questionList = questionCache.getQuestions();
-   //  if (questionList != null) {
-   //    questionService = TodayQuestionsService();
-   //    questions10 = await questionService?.getTodaysQuestions(questionList);
-   //  }
+    QuestionCache questionCache = QuestionCache();
+    //questionCache.loadQuestions();
+    //List<ElectricianQuestion>? questionList = questionCache.getQuestions();
+    //  if (questionList != null) {
+    //    questionService = TodayQuestionsService();
+    //    questions10 = await questionService?.getTodaysQuestions(questionList);
+    //  }
   }
 
   @override
@@ -62,8 +60,8 @@ class _ExploreScreenState extends State<ExploreScreen> {
                   context,
                   MaterialPageRoute(
                       builder: (_) => QuizPageToday(
-                        category: "Today Quiz",
-                      )));
+                            category: "Today Quiz",
+                          )));
             },
             child: Container(
               padding: EdgeInsets.all(16),
@@ -138,7 +136,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Opacity(
-                  opacity: 0.6,
+                  opacity: 1,
                   child: Image.asset("assets/images/ic_premium.png",
                       height: 30, width: 30, fit: BoxFit.cover),
                 ),
@@ -148,7 +146,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
                       child: title15BoldColor(context, 'Unlock All Features')),
                 ),
                 Opacity(
-                  opacity: 0.6,
+                  opacity: 1,
                   child: Image.asset("assets/images/ic_premium.png",
                       height: 30, width: 30, fit: BoxFit.cover),
                 ),
@@ -169,7 +167,11 @@ class _ExploreScreenState extends State<ExploreScreen> {
                     isPremium: false,
                     icon: Icons.question_mark_sharp,
                     onTap: () {
-                      _categoryPressed(context, "Random Question");
+                      if (SharedPreferenceHelper.getSubscription() == false) {
+                        gotToSubscriptionPage(context);
+                      } else {
+                        _categoryPressed(context, "Random Question");
+                      }
                     }),
                 QuizCard(
                     title: 'Practice By Topic',
@@ -177,8 +179,14 @@ class _ExploreScreenState extends State<ExploreScreen> {
                     isPremium: true,
                     icon: Icons.topic,
                     onTap: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (_) => PracticeByTopic()));
+                      if (SharedPreferenceHelper.getSubscription() == false) {
+                        gotToSubscriptionPage(context);
+                      } else {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (_) => PracticeByTopic()));
+                      }
                     }),
                 QuizCard(
                     title: 'Mock Quiz',
@@ -186,8 +194,14 @@ class _ExploreScreenState extends State<ExploreScreen> {
                     isPremium: true,
                     icon: Icons.quiz_rounded,
                     onTap: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (_) => MockQuizScreen()));
+                      if (SharedPreferenceHelper.getSubscription() == false) {
+                        gotToSubscriptionPage(context);
+                      } else {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (_) => MockQuizScreen()));
+                      }
                     }),
                 QuizCard(
                     title: 'Time Quiz',
@@ -195,7 +209,11 @@ class _ExploreScreenState extends State<ExploreScreen> {
                     isPremium: true,
                     icon: Icons.timelapse,
                     onTap: () {
-                      _categoryPressed(context, "Time Quiz");
+                      if (SharedPreferenceHelper.getSubscription() == false) {
+                        gotToSubscriptionPage(context);
+                      } else {
+                        _categoryPressed(context, "Time Quiz");
+                      }
                     }),
                 QuizCard(
                     title: 'Your Questions',
@@ -203,10 +221,14 @@ class _ExploreScreenState extends State<ExploreScreen> {
                     isPremium: true,
                     icon: Icons.personal_injury,
                     onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (_) => YourQuestionsScreen()));
+                      if (SharedPreferenceHelper.getSubscription() == false) {
+                        gotToSubscriptionPage(context);
+                      } else {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (_) => YourQuestionsScreen()));
+                      }
                     }),
                 QuizCard(
                     title: 'Records',
@@ -214,11 +236,12 @@ class _ExploreScreenState extends State<ExploreScreen> {
                     isPremium: true,
                     icon: Icons.fiber_smart_record_sharp,
                     onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (_) => RecordsScreen()));
-
+                      if (SharedPreferenceHelper.getSubscription() == false) {
+                        gotToSubscriptionPage(context);
+                      } else {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (_) => RecordsScreen()));
+                      }
                     }),
               ],
             ),

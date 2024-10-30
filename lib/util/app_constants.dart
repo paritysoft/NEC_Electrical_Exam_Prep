@@ -25,5 +25,9 @@ const onboardT4 = "Track Your Progress";
 const onboardD4 = "Monitor your performance, identify areas for improvement, and celebrate your achievements as you advance through each stage of the quiz.";
 
 
-
+ const String yearly = "yearly";
+ const String verifyingScope = "https://www.googleapis.com/auth/androidpublisher";
+ const String monthlyPlan = "com.nupuit.PMPMCQExamPrep2018Ed.monthly";
+ const String quarterlyPlan = "com.nupuit.PMPMCQExamPrep2018Ed.quarterly";
+ const String yearlyPlan = "com.nupuit.PMPMCQExamPrep2018Ed.yearly";
 

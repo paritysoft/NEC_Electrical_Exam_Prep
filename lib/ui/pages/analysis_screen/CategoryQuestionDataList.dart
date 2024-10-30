@@ -27,6 +27,7 @@ class _CategoryQuestionDataListState extends State<CategoryQuestionDataList> {
     _dataFuture = () async {
       UpadanSonghro dbHelper = UpadanSonghro();
       _categoryQuestionData = await dbHelper.getCategoryQuestionData();
+      print("_categoryQuestionData  ${_categoryQuestionData}");
       setState(() {}); // Trigger a UI update to reflect the data
     }();
   }
