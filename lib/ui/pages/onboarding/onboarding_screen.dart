@@ -1,10 +1,6 @@
-import 'package:commonquiz/ui/pages/data/upadansonghro.dart';
-import 'package:commonquiz/ui/pages/home.dart';
 import 'package:commonquiz/util/app_constants.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:introduction_screen/introduction_screen.dart';
-
 import '../../../util/AppColors.dart';
 import '../../widgets/common_widget.dart';
 import '../data/QuestionCache.dart';
@@ -49,9 +45,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   @override
   void initState() {
     super.initState();
-   UpadanSonghro upadanSonghro = new UpadanSonghro();
-   upadanSonghro.getAndInsertQuestions();
-   upadanSonghro.insertDataFromJson();
+   // UpadanSonghro upadanSonghro = new UpadanSonghro();
+   // upadanSonghro.getAndInsertQuestions();
+   // upadanSonghro.insertDataFromJson();
 
   }
   @override
