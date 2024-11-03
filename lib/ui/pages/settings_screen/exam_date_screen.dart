@@ -1,4 +1,5 @@
 import 'package:electrician/subscription/core/sharepref_helper.dart';
+import 'package:electrician/ui/pages/data/exam_date_management.dart';
 import 'package:electrician/ui/widgets/common_widget.dart';
 import 'package:electrician/util/AppColors.dart';
 import 'package:flutter/material.dart';
@@ -17,15 +18,29 @@ class _CalendarPageState extends State<CalendarPage> {
   TextEditingController _eventTitleController = TextEditingController();
   List<Appointment> _appointments = [];
   DateTime _selectedDate = DateTime.now();
+  final ExamDateManagement _examDateManagement = ExamDateManagement();
 
-  // Add Event with a reminder notification
-  void _addEvent() {
+  @override
+  void initState() {
+    super.initState();
+    _loadEvents();
+  }
+
+  Future<void> _loadEvents() async {
+    List<Appointment> loadedEvents = await _examDateManagement.loadEvents();
+    setState(() {
+      _appointments = loadedEvents;
+    });
+  }
+
+  Future<void> _addEvent() async {
+
     String title = _eventTitleController.text;
     if (title.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: smallLabel(context, "Exam title cannot be empty",
-          color: Colors.white),
-        backgroundColor: primary));
+          content: smallLabel(context, "Exam title cannot be empty",
+              color: Colors.white),
+          backgroundColor: primary));
       return;
     }
 
@@ -40,21 +55,27 @@ class _CalendarPageState extends State<CalendarPage> {
     );
 
     setState(() {
-      SharedPreferenceHelper.setExamDate(newAppointment.startTime.toIso8601String());
       _appointments.add(newAppointment);
       _scheduleNotification(newAppointment.startTime,
           title); // Schedule reminder using TZDateTime
       _eventTitleController.clear();
     });
+    setState(() {
+      _appointments.add(newAppointment);
+    });
+    await _examDateManagement.saveEvents(_appointments);
   }
 
+
   // Remove event and cancel its reminder
-  void _removeEvent(Appointment appointment) {
+  Future<void> _removeEvent(Appointment appointment) async {
     setState(() {
       _appointments.remove(appointment);
       _cancelNotification(
           _appointments.indexOf(appointment)); // Cancel reminder
     });
+    await _examDateManagement.removeEvent(appointment);
+
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: smallLabel(context, "Exam '${appointment.subject}' removed",
           color: Colors.white),

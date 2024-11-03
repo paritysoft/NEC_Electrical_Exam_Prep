@@ -34,30 +34,30 @@ class _CategoryQuestionDataListState extends State<CategoryQuestionDataList> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(title: Text("Category-Wise Question Data")),
-        body: Center(
-            child: FutureBuilder<void>(
-          future: _dataFuture,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return CircularProgressIndicator(); // Loading
-            } else if (snapshot.hasError) {
-              return Text("Error: ${snapshot.error}"); // Error handling
-            } else {
-              return ListView.builder(
-                itemCount: _categoryQuestionData?.length ?? 0,
-                itemBuilder: (context, index) {
-                  final data = _categoryQuestionData![index];
-                  return ListTile(
-                    title: Text(aesDecrypt(data.category, myKey)),
-                    subtitle: Text(
-                        'Correct Answer: ${data.correctCount}, Incorrect Answer: ${data.incorrectCount}, Unanswered: ${data.unansweredCount}'),
-                  );
-                },
-              );
-            }
-          },
-        )));
+    return Container(
+      child: Center(
+              child: FutureBuilder<void>(
+            future: _dataFuture,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return CircularProgressIndicator(); // Loading
+              } else if (snapshot.hasError) {
+                return Text("Error: ${snapshot.error}"); // Error handling
+              } else {
+                return ListView.builder(
+                  itemCount: _categoryQuestionData?.length ?? 0,
+                  itemBuilder: (context, index) {
+                    final data = _categoryQuestionData![index];
+                    return ListTile(
+                      title: Text(aesDecrypt(data.category, myKey)),
+                      subtitle: Text(
+                          'Correct Answer: ${data.correctCount}, Incorrect Answer: ${data.incorrectCount}, Unanswered: ${data.unansweredCount}'),
+                    );
+                  },
+                );
+              }
+            },
+          )),
+    );
   }
 }

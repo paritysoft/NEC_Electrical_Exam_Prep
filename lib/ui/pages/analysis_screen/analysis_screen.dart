@@ -33,37 +33,37 @@ class AnalysisScreen extends StatelessWidget {
 
                 // Circular Accuracy Chart
                 QuizActivityGraph(),
-                SizedBox(
-                  height: 120,
-                  width: 120,
-                  child: Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      CircularProgressIndicator(
-                        value: 0, // Change this value dynamically
-                        strokeWidth: 10,
-                        backgroundColor: Colors.grey.shade200,
-                        valueColor: AlwaysStoppedAnimation<Color>(
-                          Colors.blue,
-                        ),
-                      ),
-                      smallLabel(context,
-                        '0%',
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(height: 16),
+                // SizedBox(
+                //   height: 120,
+                //   width: 120,
+                //   child: Stack(
+                //     alignment: Alignment.center,
+                //     children: [
+                //       CircularProgressIndicator(
+                //         value: 0, // Change this value dynamically
+                //         strokeWidth: 10,
+                //         backgroundColor: Colors.grey.shade200,
+                //         valueColor: AlwaysStoppedAnimation<Color>(
+                //           Colors.blue,
+                //         ),
+                //       ),
+                //       smallLabel(context,
+                //         '0%',
+                //       ),
+                //     ],
+                //   ),
+                // ),
+              //  SizedBox(height: 16),
                 // Stats Overview
-                smallLabel(context,'Accuracy Rate', color: Colors.grey),
-                SizedBox(height: 8),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    StatItem(title: 'Answered Questions', value: '0'),
-
-                  ],
-                ),
+                // smallLabel(context,'Accuracy Rate', color: Colors.grey),
+                // SizedBox(height: 8),
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //   children: [
+                //     StatItem(title: 'Answered Questions', value: '0'),
+                //
+                //   ],
+                // ),
               ],
             ),
           ),
@@ -153,7 +153,7 @@ class AnalysisScreen extends StatelessWidget {
           // ),
           SizedBox(height: 16),
 
-          Container(height: 600, child: CategoryQuestionDataList()),
+          Container( height: 500, child: CategoryQuestionDataList()),
           // Subject Analysis Section
           // Text('Subject Analysis', style: TextStyle(fontWeight: FontWeight.bold)),
           // SizedBox(height: 8),
