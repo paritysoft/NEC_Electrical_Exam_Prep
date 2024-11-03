@@ -1,5 +1,5 @@
-import 'package:commonquiz/ui/pages/data/upadansonghro.dart';
-import 'package:commonquiz/ui/widgets/common_widget.dart';
+import 'package:electrician/ui/pages/data/upadansonghro.dart';
+import 'package:electrician/ui/widgets/common_widget.dart';
 import 'package:flutter/material.dart';
 import '../../../util/AppColors.dart';
 import '../data/QuestionCache.dart';

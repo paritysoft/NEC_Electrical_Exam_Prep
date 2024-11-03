@@ -1,6 +1,6 @@
 import 'dart:io';
-import 'package:commonquiz/ui/widgets/common_widget.dart';
-import 'package:commonquiz/util/AppColors.dart';
+import 'package:electrician/ui/widgets/common_widget.dart';
+import 'package:electrician/util/AppColors.dart';
 import 'package:flutter/material.dart';
 import '../../util/app_constants.dart';
 import '../pages/data/QuestionCache.dart';

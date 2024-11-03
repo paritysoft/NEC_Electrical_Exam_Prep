@@ -1,4 +1,4 @@
-import 'package:commonquiz/ui/pages/explore_screen/explore_screen.dart';
+import 'package:electrician/ui/pages/explore_screen/explore_screen.dart';
 import 'package:flutter/material.dart';
 
 import '../../models/question.dart';

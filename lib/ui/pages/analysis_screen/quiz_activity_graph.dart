@@ -2,6 +2,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
 import '../../../models/activity_data.dart';
+import '../../widgets/common_widget.dart';
 
 class QuizActivityGraph extends StatefulWidget {
   @override
@@ -47,7 +48,7 @@ class _QuizActivityGraphState extends State<QuizActivityGraph> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text("Activity Graph (Last $selectedDays Days)"),
+        smallLabel(context, "Activity Graph (Last $selectedDays Days)"),
         SizedBox(height: 16),
         Container(
           height: 300,

@@ -1,4 +1,4 @@
-name: commonquiz
+name: electrician
 description: "The quiz can be designed to be challenging but accessible to participants of all backgrounds, providing a fun and engaging way to learn new facts and refresh one's memory on known topics. Common quizzes are often used in schools, workplace training, quiz games, and community events to encourage learning and collaboration."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -70,6 +70,7 @@ dependencies:
   googleapis_auth: ^1.3.1
   dio: ^5.1.1
   provider: ^6.0.5
+  rflutter_alert: ^2.0.7
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

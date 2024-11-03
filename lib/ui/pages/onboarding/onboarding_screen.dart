@@ -1,4 +1,4 @@
-import 'package:commonquiz/util/app_constants.dart';
+import 'package:electrician/util/app_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import '../../../util/AppColors.dart';

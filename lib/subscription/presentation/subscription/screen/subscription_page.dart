@@ -1,4 +1,4 @@
-import 'package:commonquiz/subscription/presentation/subscription/screen/subscription_screen.dart';
+import 'package:electrician/subscription/presentation/subscription/screen/subscription_screen.dart';
 import 'package:flutter/material.dart';
 
 class SubscriptionPage extends StatelessWidget {

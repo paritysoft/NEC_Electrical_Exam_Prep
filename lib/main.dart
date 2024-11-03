@@ -1,14 +1,11 @@
-import 'package:commonquiz/subscription/presentation/subscription/bloc/provider_list.dart';
-import 'package:commonquiz/subscription/presentation/subscription/bloc/subscription_bloc.dart';
-import 'package:commonquiz/util/app_constants.dart';
-import 'package:commonquiz/util/notification.dart';
-import 'package:commonquiz/util/themes.dart';
+import 'package:electrician/subscription/presentation/subscription/bloc/provider_list.dart';
+import 'package:electrician/util/app_constants.dart';
+import 'package:electrician/util/notification.dart';
+import 'package:electrician/util/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import '../subscription/dependencyinjection/injection_container.dart' as ic;
 import 'ui/pages/onboarding/onboarding_screen.dart';
 import 'package:timezone/data/latest.dart' as tz;

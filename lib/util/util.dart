@@ -1,6 +1,8 @@
 import 'package:encrypt/encrypt.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
+import '../subscription/core/sharepref_helper.dart';
+
 String aesDecrypt(String encryptedText, String key) {
   // Check if the input is null or empty
   if (encryptedText == null || encryptedText.isEmpty) {
@@ -53,7 +55,11 @@ String encryptAES(String plainText, String key) {
     return ''; // Handle encryption failure
   }
 }
+String getExamDate(){
 
+  String currentDate = SharedPreferenceHelper.getExamDate()?.split('T').first ?? "01/01/2026";
+  return currentDate;
+}
 String yourDBKey = dotenv.env["YOUR_DB_KEY"]!;
 String your_db_pass = dotenv.env["YOUR_DB_PASS_KEY"]!;
 

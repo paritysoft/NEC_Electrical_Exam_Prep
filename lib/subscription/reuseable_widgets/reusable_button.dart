@@ -1,4 +1,4 @@
-import 'package:commonquiz/ui/widgets/common_widget.dart';
+import 'package:electrician/ui/widgets/common_widget.dart';
 import 'package:flutter/material.dart';
 
 import '../../util/pixel_size.dart';

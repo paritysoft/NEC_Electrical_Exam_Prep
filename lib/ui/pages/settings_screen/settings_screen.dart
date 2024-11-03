@@ -1,12 +1,14 @@
 import 'dart:io';
-
-import 'package:commonquiz/ui/pages/settings_screen/exam_date_screen.dart';
-import 'package:commonquiz/ui/pages/settings_screen/privacy_policy_screen.dart';
-import 'package:commonquiz/ui/widgets/common_widget.dart';
+import 'package:electrician/subscription/core/sharepref_helper.dart';
+import 'package:electrician/ui/pages/settings_screen/exam_date_screen.dart';
+import 'package:electrician/ui/pages/settings_screen/privacy_policy_screen.dart';
+import 'package:electrician/ui/widgets/common_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:in_app_review/in_app_review.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import '../../../util/util.dart';
 
 class SettingsScreen extends StatefulWidget {
   @override
@@ -17,6 +19,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
   bool notificationsOn = false;
   bool darkMode = false;
 
+  @override
+  void initState() {
+    super.initState();
+    setState(() {
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return ListView(
@@ -54,7 +62,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             leading: Icon(Icons.calendar_today_outlined),
             title: smallLabel(context, 'Exam Date'),
             trailing:
-            smallLabel(context, 'October 17, 2024', color: Colors.orange),
+            smallLabel(context, getExamDate(), color: Colors.orange),
             onTap: () {
               // Action on tap
               Navigator.push(
@@ -92,33 +100,33 @@ class _SettingsScreenState extends State<SettingsScreen> {
         // ),
 
         // Turn on Notifications switch
-        Card(
-          color: Colors.white,
-          child: ListTile(
-            leading: Icon(Icons.notifications_none),
-            title: smallLabel(context, 'Turn On Notification'),
-            trailing: Switch(
-              value: notificationsOn,
-              onChanged: (value) {
-                setState(() {
-                  notificationsOn = value;
-                });
-              },
-            ),
-          ),
-        ),
+        // Card(
+        //   color: Colors.white,
+        //   child: ListTile(
+        //     leading: Icon(Icons.notifications_none),
+        //     title: smallLabel(context, 'Turn On Notification'),
+        //     trailing: Switch(
+        //       value: notificationsOn,
+        //       onChanged: (value) {
+        //         setState(() {
+        //           notificationsOn = value;
+        //         });
+        //       },
+        //     ),
+        //   ),
+        // ),
 
         // Reset Progress
-        Card(
-          color: Colors.white,
-          child: ListTile(
-            leading: Icon(Icons.refresh),
-            title: smallLabel(context,'Reset All'),
-            onTap: () {
-              // Action on tap
-            },
-          ),
-        ),
+        // Card(
+        //   color: Colors.white,
+        //   child: ListTile(
+        //     leading: Icon(Icons.refresh),
+        //     title: smallLabel(context,'Reset All'),
+        //     onTap: () {
+        //       // Action on tap
+        //     },
+        //   ),
+        // ),
 
         // Help & Support section header
         Padding(

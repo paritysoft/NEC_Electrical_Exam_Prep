@@ -1,4 +1,4 @@
-import 'package:commonquiz/subscription/presentation/subscription/model/purchase_receipt_ios.dart';
+import 'package:electrician/subscription/presentation/subscription/model/purchase_receipt_ios.dart';
 import 'package:http/http.dart' as http;
 
 class VerifyReceiptIOSRes {

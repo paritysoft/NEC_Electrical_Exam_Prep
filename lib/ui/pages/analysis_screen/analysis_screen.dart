@@ -1,4 +1,5 @@
-import 'package:commonquiz/ui/pages/analysis_screen/quiz_activity_graph.dart';
+import 'package:electrician/ui/pages/analysis_screen/quiz_activity_graph.dart';
+import 'package:electrician/ui/widgets/common_widget.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
@@ -46,17 +47,15 @@ class AnalysisScreen extends StatelessWidget {
                           Colors.blue,
                         ),
                       ),
-                      Text(
+                      smallLabel(context,
                         '0%',
-                        style: TextStyle(
-                            fontSize: 24, fontWeight: FontWeight.bold),
                       ),
                     ],
                   ),
                 ),
                 SizedBox(height: 16),
                 // Stats Overview
-                Text('Accuracy Rate', style: TextStyle(color: Colors.grey)),
+                smallLabel(context,'Accuracy Rate', color: Colors.grey),
                 SizedBox(height: 8),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -70,88 +69,88 @@ class AnalysisScreen extends StatelessWidget {
           ),
           SizedBox(height: 16),
 
-          // Study Continuity Section
-          Container(
-            padding: EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(12),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.shade200,
-                  spreadRadius: 1,
-                  blurRadius: 10,
-                ),
-              ],
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                ContinuityItem(title: 'Quiz', value: '0'),
-                ContinuityItem(title: 'SQID', value: '0'),
-                ContinuityItem(title: 'Longest Streak', value: '0 Days'),
-              ],
-            ),
-          ),
-          SizedBox(height: 16),
-
-          // Test Record Section with Graph
-          Container(
-            padding: EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(12),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.shade200,
-                  spreadRadius: 1,
-                  blurRadius: 10,
-                ),
-              ],
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('Test Record'),
-                SizedBox(height: 8),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    FilterButton(label: '7 Days'),
-                    FilterButton(label: '30 Days'),
-                    FilterButton(label: '90 Days'),
-                  ],
-                ),
-                SizedBox(height: 16),
-                // Graph
-
-                SizedBox(
-                  height: 150,
-                  child: LineChart(
-                    LineChartData(
-                      gridData: FlGridData(show: false),
-                      borderData: FlBorderData(show: false),
-                      titlesData: FlTitlesData(show: false),
-                      lineBarsData: [
-                        LineChartBarData(
-                          spots: [
-                            FlSpot(0, 1),
-                            FlSpot(1, 1),
-                            FlSpot(2, 0),
-                            FlSpot(3, 3),
-                            FlSpot(4, 2),
-                          ],
-                          isCurved: true,
-                          dotData: FlDotData(show: false),
-                          belowBarData: BarAreaData(show: false),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
+          // // Study Continuity Section
+          // Container(
+          //   padding: EdgeInsets.all(16),
+          //   decoration: BoxDecoration(
+          //     color: Colors.white,
+          //     borderRadius: BorderRadius.circular(12),
+          //     boxShadow: [
+          //       BoxShadow(
+          //         color: Colors.grey.shade200,
+          //         spreadRadius: 1,
+          //         blurRadius: 10,
+          //       ),
+          //     ],
+          //   ),
+          //   child: Row(
+          //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //     children: [
+          //       ContinuityItem(title: 'Quiz', value: '0'),
+          //       ContinuityItem(title: 'SQID', value: '0'),
+          //       ContinuityItem(title: 'Longest Streak', value: '0 Days'),
+          //     ],
+          //   ),
+          // ),
+          // SizedBox(height: 16),
+          //
+          // // Test Record Section with Graph
+          // Container(
+          //   padding: EdgeInsets.all(16),
+          //   decoration: BoxDecoration(
+          //     color: Colors.white,
+          //     borderRadius: BorderRadius.circular(12),
+          //     boxShadow: [
+          //       BoxShadow(
+          //         color: Colors.grey.shade200,
+          //         spreadRadius: 1,
+          //         blurRadius: 10,
+          //       ),
+          //     ],
+          //   ),
+          //   child: Column(
+          //     crossAxisAlignment: CrossAxisAlignment.start,
+          //     children: [
+          //       Text('Test Record'),
+          //       SizedBox(height: 8),
+          //       Row(
+          //         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          //         children: [
+          //           FilterButton(label: '7 Days'),
+          //           FilterButton(label: '30 Days'),
+          //           FilterButton(label: '90 Days'),
+          //         ],
+          //       ),
+          //       SizedBox(height: 16),
+          //       // Graph
+          //
+          //       SizedBox(
+          //         height: 150,
+          //         child: LineChart(
+          //           LineChartData(
+          //             gridData: FlGridData(show: false),
+          //             borderData: FlBorderData(show: false),
+          //             titlesData: FlTitlesData(show: false),
+          //             lineBarsData: [
+          //               LineChartBarData(
+          //                 spots: [
+          //                   FlSpot(0, 1),
+          //                   FlSpot(1, 1),
+          //                   FlSpot(2, 0),
+          //                   FlSpot(3, 3),
+          //                   FlSpot(4, 2),
+          //                 ],
+          //                 isCurved: true,
+          //                 dotData: FlDotData(show: false),
+          //                 belowBarData: BarAreaData(show: false),
+          //               ),
+          //             ],
+          //           ),
+          //         ),
+          //       ),
+          //     ],
+          //   ),
+          // ),
           SizedBox(height: 16),
 
           Container(height: 600, child: CategoryQuestionDataList()),

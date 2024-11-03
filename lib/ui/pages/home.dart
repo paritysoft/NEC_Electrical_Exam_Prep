@@ -1,4 +1,4 @@
-import 'package:commonquiz/util/app_constants.dart';
+import 'package:electrician/util/app_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:auto_size_text/auto_size_text.dart';

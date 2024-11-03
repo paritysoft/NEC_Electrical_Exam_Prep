@@ -1,4 +1,4 @@
-import 'package:commonquiz/ui/widgets/common_widget.dart';
+import 'package:electrician/ui/widgets/common_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:html_unescape/html_unescape.dart';

@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:commonquiz/ui/widgets/common_widget.dart';
+import 'package:electrician/ui/widgets/common_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 

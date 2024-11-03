@@ -1,5 +1,5 @@
-import 'package:commonquiz/subscription/presentation/subscription/bloc/subscription_event.dart';
-import 'package:commonquiz/subscription/presentation/subscription/bloc/subscription_state.dart';
+import 'package:electrician/subscription/presentation/subscription/bloc/subscription_event.dart';
+import 'package:electrician/subscription/presentation/subscription/bloc/subscription_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../util/app_constants.dart';
 import '../../../core/usecase/usecase.dart';

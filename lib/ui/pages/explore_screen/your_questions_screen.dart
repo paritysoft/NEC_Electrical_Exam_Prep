@@ -1,5 +1,5 @@
-import 'package:commonquiz/ui/pages/explore_screen/pdf_viewer.dart';
-import 'package:commonquiz/ui/widgets/common_widget.dart';
+import 'package:electrician/ui/pages/explore_screen/pdf_viewer.dart';
+import 'package:electrician/ui/widgets/common_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import '../../../util/AppColors.dart';

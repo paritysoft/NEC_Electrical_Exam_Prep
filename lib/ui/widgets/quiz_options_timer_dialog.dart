@@ -1,13 +1,14 @@
 import 'dart:io';
-import 'package:commonquiz/ui/pages/quiz_page_timer.dart';
-import 'package:commonquiz/ui/widgets/common_widget.dart';
-import 'package:commonquiz/util/AppColors.dart';
+
+import 'package:electrician/ui/widgets/common_widget.dart';
 import 'package:flutter/material.dart';
+import '../../util/AppColors.dart';
 import '../../util/app_constants.dart';
 import '../pages/data/QuestionCache.dart';
 import '../pages/data/model/ElectricianQuestion.dart';
 import '../pages/error.dart';
 import '../pages/quiz_page.dart';
+import '../pages/quiz_page_timer.dart';
 
 
 class QuizOptionsTimerDialog extends StatefulWidget {

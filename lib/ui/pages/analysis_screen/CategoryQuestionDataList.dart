@@ -1,4 +1,4 @@
-import 'package:commonquiz/util/util.dart';
+import 'package:electrician/util/util.dart';
 import 'package:flutter/material.dart';
 
 import '../data/model/CategoryQuestionData.dart';

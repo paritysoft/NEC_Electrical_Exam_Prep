@@ -1,8 +1,8 @@
 import 'dart:async';
 
-import 'package:commonquiz/ui/pages/data/upadansonghro.dart';
-import 'package:commonquiz/ui/pages/explore_screen/your_questions_screen.dart';
-import 'package:commonquiz/ui/widgets/common_widget.dart';
+import 'package:electrician/ui/pages/data/upadansonghro.dart';
+import 'package:electrician/ui/pages/explore_screen/your_questions_screen.dart';
+import 'package:electrician/ui/widgets/common_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 

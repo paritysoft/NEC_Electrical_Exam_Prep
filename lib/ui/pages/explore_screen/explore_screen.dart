@@ -1,8 +1,8 @@
-import 'package:commonquiz/ui/pages/explore_screen/mock_quiz_screen.dart';
-import 'package:commonquiz/ui/pages/explore_screen/practice_by_topic_screen.dart';
-import 'package:commonquiz/ui/pages/explore_screen/records_screen.dart';
-import 'package:commonquiz/ui/pages/explore_screen/your_questions_screen.dart';
-import 'package:commonquiz/ui/widgets/quiz_options_timer_dialog.dart';
+import 'package:electrician/ui/pages/explore_screen/mock_quiz_screen.dart';
+import 'package:electrician/ui/pages/explore_screen/practice_by_topic_screen.dart';
+import 'package:electrician/ui/pages/explore_screen/records_screen.dart';
+import 'package:electrician/ui/pages/explore_screen/your_questions_screen.dart';
+import 'package:electrician/ui/widgets/quiz_options_timer_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../subscription/core/sharepref_helper.dart';

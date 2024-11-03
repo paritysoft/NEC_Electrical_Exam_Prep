@@ -1,7 +1,7 @@
 import 'dart:async';
-import 'package:commonquiz/ui/pages/quiz_finished.dart';
-import 'package:commonquiz/ui/widgets/common_widget.dart';
-import 'package:commonquiz/util/AppColors.dart';
+import 'package:electrician/ui/pages/quiz_finished.dart';
+import 'package:electrician/ui/widgets/common_widget.dart';
+import 'package:electrician/util/AppColors.dart';
 import 'package:flutter/material.dart';
 import 'package:html_unescape/html_unescape.dart';
 import '../widgets/TimerScreen.dart';

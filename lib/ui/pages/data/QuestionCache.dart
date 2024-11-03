@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:commonquiz/ui/pages/data/upadansonghro.dart';
+import 'package:electrician/ui/pages/data/upadansonghro.dart';
 
 import 'model/ElectricianQuestion.dart';
 

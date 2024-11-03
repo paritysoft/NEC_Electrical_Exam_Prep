@@ -1,4 +1,4 @@
-import 'package:commonquiz/util/app_constants.dart';
+import 'package:electrician/util/app_constants.dart';
 import 'package:flutter/material.dart';
 import '../../subscription/core/sharepref_helper.dart';
 import '../../subscription/presentation/subscription/screen/subscription_page.dart';
