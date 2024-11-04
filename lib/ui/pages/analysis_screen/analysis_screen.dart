@@ -153,7 +153,7 @@ class AnalysisScreen extends StatelessWidget {
           // ),
           SizedBox(height: 16),
 
-          Container( height: 500, child: CategoryQuestionDataList()),
+          CategoryQuestionDataList(),
           // Subject Analysis Section
           // Text('Subject Analysis', style: TextStyle(fontWeight: FontWeight.bold)),
           // SizedBox(height: 8),
