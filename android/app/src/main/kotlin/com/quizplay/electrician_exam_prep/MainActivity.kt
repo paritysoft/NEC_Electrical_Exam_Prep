@@ -1,4 +1,4 @@
-package com.quizplay.commonquiz.commonquiz
+package com.quizplay.electrician_exam_prep
 
 
 import io.flutter.embedding.android.FlutterActivity
