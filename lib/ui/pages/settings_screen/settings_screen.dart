@@ -30,27 +30,36 @@ class _SettingsScreenState extends State<SettingsScreen> {
     return ListView(
       padding: EdgeInsets.all(16),
       children: [
-        Container(
-          padding: EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            color: Colors.amberAccent[100],
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: Row(
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  title15BoldColor(context,
-                    'Upgrade to the Premium'),
-                  const SizedBox(height: 4),
-                  smallLabel(context, 'Get a personal learning plan', textSize: 14),
-                ],
-              ),
-              const Spacer(),
-              Image.asset("assets/images/ic_premium.png",
-                  height: 40, width: 40, fit: BoxFit.cover),
-            ],
+        InkWell(
+          onTap: (){
+            if (SharedPreferenceHelper.getSubscription() == false) {
+              gotToSubscriptionPage(context);
+            }else{
+              snackBar(context, "You are already in premium version");
+            }
+          },
+          child: Container(
+            padding: EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: Colors.amberAccent[100],
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Row(
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    title15BoldColor(context,
+                      'Upgrade to the Premium'),
+                    const SizedBox(height: 4),
+                    smallLabel(context, 'Get a personal learning plan', textSize: 14),
+                  ],
+                ),
+                const Spacer(),
+                Image.asset("assets/images/ic_premium.png",
+                    height: 40, width: 40, fit: BoxFit.cover),
+              ],
+            ),
           ),
         ),
         SizedBox(height: 24),

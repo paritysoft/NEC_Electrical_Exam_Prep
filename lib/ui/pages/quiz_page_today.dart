@@ -90,8 +90,8 @@ class _QuizPageTodayState extends State<QuizPageToday> {
       child: Scaffold(
         key: _key,
         appBar: appBarCustom(context, widget.category ?? ""),
-        body: questions10.isEmpty
-            ? Center(child: Text('No questions available.'))
+        body: questions10.isEmpty || _currentIndex > 9
+            ? Center(child: Text('No questions available for today.'))
             : Stack(
           children: <Widget>[
             ClipPath(
@@ -187,6 +187,7 @@ class _QuizPageTodayState extends State<QuizPageToday> {
       });
       questionService?.updateQuestionsReadToday(_currentIndex);
     } else {
+      questionService?.updateQuestionsReadToday(_currentIndex+1);
       Navigator.of(context).pushReplacement(MaterialPageRoute(
           builder: (_) => QuizFinishedPage(
               questions: questions10, answers: _answers)));

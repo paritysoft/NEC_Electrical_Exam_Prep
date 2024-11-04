@@ -56,6 +56,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
               //
               // // Fetch today's 10 questions
               //List<ElectricianQuestion> todaysQuestions = questionService!.getTodaysQuestions();
+
               Navigator.push(
                   context,
                   MaterialPageRoute(
