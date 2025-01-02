@@ -144,7 +144,8 @@ class _ExploreScreenState extends State<ExploreScreen> {
                 Padding(
                   padding: const EdgeInsets.fromLTRB(4, 4, 4, 4),
                   child: Center(
-                      child: title15BoldColor(context, 'Unlock All Features')),
+                      //child: title15BoldColor(context, 'Unlock All Features')),
+                      child: title15BoldColor(context, 'All Features')),
                 ),
                 Opacity(
                   opacity: 1,
@@ -168,11 +169,11 @@ class _ExploreScreenState extends State<ExploreScreen> {
                     isPremium: false,
                     icon: Icons.question_mark_sharp,
                     onTap: () {
-                      if (SharedPreferenceHelper.getSubscription() == false) {
-                        gotToSubscriptionPage(context);
-                      } else {
+                      // if (SharedPreferenceHelper.getSubscription() == false) {
+                      //   gotToSubscriptionPage(context);
+                      // } else {
                         _categoryPressed(context, "Random Question");
-                      }
+                      //}
                     }),
                 QuizCard(
                     title: 'Practice By Topic',
@@ -180,14 +181,14 @@ class _ExploreScreenState extends State<ExploreScreen> {
                     isPremium: true,
                     icon: Icons.topic,
                     onTap: () {
-                      if (SharedPreferenceHelper.getSubscription() == false) {
-                        gotToSubscriptionPage(context);
-                      } else {
+                      // if (SharedPreferenceHelper.getSubscription() == false) {
+                      //   gotToSubscriptionPage(context);
+                      // } else {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
                                 builder: (_) => PracticeByTopic()));
-                      }
+                     // }
                     }),
                 QuizCard(
                     title: 'Mock Quiz',
@@ -195,14 +196,14 @@ class _ExploreScreenState extends State<ExploreScreen> {
                     isPremium: true,
                     icon: Icons.quiz_rounded,
                     onTap: () {
-                      if (SharedPreferenceHelper.getSubscription() == false) {
-                        gotToSubscriptionPage(context);
-                      } else {
+                      // if (SharedPreferenceHelper.getSubscription() == false) {
+                      //   gotToSubscriptionPage(context);
+                      // } else {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
                                 builder: (_) => MockQuizScreen()));
-                      }
+                     // }
                     }),
                 QuizCard(
                     title: 'Time Quiz',
@@ -210,11 +211,11 @@ class _ExploreScreenState extends State<ExploreScreen> {
                     isPremium: true,
                     icon: Icons.timelapse,
                     onTap: () {
-                      if (SharedPreferenceHelper.getSubscription() == false) {
-                        gotToSubscriptionPage(context);
-                      } else {
+                      // if (SharedPreferenceHelper.getSubscription() == false) {
+                      //   gotToSubscriptionPage(context);
+                      // } else {
                         _categoryPressed(context, "Time Quiz");
-                      }
+                     // }
                     }),
                 QuizCard(
                     title: 'Your Questions',
@@ -222,14 +223,14 @@ class _ExploreScreenState extends State<ExploreScreen> {
                     isPremium: true,
                     icon: Icons.personal_injury,
                     onTap: () {
-                      if (SharedPreferenceHelper.getSubscription() == false) {
-                        gotToSubscriptionPage(context);
-                      } else {
+                      // if (SharedPreferenceHelper.getSubscription() == false) {
+                      //   gotToSubscriptionPage(context);
+                      // } else {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
                                 builder: (_) => YourQuestionsScreen()));
-                      }
+                     // }
                     }),
                 QuizCard(
                     title: 'Records',
@@ -237,12 +238,12 @@ class _ExploreScreenState extends State<ExploreScreen> {
                     isPremium: true,
                     icon: Icons.fiber_smart_record_sharp,
                     onTap: () {
-                      if (SharedPreferenceHelper.getSubscription() == false) {
-                        gotToSubscriptionPage(context);
-                      } else {
+                      // if (SharedPreferenceHelper.getSubscription() == false) {
+                      //   gotToSubscriptionPage(context);
+                      // } else {
                         Navigator.push(context,
                             MaterialPageRoute(builder: (_) => RecordsScreen()));
-                      }
+                   //   }
                     }),
               ],
             ),

@@ -32,11 +32,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
       children: [
         InkWell(
           onTap: (){
-            if (SharedPreferenceHelper.getSubscription() == false) {
-              gotToSubscriptionPage(context);
-            }else{
-              snackBar(context, "You are already in premium version");
-            }
+            // if (SharedPreferenceHelper.getSubscription() == false) {
+            //   gotToSubscriptionPage(context);
+            // }else{
+            //   snackBar(context, "You are already in premium version");
+            // }
+            snackBar(context, "You are already in premium version");
           },
           child: Container(
             padding: EdgeInsets.all(16),
@@ -49,10 +50,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    title15BoldColor(context,
-                      'Upgrade to the Premium'),
+                  //  title15BoldColor(context,'Upgrade to the Premium'),
                     const SizedBox(height: 4),
-                    smallLabel(context, 'Get a personal learning plan', textSize: 14),
+                    //smallLabel(context, 'Get a personal learning plan', textSize: 14),
+                    smallLabel(context, 'Your personal learning plan', textSize: 14),
                   ],
                 ),
                 const Spacer(),

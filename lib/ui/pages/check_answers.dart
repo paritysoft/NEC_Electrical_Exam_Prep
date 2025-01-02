@@ -1,4 +1,5 @@
 import 'package:electrician/ui/widgets/common_widget.dart';
+import 'package:electrician/util/AppColors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:html_unescape/html_unescape.dart';
@@ -6,6 +7,7 @@ import 'package:html_unescape/html_unescape.dart';
 import '../../models/question.dart';
 import 'data/QuestionCache.dart';
 import 'data/model/ElectricianQuestion.dart';
+import 'home_updated.dart';
 
 class CheckAnswersPage extends StatelessWidget {
   final List<ElectricianQuestion> questions;
@@ -40,11 +42,24 @@ class CheckAnswersPage extends StatelessWidget {
   }
   Widget _buildItem(BuildContext context, int index) {
     if(index == questions.length) {
-      return ElevatedButton(
-        child: Text("Done"),
-        onPressed: (){
-          Navigator.of(context).popUntil(ModalRoute.withName(Navigator.defaultRouteName));
-        },
+      return Padding(
+        padding: const EdgeInsets.fromLTRB(0, 8, 0, 16),
+        child: ElevatedButton(
+          style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all<Color>(primary),
+            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+              RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.0),
+              ),
+            ),
+            visualDensity: VisualDensity(vertical: 2),
+          ),
+          child: title15BoldColor(context, "Done", color: Colors.white),
+          onPressed: (){
+            Navigator.of(context).pushReplacement(MaterialPageRoute(
+              builder: (context) => QuizHomePage(),
+            ));          },
+        ),
       );
     }
     ElectricianQuestion question = questions[index];

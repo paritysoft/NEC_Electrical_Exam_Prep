@@ -25,7 +25,7 @@ class CustomOnboardingPageViewModel extends StatelessWidget {
       child: Column(
         children: [
           SizedBox(
-            height: 150,
+            height: 50,
           ),
           Container(
             alignment: Alignment.center, // use aligment
@@ -34,7 +34,7 @@ class CustomOnboardingPageViewModel extends StatelessWidget {
               imageUrl,
               alignment: Alignment.center,
               width: double.infinity,
-              height: 300,
+              height: 200,
               fit: BoxFit.fill,
             ),
           ),

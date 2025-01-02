@@ -33,14 +33,44 @@ class _CalendarPageState extends State<CalendarPage> {
     });
   }
 
+  // Future<void> _addEvent() async {
+  //
+  //   String title = _eventTitleController.text;
+  //   if (title.isEmpty) {
+  //     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+  //         content: smallLabel(context, "Exam title cannot be empty",
+  //             color: Colors.white),
+  //         backgroundColor: primary));
+  //     return;
+  //   }else{
+  //     Appointment newAppointment = Appointment(
+  //       startTime: DateTime(
+  //           _selectedDate.year, _selectedDate.month, _selectedDate.day, 9, 0),
+  //       endTime: DateTime(
+  //           _selectedDate.year, _selectedDate.month, _selectedDate.day, 10, 0),
+  //       subject: title,
+  //       color: Colors.green,
+  //       isAllDay: true,
+  //     );
+  //
+  //     setState(() {
+  //       _appointments.add(newAppointment);
+  //       _scheduleNotification(newAppointment.startTime,
+  //           title); // Schedule reminder using TZDateTime
+  //       _eventTitleController.clear();
+  //     });
+  //     setState(() {
+  //       _appointments.add(newAppointment);
+  //     });
+  //     await _examDateManagement.saveEvents(_appointments);
+  //   }
+  //
+  //
+  // }
   Future<void> _addEvent() async {
-
-    String title = _eventTitleController.text;
+    String title = _eventTitleController.text.trim();
     if (title.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: smallLabel(context, "Exam title cannot be empty",
-              color: Colors.white),
-          backgroundColor: primary));
+      _showErrorMessage("Exam title cannot be empty");
       return;
     }
 
@@ -56,16 +86,26 @@ class _CalendarPageState extends State<CalendarPage> {
 
     setState(() {
       _appointments.add(newAppointment);
-      _scheduleNotification(newAppointment.startTime,
-          title); // Schedule reminder using TZDateTime
-      _eventTitleController.clear();
     });
-    setState(() {
-      _appointments.add(newAppointment);
-    });
+
+    SharedPreferenceHelper.setExamDate("${newAppointment.startTime.day}/${newAppointment.startTime.month}/${newAppointment.startTime.year}");
+    _eventTitleController.clear();
+
     await _examDateManagement.saveEvents(_appointments);
+    _scheduleNotification(newAppointment.startTime, title);
+
+    snackBar(context, "Successfully added an event");
+
   }
 
+  void _showErrorMessage(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: smallLabel(context, message, color: Colors.white),
+        backgroundColor: primary,
+      ),
+    );
+  }
 
   // Remove event and cancel its reminder
   Future<void> _removeEvent(Appointment appointment) async {
@@ -165,6 +205,7 @@ class _CalendarPageState extends State<CalendarPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: appBarCustom(context, "Create Exam with Reminder"),
+      resizeToAvoidBottomInset: true,
       body: Column(
         children: [
           Padding(
@@ -178,15 +219,20 @@ class _CalendarPageState extends State<CalendarPage> {
             ),
           ),
           SizedBox(height: 10),
-          Expanded(
-            flex: 3,
-            child: SfCalendar(
-              showNavigationArrow: true,
-              view: CalendarView.month,
-              dataSource: EventDataSource(_appointments),
-              onTap: _onCalendarTapped,
-              monthViewSettings: MonthViewSettings(
-                appointmentDisplayMode: MonthAppointmentDisplayMode.appointment,
+          GestureDetector(
+            onTap: () => FocusScope.of(context).unfocus(),
+            child: Expanded(
+              flex: 3,
+              child: SfCalendar(
+                showNavigationArrow: true,
+                view: CalendarView.month,
+                dataSource: EventDataSource(_appointments),
+                onTap: _onCalendarTapped,
+                monthViewSettings: MonthViewSettings(
+                //  appointmentDisplayMode: MonthAppointmentDisplayMode.appointment,
+                  appointmentDisplayMode: MonthAppointmentDisplayMode.indicator,
+
+                ),
               ),
             ),
           ),
@@ -273,9 +319,9 @@ class _CalendarPageState extends State<CalendarPage> {
       'Reminder for your exam: $title',
       scheduledTime, // Use TZDateTime here
       platformChannelDetails,
-      androidAllowWhileIdle: true,
       uiLocalNotificationDateInterpretation:
           UILocalNotificationDateInterpretation.absoluteTime,
+      androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
     );
   }
 

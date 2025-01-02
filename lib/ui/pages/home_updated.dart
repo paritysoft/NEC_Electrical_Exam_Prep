@@ -29,9 +29,9 @@ class _QuizHomePageState extends State<QuizHomePage> {
   @override
   void initState() {
     super.initState();
-    if (SharedPreferenceHelper.getSubscription() == false) {
-      gotToSubscriptionPage(context);
-    }
+    // if (SharedPreferenceHelper.getSubscription() == false) {
+    //   gotToSubscriptionPage(context);
+    // }
   }
 
   @override

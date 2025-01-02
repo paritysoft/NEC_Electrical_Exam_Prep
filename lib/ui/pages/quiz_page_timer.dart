@@ -116,12 +116,13 @@ class _QuizPageTimerState extends State<QuizPageTimer> {
                                   vertical: 20.0, horizontal: 64.0)
                               : null,
                         ),
-                        child: smallLabel(
+                        child: title15BoldColor(
                             context,
                             _currentIndex == (widget.questions.length - 1)
                                 ? "Submit"
                                 : "Next",
-                            color: primary),
+                            color: bgColor),
+
                         onPressed: _nextSubmit,
                       ),
                     ),
@@ -138,7 +139,7 @@ class _QuizPageTimerState extends State<QuizPageTimer> {
   void _nextSubmit() {
     if (_answers[_currentIndex] == null) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: smallLabel(context, "You must select an answer to continue."),
+        content: smallLabel(context, "You must select an answer to continue.", color: Colors.white),
       ));
       return;
     }

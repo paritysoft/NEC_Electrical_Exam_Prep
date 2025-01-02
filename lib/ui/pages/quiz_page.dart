@@ -118,15 +118,16 @@ class _QuizPageState extends State<QuizPage> {
                                   vertical: 20.0, horizontal: 64.0)
                               : null,
                         ),
-                        child: smallLabel(context,
+                        child: title15BoldColor(context,
                           _currentIndex == (widget.questions.length - 1)
                               ? "Submit"
-                              : "Next", color: primary
+                              : "Next", color: bgColor,
                         ),
                         onPressed: _nextSubmit,
                       ),
                     ),
-                  )
+                  ),
+                  const SizedBox(height: 10),
                 ],
               ),
             )
@@ -140,7 +141,7 @@ class _QuizPageState extends State<QuizPage> {
 
     if (_answers[_currentIndex] == null) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: smallLabel(context, "You must select an answer to continue."),
+        content: smallLabel(context, "You must select an answer to continue.", color: Colors.white),
       ));
       return;
     }

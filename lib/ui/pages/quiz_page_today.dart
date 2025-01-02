@@ -154,10 +154,10 @@ class _QuizPageTodayState extends State<QuizPageToday> {
                                   vertical: 20.0, horizontal: 64.0)
                               : null,
                         ),
-                        child: smallLabel(context,
-                          _currentIndex == ((questions10?.length ?? 0)- 1)
+                        child: title15BoldColor(context,
+                          _currentIndex == ((questions10.length ?? 0)- 1)
                               ? "Submit"
-                              : "Next", color: primary
+                              : "Next", color: bgColor
                         ),
                         onPressed: _nextSubmit,
                       ),
@@ -176,7 +176,7 @@ class _QuizPageTodayState extends State<QuizPageToday> {
 
     if (_answers[_currentIndex] == null) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: smallLabel(context, "You must select an answer to continue."),
+        content: smallLabel(context, "You must select an answer to continue.", color: Colors.white),
       ));
       return;
     }

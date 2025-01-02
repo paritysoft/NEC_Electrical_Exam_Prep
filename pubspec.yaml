@@ -50,7 +50,7 @@ dependencies:
   syncfusion_flutter_pdfviewer: ^27.1.50
   device_info_plus: ^10.1.0
   shared_preferences: ^2.0.13
-  sqflite_sqlcipher: ^2.0.0+3
+  sqflite_sqlcipher: ^3.1.0+1
   flutter_secure_storage: ^9.2.2
   uuid: ^4.5.1
   webview_flutter: ^4.10.0
@@ -61,7 +61,7 @@ dependencies:
   flutter_local_notifications: ^17.2.3
   timezone: ^0.9.4 # Add this package for timezone support
   permission_handler: ^11.3.1
-  get_it: ^7.2.0
+  get_it: ^8.0.3
   flutter_bloc: ^8.1.5
   flutter_inapp_purchase: ^5.6.1
   dartz: ^0.10.1
@@ -85,7 +85,7 @@ dev_dependencies:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^4.0.0
+  flutter_lints: ^5.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
