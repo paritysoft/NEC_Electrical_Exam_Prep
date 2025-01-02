@@ -68,9 +68,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
           } ,
           done:  Container(
-            padding: const EdgeInsets.fromLTRB(16, 4, 16, 4),
+            padding: const EdgeInsets.fromLTRB(4, 4, 4, 4),
             decoration: BoxDecoration(
-              color: Colors.amber,
+              color: Colors.amber[600],
               borderRadius: BorderRadius.circular(8),
             ),
             child: Row(
@@ -79,7 +79,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Center(
-                    child: smallLabel(context, 'Get Started', textSize: 10)),
+                    child: smallLabel(context, 'Get Started', textSize: 14, color: Colors.grey[800]
+                    )),
               ],
             ),
           ),
@@ -100,7 +101,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Center(
-                    child: smallLabel(context, 'Next', textSize: 10)),
+                    child: smallLabel(context, 'Next', color: Colors.grey[800]
+                        , textSize: 14)),
               ],
             ),
           ),

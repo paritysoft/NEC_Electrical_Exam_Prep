@@ -43,18 +43,27 @@ class RecordsAnswersScreen extends StatelessWidget {
       return Padding(
         padding: const EdgeInsets.all(8.0),
         child: ElevatedButton(
-          child: Text("Go Home"),
+          style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all<Color>(primary),
+            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+              RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.0),
+              ),
+            ),
+            visualDensity: VisualDensity(vertical: 2),
+          ),
+          child: title15BoldColor(context, "Go Home", color: Colors.white),
           onPressed: (){
             if (Navigator.canPop(context)) {
               Navigator.of(context, rootNavigator: true).pop(context);
             }
           },
-          style: ElevatedButton.styleFrom(
-              backgroundColor: background,
-              padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
-              textStyle: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold, color: Colors.white),),
+          // style: ElevatedButton.styleFrom(
+          //     backgroundColor: background,
+          //     padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+          //     textStyle: TextStyle(
+          //         fontSize: 16,
+          //         fontWeight: FontWeight.bold, color: Colors.white),),
         ),
       );
     }

@@ -36,6 +36,10 @@ class QuestionCache {
     // Use the .where() method to filter by category
     return questions.where((question) => question.category == category).toList();
   }
+  List<ElectricianQuestion> filterQuestionsByGivenAnswer(List<ElectricianQuestion> questions) {
+    // Return questions where the givenAnswer is empty
+    return questions.where((question) => question.givenAnswer.isNotEmpty).toList();
+  }
 }
 
 // Usage in your app

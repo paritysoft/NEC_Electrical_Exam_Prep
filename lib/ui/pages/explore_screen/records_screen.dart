@@ -74,11 +74,16 @@ class _RecordsScreenState extends State<RecordsScreen> {
                             List<ElectricianQuestion>? filterQuestions =
                                 QuestionCache().filterQuestionsByCategory(
                                     questions, _categories[index]);
+
+                            List<ElectricianQuestion>? filterQuestionByGivenAnswer =
+                            QuestionCache().filterQuestionsByGivenAnswer(
+                                filterQuestions);
+
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                     builder: (_) => RecordsAnswersScreen(
-                                          questions: filterQuestions,
+                                          questions: filterQuestionByGivenAnswer,
                                         )));
                           }
                         },
