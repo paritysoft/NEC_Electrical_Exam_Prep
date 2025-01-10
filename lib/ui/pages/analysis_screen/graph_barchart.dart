@@ -2,16 +2,14 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
 import '../../../models/activity_data.dart';
-import '../../widgets/common_widget.dart';
 
-class QuizActivityGraph extends StatefulWidget {
+class QuizGraphBarChart extends StatefulWidget {
   @override
   _QuizActivityGraphState createState() => _QuizActivityGraphState();
 }
 
-class _QuizActivityGraphState extends State<QuizActivityGraph> {
+class _QuizActivityGraphState extends State<QuizGraphBarChart> {
   int selectedDays = 7; // Default to 7 days
-
   List<ActivityData> activityData = [];
 
   @override
@@ -25,10 +23,10 @@ class _QuizActivityGraphState extends State<QuizActivityGraph> {
     return List.generate(days, (index) {
       final date = now.subtract(Duration(days: index));
       final answeredQuestions = (10 + index * 2); // Replace with actual data
-      final accuracyRate = (60 + index % 20).toDouble(); // Replace with actual data
-      return ActivityData(date, answeredQuestions, accuracyRate);
-    });
+      return ActivityData(date, answeredQuestions,0);
+    }).reversed.toList(); // Reverse for chronological order
   }
+
   void updateData(int days) {
     setState(() {
       selectedDays = days;
@@ -36,56 +34,80 @@ class _QuizActivityGraphState extends State<QuizActivityGraph> {
     });
   }
 
-  List<FlSpot> generateSpots() {
-    return activityData
-        .asMap()
-        .entries
-        .map((entry) => FlSpot(entry.key.toDouble(), entry.value.answeredQuestions.toDouble()))
-        .toList();
+  List<BarChartGroupData> generateBarGroups() {
+    return activityData.asMap().entries.map((entry) {
+      final index = entry.key;
+      final data = entry.value;
+      return BarChartGroupData(
+        x: index,
+        barRods: [
+          BarChartRodData(
+            toY: data.answeredQuestions.toDouble(),
+            color: Colors.teal,
+            width: 16,
+            borderRadius: BorderRadius.circular(4),
+          ),
+        ],
+      );
+    }).toList();
+  }
+
+  Widget getBottomTitles(double value, TitleMeta meta) {
+    final index = value.toInt();
+    if (index < 0 || index >= activityData.length) return Container();
+    final date = activityData[index].date;
+    return SideTitleWidget(
+      axisSide: meta.axisSide,
+      child: Text(
+        "${date.day}/${date.month}",
+        style: TextStyle(fontSize: 10),
+      ),
+    );
+  }
+
+  Widget getLeftTitles(double value, TitleMeta meta) {
+    return Text(
+      value.toInt().toString(),
+      style: TextStyle(fontSize: 10),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        smallLabel(context, "Activity Graph (Last $selectedDays Days)"),
+        Text(
+          "Activity Graph (Last $selectedDays Days)",
+          style: Theme.of(context).textTheme.titleLarge,
+        ),
         SizedBox(height: 16),
         Container(
           height: 300,
-          padding: EdgeInsets.all(16),
-          child: LineChart(
-            LineChartData(
-              lineBarsData: [
-                LineChartBarData(
-                  spots: generateSpots(),
-                  isCurved: true,
-                  color: Colors.teal,
-                  barWidth: 4,
-                  belowBarData: BarAreaData(
-                    show: true,
-                    color: Colors.teal.withOpacity(0.3),
-                  ),
-                  dotData: FlDotData(show: false),
-                ),
-              ],
+          padding: EdgeInsets.symmetric(horizontal: 16),
+          child: BarChart(
+            BarChartData(
+              barGroups: generateBarGroups(),
               titlesData: FlTitlesData(
                 leftTitles: AxisTitles(
                   sideTitles: SideTitles(
                     showTitles: true,
-                    getTitlesWidget: (value, _) => Text(value.toInt().toString()),
+                    getTitlesWidget: getLeftTitles,
                   ),
                 ),
                 bottomTitles: AxisTitles(
                   sideTitles: SideTitles(
                     showTitles: true,
-                    getTitlesWidget: (value, _) {
-                      final date = activityData[value.toInt()].date;
-                      return Text("${date.day}/${date.month}");
-                    },
+                    getTitlesWidget: getBottomTitles,
                   ),
                 ),
+                topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
               ),
               gridData: FlGridData(show: true),
+              borderData: FlBorderData(
+                show: true,
+                border: Border.all(color: Colors.grey.withOpacity(0.5)),
+              ),
             ),
           ),
         ),

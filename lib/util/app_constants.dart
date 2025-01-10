@@ -3,7 +3,7 @@ import 'dart:math';
 
 import '../ui/pages/data/model/ElectricianQuestion.dart';
 
-const app_title = "Electrician Test Prep 2025";
+const app_title = "Journeyman Electrician 2025";
 const sizeBox16 = 16.0;
 const padding20 = 20.0;
 class AdaptiveFontSize {

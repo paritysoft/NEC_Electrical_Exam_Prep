@@ -1,3 +1,5 @@
+import 'package:electrician/ui/pages/analysis_screen/graph_barchart.dart';
+import 'package:electrician/ui/pages/analysis_screen/graph_pichart.dart';
 import 'package:electrician/ui/pages/analysis_screen/quiz_activity_graph.dart';
 import 'package:electrician/ui/widgets/common_widget.dart';
 import 'package:fl_chart/fl_chart.dart';
@@ -32,7 +34,9 @@ class AnalysisScreen extends StatelessWidget {
               children: [
 
                 // Circular Accuracy Chart
-                QuizActivityGraph(),
+               /// QuizActivityGraph(),
+               // QuizGraphPicChart(),
+                QuizGraphBarChart()
                 // SizedBox(
                 //   height: 120,
                 //   width: 120,

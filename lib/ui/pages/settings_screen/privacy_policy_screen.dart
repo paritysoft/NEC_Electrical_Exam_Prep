@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -7,8 +6,8 @@ import '../../widgets/common_widget.dart';
 class PrivacyPolicyScreen extends StatefulWidget {
   String title = "";
 
-  PrivacyPolicyScreen({Key? key, required this.title})
-      : super(key: key);
+  PrivacyPolicyScreen({Key? key, required this.title}) : super(key: key);
+
   @override
   _PrivacyPolicyScreenState createState() => _PrivacyPolicyScreenState();
 }
@@ -23,7 +22,9 @@ class _PrivacyPolicyScreenState extends State<PrivacyPolicyScreen> {
     // Initialize the WebViewController
     _controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
-      ..loadHtmlString((widget.title == "Privacy Policy") ? _htmlContentPrivacy : _htmlContentTerms);
+      ..loadHtmlString((widget.title == "Privacy Policy")
+          ? _htmlContentPrivacy
+          : _htmlContentTerms);
   }
 
   static const String _htmlContentPrivacy = '''
@@ -113,11 +114,12 @@ The Service Provider provides physical, electronic, and procedural safeguards to
       
       
   ''';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: appBarCustom(context, widget.title),
-        body: WebViewWidget(controller: _controller),
+      appBar: appBarCustom(context, widget.title),
+      body: WebViewWidget(controller: _controller),
     );
   }
 }
