@@ -1,3 +1,6 @@
+
+import 'dart:io';
+
 import 'package:electrician/subscription/presentation/subscription/bloc/provider_list.dart';
 import 'package:electrician/util/app_constants.dart';
 import 'package:electrician/util/notification.dart';
@@ -9,13 +12,17 @@ import 'package:provider/provider.dart';
 import '../subscription/dependencyinjection/injection_container.dart' as ic;
 import 'ui/pages/onboarding/onboarding_screen.dart';
 import 'package:timezone/data/latest.dart' as tz;
+
 FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: '.env');
   tz.initializeTimeZones();
-  await checkAndRequestExactAlarmPermission();
+  if(!Platform.isMacOS){
+    await checkAndRequestExactAlarmPermission();
+  }
+
   ic.init();
 
   // Initialize the notifications
@@ -25,9 +32,9 @@ void main() async {
     android: initializationSettingsAndroid,
     iOS: initializationSettingsIOS,
   );
-
-  await flutterLocalNotificationsPlugin.initialize(initializationSettings);
-
+  if(!Platform.isMacOS) {
+    await flutterLocalNotificationsPlugin.initialize(initializationSettings);
+  }
   runApp(MyApp());
 }
 

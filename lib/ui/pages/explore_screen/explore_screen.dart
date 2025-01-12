@@ -45,6 +45,11 @@ class _ExploreScreenState extends State<ExploreScreen> {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
+    // Calculate crossAxisCount based on screen width
+    int crossAxisCount = screenWidth > 600 ? 3 : 2; // Example: 3 columns on tablets, 2 on phones
+
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Column(
@@ -159,7 +164,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
           SizedBox(height: sizeBox16),
           Expanded(
             child: GridView.count(
-              crossAxisCount: 2,
+              crossAxisCount: crossAxisCount,
               mainAxisSpacing: 16,
               crossAxisSpacing: 16,
               children: [
@@ -317,8 +322,8 @@ class QuizCard extends StatelessWidget {
                         color: Colors.deepOrange,
                         borderRadius: BorderRadius.circular(4),
                       ),
-                      child: smallLabel(context, "Premium",
-                          color: Colors.white, textSize: 6))
+                      child: smallLabel(context, " Recommended ",
+                          color: Colors.white, textSize: 8))
               ],
             ),
             SizedBox(height: 10),

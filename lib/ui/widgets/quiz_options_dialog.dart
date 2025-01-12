@@ -156,7 +156,7 @@ class _QuizOptionsDialogState extends State<QuizOptionsDialog> {
                   ),
 
                 ),
-            SizedBox(height: 20.0),
+            SizedBox(height: 40.0),
           ],
         ),
       ),

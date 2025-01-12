@@ -55,6 +55,11 @@ class _QuizPageState extends State<QuizPage> {
   //
   //   }
 
+    double screenWidth = MediaQuery.of(context).size.width;
+    double textSize = screenWidth > 600 ? 7 : 8;
+    double textBox = screenWidth > 600 ? 30 : 20;
+
+
     return WillPopScope(
       onWillPop: _onWillPop,
       child: Scaffold(
@@ -77,8 +82,10 @@ class _QuizPageState extends State<QuizPage> {
                   Row(
                     children: <Widget>[
                       CircleAvatar(
+                        minRadius: textBox,
+                        maxRadius: textBox,
                         backgroundColor: Colors.white70,
-                        child: smallLabel(context, "${_currentIndex + 1}/${widget.questions.length}", color: Colors.black, textSize: 10),
+                        child: smallLabel(context, "${_currentIndex + 1}/${widget.questions.length}", color: Colors.black, textSize: textSize),
                       ),
                       SizedBox(width: 16.0),
                       Expanded(

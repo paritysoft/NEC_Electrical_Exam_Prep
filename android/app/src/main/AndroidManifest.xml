@@ -6,7 +6,7 @@
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM"/>
 
     <application
-        android:label="Electrician Test Prep 2025"
+        android:label="Journeyman Electrician 2025"
         android:name="${applicationName}"
         android:icon="@drawable/logo_electrician"
         android:roundIcon="@drawable/logo_electrician_round"

@@ -11,7 +11,7 @@ class AdaptiveFontSize {
     double screenWidth = MediaQuery.of(context).size.width;
     const double baseScreenWidth = 375.0; // Standard screen width
     double scaleFactor = screenWidth / baseScreenWidth;
-    return baseFontSize * scaleFactor;
+    return (baseFontSize * scaleFactor)-2;
   }
 }
 

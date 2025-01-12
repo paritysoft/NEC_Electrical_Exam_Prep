@@ -35,7 +35,7 @@ class CustomOnboardingPageViewModel extends StatelessWidget {
               alignment: Alignment.center,
               width: double.infinity,
               height: 200,
-              fit: BoxFit.fill,
+              fit: BoxFit.fitHeight,
             ),
           ),
           SizedBox(

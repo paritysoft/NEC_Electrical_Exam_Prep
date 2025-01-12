@@ -55,14 +55,19 @@ class _TimerWidgetState extends State<TimerWidget> {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double height = screenWidth > 600 ? 250 : 160;
+    double width = screenWidth > 600 ? 240 : 150;
+    double radius = screenWidth > 600 ? 120 : 65;
+    double textSize = screenWidth > 600 ? 12 : 15;
     return SizedBox(
-      height: 160, // Set the height of the TimerWidget
-      width: 150, // Set the width of the TimerWidget
+      height: height, // Set the height of the TimerWidget
+      width: width, // Set the width of the TimerWidget
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           CircularPercentIndicator(
-            radius: 65.0, // Match the height and width for a circular effect
+            radius: radius, // Match the height and width for a circular effect
             lineWidth: 13.0,
             percent: _percent,
             center: Column(
@@ -72,8 +77,8 @@ class _TimerWidgetState extends State<TimerWidget> {
                   'Remaining Time',
                 textSize: 9),
                 SizedBox(height: 4),
-                title15BoldColor(context,
-                  formatTime(_remainingTime),
+                smallLabel(context,
+                  formatTime(_remainingTime),textSize: textSize
                 ),
               ],
             ),

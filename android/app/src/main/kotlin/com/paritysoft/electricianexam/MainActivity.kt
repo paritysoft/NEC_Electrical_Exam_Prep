@@ -1,5 +1,4 @@
-package com.quizplay.electrician_exam_prep
-
+package com.paritysoft.electricianexam
 
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
