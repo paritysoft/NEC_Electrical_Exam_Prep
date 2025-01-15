@@ -24,7 +24,7 @@ class _RecordsScreenState extends State<RecordsScreen> {
 
   Future<void> _fetchUniqueCategories() async {
     UpadanSonghro dbHelper = UpadanSonghro();
-    List<String> categories = await dbHelper.getUniqueCategories();
+    List<String> categories = await dbHelper.getUniqueTopics();
     setState(() {
       _categories = categories; // Update categories list
       _isLoading = false; // Stop the loading indicator

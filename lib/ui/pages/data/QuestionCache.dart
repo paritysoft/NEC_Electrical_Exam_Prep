@@ -32,9 +32,9 @@ class QuestionCache {
   }
 
 
-  List<ElectricianQuestion> filterQuestionsByCategory(List<ElectricianQuestion> questions, String category) {
+  List<ElectricianQuestion> filterQuestionsByCategory(List<ElectricianQuestion> questions, String topic) {
     // Use the .where() method to filter by category
-    return questions.where((question) => question.category == category).toList();
+    return questions.where((question) => question.topicName == topic).toList();
   }
   List<ElectricianQuestion> filterQuestionsByGivenAnswer(List<ElectricianQuestion> questions) {
     // Return questions where the givenAnswer is empty
@@ -124,10 +124,13 @@ List<String> cleanQuizOptions(String optionsString) {
   }
 
   // Split by the comma, then clean up extra whitespace and quotes
-  List<String> optionsList = cleaned.split(RegExp(r'","|", "'))
-      .map((option) => option.replaceAll('"', '').trim())
-      .toList();
+  // List<String> optionsList = cleaned.split(RegExp(r'","|", "'))
+  //     .map((option) => option.replaceAll('"', '').trim())
+  //     .toList();
 
+    List<String> optionsList = cleaned.split(",")
+        .map((option) => option.replaceAll('"', '').trim())
+        .toList();
   return optionsList;
 }
 

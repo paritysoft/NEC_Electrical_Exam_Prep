@@ -6,10 +6,10 @@
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM"/>
 
     <application
-        android:label="Journeyman Electrician 2025"
+        android:label="ACNP Exam Prep - Nurse MCQs"
         android:name="${applicationName}"
-        android:icon="@drawable/logo_electrician"
-        android:roundIcon="@drawable/logo_electrician_round"
+        android:icon="@drawable/logo_acnp"
+        android:roundIcon="@drawable/logo_ancp_round"
         android:usesCleartextTraffic="true">
         <activity
             android:name=".MainActivity"
@@ -65,4 +65,7 @@
             <data android:mimeType="text/plain"/>
         </intent>
     </queries>
+
+    <meta-data android:name="io.flutter.embedding.android.EnableImpeller"
+        android:value="false" />
 </manifest>

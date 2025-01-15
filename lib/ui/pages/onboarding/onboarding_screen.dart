@@ -30,12 +30,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         modelDescription: onboardD2,
       ),
       const CustomOnboardingPageViewModel(
-        imageUrl: 'assets/images/onbImage3.jpg',
+        imageUrl: 'assets/images/onbImage3.png',
         modelTitle: onboardT3,
         modelDescription: onboardD3,
       ),
       const CustomOnboardingPageViewModel(
-        imageUrl: 'assets/images/onbImage4.jpg',
+        imageUrl: 'assets/images/onbImage4.png',
         modelTitle: onboardT4,
         modelDescription: onboardD4,
       ),
@@ -45,9 +45,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   @override
   void initState() {
     super.initState();
-   // UpadanSonghro upadanSonghro = new UpadanSonghro();
+//   UpadanSonghro upadanSonghro = new UpadanSonghro();
    // upadanSonghro.getAndInsertQuestions();
-   // upadanSonghro.insertDataFromJson();
+   //upadanSonghro.insertDataFromJson();
 
   }
   @override

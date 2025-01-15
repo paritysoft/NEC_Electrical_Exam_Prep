@@ -23,7 +23,7 @@ class _PracticeByTopicState extends State<PracticeByTopic> {
 
   Future<void> _fetchUniqueCategories() async {
     UpadanSonghro dbHelper = UpadanSonghro();
-    List<String> categories = await dbHelper.getUniqueCategories();
+    List<String> categories = await dbHelper.getUniqueTopics();
 
     setState(() {
       _categories = categories; // Update categories list

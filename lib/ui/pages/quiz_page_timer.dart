@@ -66,26 +66,29 @@ class _QuizPageTimerState extends State<QuizPageTimer> {
                 children: <Widget>[
                   TimerWidget(initialTime: widget.playTime ?? 0),
                   Card(
-                    child: Row(
-                      children: <Widget>[
-                        CircleAvatar(
-                          backgroundColor: Colors.white70,
-                          child: smallLabel(context,
-                              "${_currentIndex + 1}/${widget.questions.length}",
-                              color: Colors.black, textSize: 10),
-                        ),
-                        SizedBox(width: 16.0),
-                        Expanded(
-                          child: Text(
-                            HtmlUnescape().convert(
-                                widget.questions[_currentIndex].question),
-                            softWrap: true,
-                            style: MediaQuery.of(context).size.width > 800
-                                ? _questionStyle.copyWith(fontSize: 20.0)
-                                : _questionStyle,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        children: <Widget>[
+                          CircleAvatar(
+                            backgroundColor: Colors.white70,
+                            child: smallLabel(context,
+                                "${_currentIndex + 1}/${widget.questions.length}",
+                                color: Colors.black, textSize: 10),
                           ),
-                        ),
-                      ],
+                          SizedBox(width: 16.0),
+                          Expanded(
+                            child: Text(
+                              HtmlUnescape().convert(
+                                  widget.questions[_currentIndex].question),
+                              softWrap: true,
+                              style: MediaQuery.of(context).size.width > 800
+                                  ? _questionStyle.copyWith(fontSize: 20.0)
+                                  : _questionStyle,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                   SizedBox(height: 20.0),

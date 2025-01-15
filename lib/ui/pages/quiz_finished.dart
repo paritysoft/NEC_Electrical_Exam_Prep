@@ -1,7 +1,4 @@
-import 'package:electrician/ui/pages/explore_screen/explore_screen.dart';
 import 'package:flutter/material.dart';
-
-import '../../models/question.dart';
 import '../../util/AppColors.dart';
 import '../widgets/common_widget.dart';
 import 'check_answers.dart';

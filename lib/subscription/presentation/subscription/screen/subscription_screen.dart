@@ -466,7 +466,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
   void _verifyIOSReceipt(PurchasedItem productItem) {
     PurchaseReceiptIOS purchaseReceiptIOS = PurchaseReceiptIOS(receiptBody: {
       StringConstant.receiptData: productItem.transactionReceipt ?? "",
-      StringConstant.password: "47ae3e6d4b6144849cc1fa5d8304f81f"
+      StringConstant.password: "6146e8949f90433dae3e4c2fb82a494d"
     }, isTest: false);
     _subscriptionBloc
         ?.add(VerifyReceiptIOSEvent(purchaseReceiptIOS: purchaseReceiptIOS));

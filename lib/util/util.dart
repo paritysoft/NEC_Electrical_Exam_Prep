@@ -55,2502 +55,3611 @@ String encryptAES(String plainText, String key) {
     return ''; // Handle encryption failure
   }
 }
-String getExamDate(){
 
-  String currentDate = SharedPreferenceHelper.getExamDate()?.split('T').first ?? "01/01/2026";
+String getExamDate() {
+  String currentDate =
+      SharedPreferenceHelper.getExamDate()?.split('T').first ?? "01/01/2026";
   return currentDate;
 }
+
 String yourDBKey = dotenv.env["YOUR_DB_KEY"]!;
 String your_db_pass = dotenv.env["YOUR_DB_PASS_KEY"]!;
 
 List<Map<String, dynamic>> quizzesJsonList = [
   {
-    "uuid": "1a2b3c4d5e6f7g8h9i0j",
-    "question": "What is the primary purpose of a generator's stator?",
+    "uuid": "q1",
+    "question":
+        "Which of the following is the most common cause of community-acquired pneumonia in adults?",
     "explanation":
-        "The stator in a generator produces a magnetic field that interacts with the rotor to induce a current in the windings.",
-    "incorrect_answer":
-        '["【1】To regulate voltage","【2】To house the cooling system","【3】To protect against overload"]',
-    "correct_answer": '["【0】To produce a magnetic field"]',
-    "topic_name": "Electrical Equipment and Devices",
-    "category": "Basic Components",
+        "Streptococcus pneumoniae is the most common bacterial pathogen responsible for community-acquired pneumonia in adults.",
+    "incorrect_answer": [
+      "Klebsiella pneumoniae",
+      "Mycoplasma pneumoniae",
+      "Legionella pneumophila"
+    ],
+    "correct_answer": ["Streptococcus pneumoniae"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Respiratory Infections",
+    "level": 1,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q2",
+    "question":
+        "A 65-year-old male with a history of COPD presents with acute worsening of dyspnea, increased sputum production, and purulence. What is the most appropriate first-line antibiotic therapy?",
+    "explanation":
+        "Amoxicillin-clavulanate is effective against common bacterial pathogens responsible for COPD exacerbations, including H. influenzae and M. catarrhalis.",
+    "incorrect_answer": [
+      "Azithromycin",
+      "Levofloxacin",
+      "Trimethoprim-sulfamethoxazole"
+    ],
+    "correct_answer": ["Amoxicillin-clavulanate"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "COPD Management",
     "level": 2,
     "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
+    "exam_title": "Acute Care NP Exam Prep 2024"
   },
   {
-    "uuid": "1b2c3d4e5f6g7h8i9j0k",
+    "uuid": "q3",
     "question":
-        "What type of motor is commonly used in residential HVAC systems?",
+        "What is the primary diagnostic test used to confirm the presence of pulmonary embolism (PE)?",
     "explanation":
-        "A single-phase induction motor is commonly used in residential HVAC systems due to its efficiency and reliability.",
-    "incorrect_answer":
-        '["【1】Three-phase motor","【2】Universal motor","【3】Synchronous motor"]',
-    "correct_answer": '["【0】Single-phase induction motor"]',
-    "topic_name": "Electrical Equipment and Devices",
-    "category": "Motor Types",
+        "CT pulmonary angiography is the gold standard imaging modality for diagnosing pulmonary embolism.",
+    "incorrect_answer": [
+      "Ventilation-perfusion (V/Q) scan",
+      "Chest X-ray",
+      "D-dimer blood test"
+    ],
+    "correct_answer": ["CT pulmonary angiography"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Pulmonary Embolism",
+    "level": 2,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q4",
+    "question":
+        "A 50-year-old female presents with a 3-week history of chronic dry cough and dyspnea. A chest CT reveals bilateral hilar lymphadenopathy. What is the most likely diagnosis?",
+    "explanation":
+        "Sarcoidosis often presents with bilateral hilar lymphadenopathy and systemic symptoms such as dry cough and dyspnea.",
+    "incorrect_answer": ["Tuberculosis", "Lung cancer", "Pulmonary fibrosis"],
+    "correct_answer": ["Sarcoidosis"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Interstitial Lung Diseases",
+    "level": 2,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q5",
+    "question":
+        "What is the preferred initial treatment for acute asthma exacerbation in the emergency department?",
+    "explanation":
+        "Nebulized short-acting beta-agonists (e.g., albuterol) are the first-line treatment for acute asthma exacerbations.",
+    "incorrect_answer": [
+      "Inhaled corticosteroids",
+      "Leukotriene receptor antagonists",
+      "Long-acting beta-agonists"
+    ],
+    "correct_answer": ["Nebulized short-acting beta-agonists"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Asthma Management",
     "level": 1,
     "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
+    "exam_title": "Acute Care NP Exam Prep 2024"
   },
   {
-    "uuid": "2c3d4e5f6g7h8i9j0k1l",
-    "question": "What is an electrical feeder in a distribution system?",
+    "uuid": "q6",
+    "question":
+        "Which of the following is the most common cause of transudative pleural effusion?",
     "explanation":
-        "An electrical feeder is a conductor that carries current from the main service panel to a subpanel or large load.",
-    "incorrect_answer":
-        '["【1】A small circuit","【2】A branch circuit breaker","【3】A load conductor"]',
-    "correct_answer": '["【0】A conductor carrying current to a subpanel"]',
-    "topic_name": "Electrical Feeders",
-    "category": "Distribution Systems",
+        "Congestive heart failure is the most common cause of transudative pleural effusion, characterized by low protein content.",
+    "incorrect_answer": ["Pneumonia", "Pulmonary embolism", "Malignancy"],
+    "correct_answer": ["Congestive heart failure"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Pleural Diseases",
     "level": 1,
     "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
+    "exam_title": "Acute Care NP Exam Prep 2024"
   },
   {
-    "uuid": "2b3c4d5e6f7g8h9i0k1l",
+    "uuid": "q7",
     "question":
-        "What is the purpose of the main disconnect switch in an electrical system?",
+        "A 72-year-old male with a 40-pack-year smoking history presents with hemoptysis and unintentional weight loss. A chest CT reveals a centrally located lung mass. What is the most likely diagnosis?",
     "explanation":
-        "The main disconnect switch allows for the complete disconnection of power to the electrical system for safety and maintenance.",
-    "incorrect_answer":
-        '["【1】To regulate voltage","【2】To provide surge protection","【3】To isolate circuits"]',
-    "correct_answer": '["【0】To disconnect power completely"]',
-    "topic_name": "Electrical Feeders",
-    "category": "System Safety",
-    "level": 1,
-    "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
-  },
-  {
-    "uuid": "3c4d5e6f7g8h9i0j1k2m",
-    "question":
-        "What special precaution is required for electrical installations in areas with explosive gases?",
-    "explanation":
-        "Equipment in these areas must be explosion-proof or intrinsically safe to prevent sparks or heat from causing an ignition.",
-    "incorrect_answer":
-        '["【1】Standard insulation","【2】Waterproofing","【3】Grounding only"]',
-    "correct_answer": '["【0】Explosion-proof equipment"]',
-    "topic_name": "Special Occupancies, Equipment, and Conditions",
-    "category": "Safety Standards",
+        "Small cell lung cancer often presents as a centrally located mass and is associated with smoking history.",
+    "incorrect_answer": [
+      "Adenocarcinoma",
+      "Large cell carcinoma",
+      "Mesothelioma"
+    ],
+    "correct_answer": ["Small cell lung cancer"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Oncology",
     "level": 3,
     "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
+    "exam_title": "Acute Care NP Exam Prep 2024"
   },
   {
-    "uuid": "4c5d6e7f8g9h0i1j2k3l",
+    "uuid": "q8",
     "question":
-        "What is the typical operating voltage for solar photovoltaic systems?",
+        "Which of the following is a classic finding on chest X-ray for a patient with pneumothorax?",
     "explanation":
-        "Solar photovoltaic systems typically operate at low DC voltage, commonly around 12V, 24V, or 48V.",
-    "incorrect_answer": '["【1】240V","【2】120V","【3】480V"]',
-    "correct_answer": '["【0】12V, 24V, or 48V"]',
-    "topic_name": "Renewable Energy Technologies",
-    "category": "Energy Systems",
+        "A pneumothorax is characterized by the presence of a visible pleural line and absence of lung markings beyond it.",
+    "incorrect_answer": [
+      "Consolidation",
+      "Bilateral hilar lymphadenopathy",
+      "Ground-glass opacities"
+    ],
+    "correct_answer": ["Visible pleural line and absent lung markings"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Pleural Diseases",
+    "level": 1,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q9",
+    "question":
+        "What is the hallmark clinical finding in obstructive sleep apnea?",
+    "explanation":
+        "Daytime somnolence and loud snoring with witnessed apneas are hallmark findings in obstructive sleep apnea.",
+    "incorrect_answer": ["Hemoptysis", "Chronic cough", "Wheezing"],
+    "correct_answer": ["Daytime somnolence and loud snoring"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Sleep Disorders",
+    "level": 1,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q10",
+    "question":
+        "Which of the following is the most common cause of ARDS (Acute Respiratory Distress Syndrome)?",
+    "explanation":
+        "Sepsis is the leading cause of ARDS, accounting for a significant proportion of cases.",
+    "incorrect_answer": ["Aspiration pneumonia", "Trauma", "Near-drowning"],
+    "correct_answer": ["Sepsis"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Critical Care",
     "level": 2,
     "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
+    "exam_title": "Acute Care NP Exam Prep 2024"
   },
   {
-    "uuid": "5d6e7f8g9h0i1j2k3l4m",
+    "uuid": "q101",
     "question":
-        "What type of current is generated by photovoltaic (PV) solar panels?",
+        "What is the initial imaging study of choice for a patient suspected of having a pneumothorax?",
     "explanation":
-        "PV panels generate direct current (DC), which is then often converted to alternating current (AC) for household use.",
-    "incorrect_answer": '["【1】AC","【2】VC","【3】AC and DC"]',
-    "correct_answer": '["【0】DC"]',
-    "topic_name": "Renewable Energy Technologies",
-    "category": "Energy Systems",
+        "A chest X-ray is the first-line imaging study to confirm the presence of a pneumothorax.",
+    "incorrect_answer": [
+      "CT scan of the chest",
+      "Ventilation-perfusion (V/Q) scan",
+      "Pulmonary angiography"
+    ],
+    "correct_answer": ["Chest X-ray"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Pleural Diseases",
+    "level": 1,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q102",
+    "question":
+        "A 55-year-old male with a history of long-term corticosteroid use presents with dyspnea and bilateral infiltrates on a chest X-ray. Which condition should be suspected?",
+    "explanation":
+        "Prolonged corticosteroid use is associated with an increased risk of pneumocystis pneumonia (PCP), particularly in immunocompromised patients.",
+    "incorrect_answer": [
+      "Pulmonary embolism",
+      "Pulmonary fibrosis",
+      "Tuberculosis"
+    ],
+    "correct_answer": ["Pneumocystis pneumonia (PCP)"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Infections",
     "level": 2,
     "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
+    "exam_title": "Acute Care NP Exam Prep 2024"
   },
   {
-    "uuid": "6d7e8f9g0h1i2j3k4l5m",
+    "uuid": "q103",
     "question":
-        "What is the maximum allowable voltage drop in branch circuits according to NEC standards?",
+        "What is the most common cause of acute hypoxemia in hospitalized patients?",
     "explanation":
-        "NEC recommends a maximum voltage drop of 3% in branch circuits to maintain energy efficiency and appliance performance.",
-    "incorrect_answer": '["【1】5%","【2】2%","【3】4%"]',
-    "correct_answer": '["【0】3%"]',
-    "topic_name": "Branch Circuit Calculations and Conductors",
-    "category": "Electrical Standards",
+        "Atelectasis is the most common cause of acute hypoxemia in hospitalized patients, often caused by hypoventilation or obstruction.",
+    "incorrect_answer": [
+      "Pulmonary embolism",
+      "Pneumonia",
+      "Acute respiratory distress syndrome (ARDS)"
+    ],
+    "correct_answer": ["Atelectasis"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Respiratory Pathophysiology",
     "level": 2,
     "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
+    "exam_title": "Acute Care NP Exam Prep 2024"
   },
   {
-    "uuid": "7d8e9f0g1h2i3j4k5l6m",
+    "uuid": "q104",
     "question":
-        "What is the purpose of derating conductors in a multi-wire branch circuit?",
+        "Which of the following is a hallmark finding in a patient with pulmonary fibrosis?",
     "explanation":
-        "Derating is necessary to account for heat generated by multiple conductors bundled together, ensuring they do not exceed their temperature ratings.",
-    "incorrect_answer":
-        '["【1】Increase current flow","【2】Reduce wire length","【3】Improve insulation"]',
-    "correct_answer": '["【0】Prevent overheating"]',
-    "topic_name": "Branch Circuit Calculations and Conductors",
-    "category": "Circuit Design",
+        "Pulmonary fibrosis is associated with restrictive lung disease, characterized by reduced lung volumes and impaired gas exchange.",
+    "incorrect_answer": [
+      "Wheezing",
+      "Obstructive spirometry pattern",
+      "Decreased residual volume"
+    ],
+    "correct_answer": ["Reduced total lung capacity (TLC)"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Interstitial Lung Diseases",
+    "level": 2,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q105",
+    "question":
+        "What is the preferred treatment for a patient with latent tuberculosis infection (LTBI)?",
+    "explanation":
+        "Isoniazid for 9 months is the recommended treatment to prevent progression to active tuberculosis.",
+    "incorrect_answer": [
+      "Rifampin for 4 months",
+      "Pyrazinamide for 2 months",
+      "Ethambutol for 6 months"
+    ],
+    "correct_answer": ["Isoniazid for 9 months"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Infectious Diseases",
+    "level": 1,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q106",
+    "question":
+        "Which diagnostic test is used to confirm obstructive sleep apnea?",
+    "explanation":
+        "Polysomnography (sleep study) is the gold standard for diagnosing obstructive sleep apnea.",
+    "incorrect_answer": [
+      "Chest X-ray",
+      "Arterial blood gas analysis",
+      "Pulmonary function tests"
+    ],
+    "correct_answer": ["Polysomnography"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Sleep Disorders",
+    "level": 1,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q107",
+    "question":
+        "Which of the following is the most specific symptom of pulmonary embolism?",
+    "explanation":
+        "Hemoptysis, while rare, is a specific symptom of pulmonary embolism and is typically associated with pulmonary infarction.",
+    "incorrect_answer": ["Dyspnea", "Tachycardia", "Pleuritic chest pain"],
+    "correct_answer": ["Hemoptysis"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Pulmonary Embolism",
+    "level": 2,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q108",
+    "question": "What is the most common cause of chronic cough in nonsmokers?",
+    "explanation":
+        "Postnasal drip syndrome is the leading cause of chronic cough in nonsmokers.",
+    "incorrect_answer": [
+      "Gastroesophageal reflux disease (GERD)",
+      "Asthma",
+      "Chronic bronchitis"
+    ],
+    "correct_answer": ["Postnasal drip syndrome"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Chronic Cough",
+    "level": 1,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q109",
+    "question":
+        "Which organism is most commonly associated with pneumonia in patients with cystic fibrosis?",
+    "explanation":
+        "Pseudomonas aeruginosa is the most common pathogen in pneumonia associated with cystic fibrosis.",
+    "incorrect_answer": [
+      "Streptococcus pneumoniae",
+      "Mycoplasma pneumoniae",
+      "Klebsiella pneumoniae"
+    ],
+    "correct_answer": ["Pseudomonas aeruginosa"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Respiratory Infections",
+    "level": 2,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q110",
+    "question": "What is the primary treatment for tension pneumothorax?",
+    "explanation":
+        "Immediate needle decompression in the second intercostal space at the midclavicular line is the life-saving treatment for tension pneumothorax.",
+    "incorrect_answer": [
+      "Supplemental oxygen",
+      "Chest tube placement",
+      "Observation and serial imaging"
+    ],
+    "correct_answer": ["Needle decompression"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Critical Care",
+    "level": 2,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q111",
+    "question":
+        "What is the hallmark physical examination finding in a patient with pleural effusion?",
+    "explanation":
+        "Dullness to percussion and decreased breath sounds are classic findings associated with pleural effusion.",
+    "incorrect_answer": [
+      "Hyperresonance to percussion",
+      "Bronchial breath sounds",
+      "Stridor"
+    ],
+    "correct_answer": ["Dullness to percussion and decreased breath sounds"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Pleural Diseases",
+    "level": 1,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q112",
+    "question":
+        "A 40-year-old male presents with hemoptysis, weight loss, and a cavitary lesion in the upper lobe on chest imaging. What is the most likely diagnosis?",
+    "explanation":
+        "Tuberculosis commonly presents with hemoptysis, weight loss, and cavitary lesions in the upper lobes on imaging.",
+    "incorrect_answer": ["Pulmonary embolism", "Lung abscess", "Sarcoidosis"],
+    "correct_answer": ["Tuberculosis"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Respiratory Infections",
+    "level": 2,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q113",
+    "question":
+        "What is the most common pulmonary complication of systemic lupus erythematosus (SLE)?",
+    "explanation":
+        "Pleuritis is the most common pulmonary complication of SLE and often presents with pleuritic chest pain.",
+    "incorrect_answer": [
+      "Pulmonary hypertension",
+      "Pulmonary embolism",
+      "Diffuse alveolar hemorrhage"
+    ],
+    "correct_answer": ["Pleuritis"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Autoimmune Disorders",
+    "level": 2,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q114",
+    "question":
+        "A 35-year-old female presents with progressive dyspnea and a nonproductive cough. Chest X-ray reveals a honeycombing pattern. What is the most likely diagnosis?",
+    "explanation":
+        "Idiopathic pulmonary fibrosis is characterized by a honeycombing pattern on imaging, reflecting end-stage lung disease.",
+    "incorrect_answer": [
+      "Sarcoidosis",
+      "Pulmonary embolism",
+      "Chronic obstructive pulmonary disease (COPD)"
+    ],
+    "correct_answer": ["Idiopathic pulmonary fibrosis"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Interstitial Lung Diseases",
     "level": 3,
     "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
+    "exam_title": "Acute Care NP Exam Prep 2024"
   },
   {
-    "uuid": "8e9f0g1h2i3j4k5l6m7n",
+    "uuid": "q115",
     "question":
-        "What is the minimum burial depth for underground electrical cables?",
+        "What is the most appropriate treatment for exercise-induced asthma?",
     "explanation":
-        "The minimum burial depth for residential underground wiring is typically 24 inches, following NEC guidelines to prevent accidental contact.",
-    "incorrect_answer": '["【1】18 inches","【2】36 inches","【3】12 inches"]',
-    "correct_answer": '["【0】24 inches"]',
-    "topic_name": "Electrical Wiring Methods and Electrical Materials",
-    "category": "Installation Standards",
-    "level": 2,
-    "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
-  },
-  {
-    "uuid": "9f0g1h2i3j4k5l6m7n8o",
-    "question":
-        "What type of conduit is commonly used for outdoor installations?",
-    "explanation":
-        "PVC conduit is widely used outdoors as it is resistant to corrosion and suitable for protecting wiring from environmental factors.",
-    "incorrect_answer": '["【1】EMT","【2】Flexible metal","【3】Bare copper"]',
-    "correct_answer": '["【0】PVC"]',
-    "topic_name": "Electrical Wiring Methods and Electrical Materials",
-    "category": "Material Selection",
+        "Short-acting beta-agonists (SABAs) like albuterol are effective in preventing and treating exercise-induced bronchospasm.",
+    "incorrect_answer": [
+      "Inhaled corticosteroids",
+      "Leukotriene receptor antagonists",
+      "Long-acting beta-agonists"
+    ],
+    "correct_answer": ["Short-acting beta-agonists"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Asthma Management",
     "level": 1,
     "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
+    "exam_title": "Acute Care NP Exam Prep 2024"
   },
   {
-    "uuid": "10g1h2i3j4k5l6m7n8o9p",
+    "uuid": "q116",
     "question":
-        "What is the function of a contactor in electrical control devices?",
+        "Which of the following is a contraindication to noninvasive positive pressure ventilation (NIPPV)?",
     "explanation":
-        "A contactor controls the switching on and off of high-power circuits using a low-power signal.",
-    "incorrect_answer":
-        '["【1】Measures current","【2】Increases voltage","【3】Protects against surges"]',
-    "correct_answer": '["【0】Controls switching"]',
-    "topic_name": "Electrical Control Devices and Disconnecting Means",
-    "category": "System Control",
+        "Altered mental status is a contraindication to NIPPV because it increases the risk of aspiration and inadequate airway protection.",
+    "incorrect_answer": [
+      "Hypoxemic respiratory failure",
+      "Mild hypercapnia",
+      "Obstructive sleep apnea"
+    ],
+    "correct_answer": ["Altered mental status"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Ventilator Management",
     "level": 2,
     "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
+    "exam_title": "Acute Care NP Exam Prep 2024"
   },
   {
-    "uuid": "11h2i3j4k5l6m7n8o9p0q",
+    "uuid": "q117",
     "question":
-        "In a service panel, what device is used to interrupt current in case of overload?",
+        "A 55-year-old patient presents with chronic dyspnea and bilateral fine inspiratory crackles. Which diagnostic test is most useful to confirm interstitial lung disease?",
     "explanation":
-        "Circuit breakers are installed in the service panel to automatically disconnect power in case of an overload.",
-    "incorrect_answer": '["【1】Contactors", "【2】Transformers", "【3】Relays"]',
-    "correct_answer": '["【0】Circuit breakers"]',
-    "topic_name": "Electrical Equipment and Devices",
-    "category": "System Protection",
-    "level": 1,
-    "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
-  },
-  {
-    "uuid": "12i3j4k5l6m7n8o9p0q1r",
-    "question":
-        "What is the National Electrical Code (NEC) definition of 'Ampacity'?",
-    "explanation":
-        "Ampacity refers to the maximum current a conductor can carry continuously without exceeding its temperature rating.",
-    "incorrect_answer":
-        '["【1】Voltage capacity", "【2】Load potential", "【3】Electrical insulation"]',
-    "correct_answer": '["【0】Maximum current a conductor can carry"]',
-    "topic_name": "Definitions, Calculations, Theory, and Plans",
-    "category": "Code Knowledge",
+        "High-resolution computed tomography (HRCT) is the most sensitive imaging modality for diagnosing interstitial lung disease.",
+    "incorrect_answer": [
+      "Chest X-ray",
+      "Pulmonary function tests",
+      "Arterial blood gas analysis"
+    ],
+    "correct_answer": ["High-resolution computed tomography (HRCT)"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Interstitial Lung Diseases",
     "level": 2,
     "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
+    "exam_title": "Acute Care NP Exam Prep 2024"
   },
   {
-    "uuid": "13j4k5l6m7n8o9p0q1r2s",
+    "uuid": "q118",
     "question":
-        "How is conductor size for a feeder circuit typically determined?",
+        "What is the most common occupational lung disease in the United States?",
     "explanation":
-        "Feeder conductor size is based on ampacity requirements and derating factors for temperature and conduit fill, following NEC calculations.",
-    "incorrect_answer":
-        '["【1】By voltage alone", "【2】By conduit type", "【3】By load power factor"]',
-    "correct_answer": '["【0】By ampacity and derating factors"]',
-    "topic_name": "Electrical Feeders",
-    "category": "Circuit Design",
+        "Silicosis is the most common occupational lung disease in the U.S., associated with inhalation of crystalline silica dust.",
+    "incorrect_answer": [
+      "Asbestosis",
+      "Coal workers' pneumoconiosis",
+      "Berylliosis"
+    ],
+    "correct_answer": ["Silicosis"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Occupational Lung Diseases",
+    "level": 2,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q119",
+    "question":
+        "Which of the following conditions is associated with a decrease in DLCO (diffusing capacity for carbon monoxide)?",
+    "explanation":
+        "Emphysema, due to alveolar destruction, reduces the surface area available for gas exchange, leading to a decreased DLCO.",
+    "incorrect_answer": ["Asthma", "Chronic bronchitis", "Pulmonary edema"],
+    "correct_answer": ["Emphysema"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Pulmonary Function Tests",
+    "level": 2,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q120",
+    "question":
+        "What is the gold standard test for diagnosing pulmonary hypertension?",
+    "explanation":
+        "Right heart catheterization directly measures pulmonary artery pressure and is the gold standard for diagnosing pulmonary hypertension.",
+    "incorrect_answer": [
+      "Echocardiography",
+      "Chest CT scan",
+      "Pulmonary function tests"
+    ],
+    "correct_answer": ["Right heart catheterization"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Pulmonary Hypertension",
     "level": 3,
     "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
+    "exam_title": "Acute Care NP Exam Prep 2024"
   },
   {
-    "uuid": "14k5l6m7n8o9p0q1r2s3t",
+    "uuid": "q121",
     "question":
-        "What is the proper way to size a circuit breaker for a residential kitchen circuit?",
+        "Which of the following findings on pulmonary function tests is characteristic of restrictive lung disease?",
     "explanation":
-        "For kitchen circuits, it is typically sized at 20 amps for general-purpose circuits and 30 amps for dedicated appliances.",
-    "incorrect_answer": '["【1】15 amps only", "【2】40 amps", "【3】10 amps"]',
-    "correct_answer": '["【0】20 amps or 30 amps for dedicated"]',
-    "topic_name": "Electrical Equipment and Devices",
-    "category": "Load Calculation",
-    "level": 1,
-    "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
-  },
-  {
-    "uuid": "15l6m7n8o9p0q1r2s3t4u",
-    "question":
-        "What is the purpose of a ground fault circuit interrupter (GFCI)?",
-    "explanation":
-        "GFCIs are designed to protect against electrical shock by monitoring current differences between the hot and neutral wires.",
-    "incorrect_answer":
-        '["【1】To increase voltage", "【2】To enhance conductivity", "【3】To reduce power loss"]',
-    "correct_answer": '["【0】To protect against electrical shock"]',
-    "topic_name": "Electrical Control Devices and Disconnecting Means",
-    "category": "Safety Devices",
+        "Restrictive lung diseases are characterized by a decreased total lung capacity (TLC) and preserved or increased FEV1/FVC ratio.",
+    "incorrect_answer": [
+      "Decreased FEV1/FVC ratio",
+      "Increased residual volume (RV)",
+      "Increased total lung capacity (TLC)"
+    ],
+    "correct_answer": [
+      "Decreased total lung capacity (TLC) with preserved FEV1/FVC ratio"
+    ],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Pulmonary Function Tests",
     "level": 2,
     "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
+    "exam_title": "Acute Care NP Exam Prep 2024"
   },
   {
-    "uuid": "16m7n8o9p0q1r2s3t4u5v",
+    "uuid": "q122",
     "question":
-        "What is the most common type of wiring method used in residential construction?",
+        "A 45-year-old male presents with acute dyspnea after a motor vehicle accident. Chest X-ray reveals multiple rib fractures and subcutaneous emphysema. What is the most likely diagnosis?",
     "explanation":
-        "Non-metallic sheathed cable (often referred to as Romex) is the most common wiring method in residential construction.",
-    "incorrect_answer":
-        '["【1】Rigid conduit", "【2】Flexible metal conduit", "【3】Direct burial cable"]',
-    "correct_answer": '["【0】Non-metallic sheathed cable"]',
-    "topic_name": "Electrical Wiring Methods and Electrical Materials",
-    "category": "Wiring Methods",
-    "level": 1,
-    "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
-  },
-  {
-    "uuid": "17n8o9p0q1r2s3t4u5v6w",
-    "question":
-        "What is the primary function of a transformer in an electrical system?",
-    "explanation":
-        "A transformer is used to change the voltage levels in an electrical system, either stepping it up or stepping it down.",
-    "incorrect_answer":
-        '["【1】To store electrical energy", "【2】To convert AC to DC", "【3】To increase current"]',
-    "correct_answer": '["【0】To change voltage levels"]',
-    "topic_name": "Electrical Equipment and Devices",
-    "category": "Transformers",
+        "Pneumothorax is commonly associated with rib fractures and subcutaneous emphysema following trauma.",
+    "incorrect_answer": ["Hemothorax", "Flail chest", "Diaphragmatic rupture"],
+    "correct_answer": ["Pneumothorax"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Trauma and Critical Care",
     "level": 2,
     "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
+    "exam_title": "Acute Care NP Exam Prep 2024"
   },
   {
-    "uuid": "18o9p0q1r2s3t4u5v6w7x",
-    "question": "What is the definition of short-circuit current?",
+    "uuid": "q123",
+    "question":
+        "What is the recommended duration of anticoagulation therapy for a patient with a first unprovoked pulmonary embolism?",
     "explanation":
-        "Short-circuit current is the maximum current that flows when a fault occurs, leading to a direct connection between the supply and ground.",
-    "incorrect_answer":
-        '["【1】Normal operating current", "【2】Average current", "【3】Emergency current"]',
-    "correct_answer": '["【0】Maximum current during a fault"]',
-    "topic_name": "Definitions, Calculations, Theory, and Plans",
-    "category": "Electrical Definitions",
+        "For a first unprovoked pulmonary embolism, anticoagulation is recommended for at least 3 months, with consideration for extended therapy based on bleeding risk.",
+    "incorrect_answer": ["1 month", "6 weeks", "6 months"],
+    "correct_answer": ["At least 3 months"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Pulmonary Embolism",
+    "level": 2,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q124",
+    "question":
+        "Which of the following is the best initial test to confirm the diagnosis of obstructive sleep apnea?",
+    "explanation":
+        "Polysomnography is the gold standard diagnostic test for obstructive sleep apnea, measuring apneas and hypopneas during sleep.",
+    "incorrect_answer": [
+      "Chest X-ray",
+      "Arterial blood gas",
+      "Echocardiography"
+    ],
+    "correct_answer": ["Polysomnography"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Sleep Disorders",
+    "level": 2,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q125",
+    "question":
+        "A 70-year-old patient with a history of COPD is hospitalized for acute respiratory failure. Which of the following arterial blood gas findings is most consistent with this condition?",
+    "explanation":
+        "In COPD exacerbation with respiratory failure, arterial blood gas typically shows respiratory acidosis with elevated PaCO2 and a compensatory rise in bicarbonate.",
+    "incorrect_answer": [
+      "Respiratory alkalosis with low PaCO2",
+      "Normal PaCO2 and normal pH",
+      "Metabolic acidosis with low bicarbonate"
+    ],
+    "correct_answer": ["Respiratory acidosis with elevated PaCO2"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "COPD Management",
     "level": 3,
     "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
+    "exam_title": "Acute Care NP Exam Prep 2024"
   },
   {
-    "uuid": "19p0q1r2s3t4u5v6w7x8y",
-    "question":
-        "What should be the first step in troubleshooting an electrical circuit?",
+    "uuid": "q126",
+    "question": "What is the most common cause of chronic cough in nonsmokers?",
     "explanation":
-        "The first step is to verify that power is available and the circuit is energized before proceeding with further testing.",
-    "incorrect_answer":
-        '["【1】Replace the circuit breaker", "【2】Check the load", "【3】Inspect the wiring"]',
-    "correct_answer": '["【0】Verify power availability"]',
-    "topic_name": "Electrical Control Devices and Disconnecting Means",
-    "category": "Troubleshooting",
-    "level": 2,
-    "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
-  },
-  {
-    "uuid": "20q1r2s3t4u5v6w7x8y9z",
-    "question": "What is the function of a circuit breaker?",
-    "explanation":
-        "A circuit breaker protects electrical circuits from overload and short circuits by interrupting the current flow.",
-    "incorrect_answer":
-        '["【1】To amplify current", "【2】To regulate voltage", "【3】To serve as a fuse"]',
-    "correct_answer": '["【0】To interrupt current flow"]',
-    "topic_name": "Electrical Equipment and Devices",
-    "category": "Protection Devices",
+        "Postnasal drip syndrome is the leading cause of chronic cough in nonsmokers, often caused by allergic or nonallergic rhinitis.",
+    "incorrect_answer": [
+      "Gastroesophageal reflux disease (GERD)",
+      "Asthma",
+      "Chronic bronchitis"
+    ],
+    "correct_answer": ["Postnasal drip syndrome"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Respiratory Symptoms",
     "level": 1,
     "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
+    "exam_title": "Acute Care NP Exam Prep 2024"
   },
   {
-    "uuid": "21r2s3t4u5v6w7x8y9z0a",
+    "uuid": "q127",
     "question":
-        "What is the recommended maximum voltage for low-voltage lighting systems?",
+        "Which pathogen is most commonly associated with ventilator-associated pneumonia (VAP)?",
     "explanation":
-        "Low-voltage lighting systems typically operate at 12V or 24V, which is safe for residential use.",
-    "incorrect_answer": '["【1】120V", "【2】240V", "【3】480V"]',
-    "correct_answer": '["【0】12V or 24V"]',
-    "topic_name": "Renewable Energy Technologies",
-    "category": "Low-Voltage Systems",
-    "level": 1,
-    "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
-  },
-  {
-    "uuid": "22s3t4u5v6w7x8y9z0a1b",
-    "question":
-        "Which code provides regulations for the installation of electrical systems?",
-    "explanation":
-        "The National Electrical Code (NEC) provides regulations to ensure safe electrical installations across the United States.",
-    "incorrect_answer":
-        '["【1】OSHA regulations", "【2】Local building codes", "【3】Fire safety codes"]',
-    "correct_answer": '["【0】National Electrical Code (NEC)"]',
-    "topic_name": "Electrical Wiring Methods and Electrical Materials",
-    "category": "Regulatory Standards",
-    "level": 2,
-    "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
-  },
-  {
-    "uuid": "23t4u5v6w7x8y9z0a1b2c",
-    "question":
-        "What is the typical lifespan of LED lighting compared to incandescent bulbs?",
-    "explanation":
-        "LED lighting typically lasts 25,000 to 50,000 hours, significantly longer than incandescent bulbs which last around 1,000 hours.",
-    "incorrect_answer":
-        '["【1】10,000 hours", "【2】5,000 hours", "【3】2,000 hours"]',
-    "correct_answer": '["【0】25,000 to 50,000 hours"]',
-    "topic_name": "Electrical Equipment and Devices",
-    "category": "Lighting Technologies",
-    "level": 1,
-    "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
-  },
-  {
-    "uuid": "24u5v6w7x8y9z0a1b2c3d",
-    "question": "What is the purpose of a surge protector?",
-    "explanation":
-        "Surge protectors are designed to protect electrical devices from voltage spikes by diverting excess voltage away from sensitive equipment.",
-    "incorrect_answer":
-        '["【1】To increase voltage", "【2】To limit current", "【3】To store energy"]',
-    "correct_answer": '["【0】To protect against voltage spikes"]',
-    "topic_name": "Electrical Equipment and Devices",
-    "category": "Protection Devices",
-    "level": 2,
-    "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
-  },
-  {
-    "uuid": "25v6w7x8y9z0a1b2c3d4e",
-    "question": "What is the role of a relay in electrical circuits?",
-    "explanation":
-        "A relay is an electrically operated switch that uses an electromagnet to control the opening and closing of a circuit.",
-    "incorrect_answer":
-        '["【1】To measure voltage", "【2】To convert AC to DC", "【3】To protect against overload"]',
-    "correct_answer": '["【0】To control switching"]',
-    "topic_name": "Electrical Control Devices and Disconnecting Means",
-    "category": "Control Devices",
-    "level": 2,
-    "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
-  },
-  {
-    "uuid": "26w7x8y9z0a1b2c3d4e5f",
-    "question":
-        "What is the primary advantage of using a variable frequency drive (VFD) with motors?",
-    "explanation":
-        "VFDs allow for precise control of motor speed and torque, enhancing efficiency and reducing energy consumption.",
-    "incorrect_answer":
-        '["【1】Increases noise", "【2】Decreases efficiency", "【3】Adds complexity"]',
-    "correct_answer": '["【0】Enhances efficiency"]',
-    "topic_name": "Motors and Generators",
-    "category": "Motor Control",
-    "level": 2,
-    "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
-  },
-  {
-    "uuid": "27x8y9z0a1b2c3d4e5f6g",
-    "question":
-        "Which device is commonly used to provide overcurrent protection in circuits?",
-    "explanation":
-        "Fuses and circuit breakers are commonly used to provide overcurrent protection by interrupting the flow of electricity during overload conditions.",
-    "incorrect_answer": '["【1】Transformers", "【2】Switches", "【3】Contactors"]',
-    "correct_answer": '["【0】Fuses and circuit breakers"]',
-    "topic_name": "Electrical Equipment and Devices",
-    "category": "Protection Devices",
-    "level": 1,
-    "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
-  },
-  {
-    "uuid": "28y9z0a1b2c3d4e5f6g7h",
-    "question": "What is the role of a power factor correction capacitor?",
-    "explanation":
-        "Power factor correction capacitors are used to improve the power factor of a system, reducing losses and improving efficiency.",
-    "incorrect_answer":
-        '["【1】To decrease voltage", "【2】To increase inductance", "【3】To serve as a load"]',
-    "correct_answer": '["【0】To improve power factor"]',
-    "topic_name": "Motors and Generators",
-    "category": "Power Quality",
+        "Pseudomonas aeruginosa is a common pathogen associated with ventilator-associated pneumonia, especially in ICU settings.",
+    "incorrect_answer": [
+      "Staphylococcus epidermidis",
+      "Legionella pneumophila",
+      "Streptococcus pneumoniae"
+    ],
+    "correct_answer": ["Pseudomonas aeruginosa"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Respiratory Infections",
     "level": 3,
     "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
+    "exam_title": "Acute Care NP Exam Prep 2024"
   },
   {
-    "uuid": "29z0a1b2c3d4e5f6g7h8i",
+    "uuid": "q128",
     "question":
-        "What does the term 'harmonics' refer to in electrical systems?",
+        "A 60-year-old male presents with progressive dyspnea and fatigue. Pulmonary artery pressure is elevated on echocardiography. What is the next step to confirm the diagnosis of pulmonary hypertension?",
     "explanation":
-        "Harmonics are voltage or current waveforms that are multiples of the fundamental frequency, which can cause distortion and inefficiency in systems.",
-    "incorrect_answer":
-        '["【1】Standard frequencies", "【2】Surge currents", "【3】Transient voltages"]',
-    "correct_answer": '["【0】Multiples of fundamental frequency"]',
-    "topic_name": "Electrical Control Devices and Disconnecting Means",
-    "category": "Power Quality",
+        "Right heart catheterization is required to confirm the diagnosis of pulmonary hypertension by directly measuring pulmonary artery pressure.",
+    "incorrect_answer": [
+      "CT pulmonary angiography",
+      "Pulmonary function testing",
+      "D-dimer testing"
+    ],
+    "correct_answer": ["Right heart catheterization"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Pulmonary Hypertension",
+    "level": 2,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q129",
+    "question":
+        "Which of the following is the most appropriate initial treatment for moderate to severe croup in children?",
+    "explanation":
+        "Nebulized epinephrine is effective in reducing airway swelling and improving symptoms in moderate to severe croup.",
+    "incorrect_answer": [
+      "Inhaled corticosteroids",
+      "Intravenous antibiotics",
+      "Chest physiotherapy"
+    ],
+    "correct_answer": ["Nebulized epinephrine"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Pediatric Respiratory Disorders",
+    "level": 2,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q130",
+    "question":
+        "What is the most likely etiology of hypoxemia in a patient with pneumonia?",
+    "explanation":
+        "Ventilation-perfusion (V/Q) mismatch occurs in pneumonia due to alveolar consolidation, leading to impaired oxygen exchange.",
+    "incorrect_answer": ["Shunt", "Hypoventilation", "Diffusion impairment"],
+    "correct_answer": ["Ventilation-perfusion (V/Q) mismatch"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Respiratory Physiology",
+    "level": 2,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q131",
+    "question":
+        "Which condition is characterized by noncaseating granulomas in the lungs and other organs?",
+    "explanation":
+        "Sarcoidosis is a systemic inflammatory disease characterized by noncaseating granulomas, most commonly affecting the lungs.",
+    "incorrect_answer": ["Tuberculosis", "Lung cancer", "Asbestosis"],
+    "correct_answer": ["Sarcoidosis"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Interstitial Lung Diseases",
+    "level": 2,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q132",
+    "question": "What is the most common cause of bronchiolitis in infants?",
+    "explanation":
+        "Respiratory syncytial virus (RSV) is the leading cause of bronchiolitis in children under 2 years old.",
+    "incorrect_answer": [
+      "Parainfluenza virus",
+      "Adenovirus",
+      "Influenza virus"
+    ],
+    "correct_answer": ["Respiratory syncytial virus (RSV)"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Pediatric Respiratory Disorders",
+    "level": 1,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q133",
+    "question":
+        "Which type of lung cancer is most strongly associated with smoking?",
+    "explanation":
+        "Small cell lung cancer (SCLC) is strongly linked to smoking and is aggressive, often presenting with metastases at diagnosis.",
+    "incorrect_answer": [
+      "Adenocarcinoma",
+      "Large cell carcinoma",
+      "Mesothelioma"
+    ],
+    "correct_answer": ["Small cell lung cancer (SCLC)"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Oncology",
     "level": 3,
     "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
+    "exam_title": "Acute Care NP Exam Prep 2024"
   },
   {
-    "uuid": "30a1b2c3d4e5f6g7h8i9j",
-    "question": "What is the purpose of an overload relay?",
+    "uuid": "q134",
+    "question":
+        "What is the most effective intervention to prevent ventilator-associated pneumonia (VAP)?",
     "explanation":
-        "An overload relay protects motors from overheating due to excessive current by disconnecting the power supply when preset levels are exceeded.",
-    "incorrect_answer":
-        '["【1】To increase motor speed", "【2】To control voltage", "【3】To provide starting torque"]',
-    "correct_answer": '["【0】To protect against overheating"]',
-    "topic_name": "Motors and Generators",
-    "category": "Motor Protection",
+        "Elevation of the head of the bed reduces the risk of aspiration, a key factor in preventing VAP.",
+    "incorrect_answer": [
+      "Routine chest physiotherapy",
+      "Frequent suctioning",
+      "Daily chest X-rays"
+    ],
+    "correct_answer": ["Elevation of the head of the bed"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Critical Care",
     "level": 2,
     "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
+    "exam_title": "Acute Care NP Exam Prep 2024"
   },
   {
-    "uuid": "31b2c3d4e5f6g7h8i9j0k",
+    "uuid": "q135",
     "question":
-        "What is the typical installation height for a service disconnect switch?",
+        "Which pulmonary function test result is characteristic of obstructive lung disease?",
     "explanation":
-        "Service disconnect switches are typically installed at a height of 5 to 6 feet above the floor to allow for easy access and visibility.",
-    "incorrect_answer": '["【1】3 feet", "【2】8 feet", "【3】2 feet"]',
-    "correct_answer": '["【0】5 to 6 feet"]',
-    "topic_name": "Electrical Control Devices and Disconnecting Means",
-    "category": "Installation Standards",
-    "level": 1,
-    "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
-  },
-  {
-    "uuid": "32c3d4e5f6g7h8i9j0k1l",
-    "question":
-        "What type of cable is typically used for residential wiring in walls?",
-    "explanation":
-        "Romex, or NM cable, is commonly used for residential wiring as it combines conductors in a single insulated jacket, making installation easier.",
-    "incorrect_answer":
-        '["【1】Armored cable", "【2】Rigid conduit", "【3】Flexible conduit"]',
-    "correct_answer": '["【0】Romex (NM cable)"]',
-    "topic_name": "Electrical Wiring Methods and Electrical Materials",
-    "category": "Wiring Materials",
-    "level": 1,
-    "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
-  },
-  {
-    "uuid": "33d4e5f6g7h8i9j0k1l2m",
-    "question": "What is the typical color code for a three-phase system?",
-    "explanation":
-        "In a typical three-phase system, the color code is commonly red, yellow, and blue for the three phases.",
-    "incorrect_answer":
-        '["【1】Black, red, blue", "【2】Green, white, black", "【3】Brown, orange, yellow"]',
-    "correct_answer": '["【0】Red, yellow, blue"]',
-    "topic_name": "Electrical Wiring Methods and Electrical Materials",
-    "category": "Color Codes",
-    "level": 1,
-    "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
-  },
-  {
-    "uuid": "34e5f6g7h8i9j0k1l2m3n",
-    "question": "What is the primary advantage of using digital multimeters?",
-    "explanation":
-        "Digital multimeters provide precise readings and can measure multiple electrical parameters, including voltage, current, and resistance.",
-    "incorrect_answer":
-        '["【1】Only measure voltage", "【2】Increased size", "【3】Lower accuracy"]',
-    "correct_answer": '["【0】Precise readings for multiple parameters"]',
-    "topic_name": "Electrical Equipment and Devices",
-    "category": "Measurement Tools",
+        "A decreased FEV1/FVC ratio is the hallmark finding in obstructive lung diseases such as asthma and COPD.",
+    "incorrect_answer": [
+      "Decreased total lung capacity (TLC)",
+      "Increased FEV1/FVC ratio",
+      "Decreased residual volume (RV)"
+    ],
+    "correct_answer": ["Decreased FEV1/FVC ratio"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Pulmonary Function Tests",
     "level": 2,
     "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
+    "exam_title": "Acute Care NP Exam Prep 2024"
   },
   {
-    "uuid": "35f6g7h8i9j0k1l2m3n4o",
+    "uuid": "q136",
     "question":
-        "What is the main purpose of a contactor in electrical systems?",
+        "Which of the following is the best diagnostic test for tuberculosis in a patient with suspected active disease?",
     "explanation":
-        "Contactors are electrically operated switches used to control the flow of electricity in larger circuits, especially in motor control applications.",
-    "incorrect_answer":
-        '["【1】To reduce voltage", "【2】To measure current", "【3】To amplify signals"]',
-    "correct_answer": '["【0】To control electricity in larger circuits"]',
-    "topic_name": "Electrical Control Devices and Disconnecting Means",
-    "category": "Control Devices",
-    "level": 1,
-    "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
-  },
-  {
-    "uuid": "36g7h8i9j0k1l2m3n4o5p",
-    "question":
-        "What type of battery is commonly used in uninterruptible power supplies (UPS)?",
-    "explanation":
-        "Lead-acid batteries are commonly used in uninterruptible power supplies due to their reliability and cost-effectiveness.",
-    "incorrect_answer":
-        '["【1】Lithium-ion", "【2】Nickel-cadmium", "【3】Alkaline"]',
-    "correct_answer": '["【0】Lead-acid"]',
-    "topic_name": "Fundamentals of Electrical Theory",
-    "category": "UPS Systems",
-    "level": 1,
-    "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
-  },
-  {
-    "uuid": "37h8i9j0k1l2m3n4o5p6q",
-    "question":
-        "What is the primary function of a line reactor in electrical systems?",
-    "explanation":
-        "Line reactors are used to reduce harmonics and limit inrush current in motor applications, improving system stability.",
-    "incorrect_answer":
-        '["【1】To store energy", "【2】To convert voltage", "【3】To amplify signals"]',
-    "correct_answer": '["【0】To reduce harmonics and limit inrush current"]',
-    "topic_name": "Electrical Equipment and Devices",
-    "category": "Motor Control",
+        "Sputum acid-fast bacilli (AFB) smear and culture remain the gold standard for diagnosing active tuberculosis.",
+    "incorrect_answer": [
+      "Tuberculin skin test",
+      "Interferon-gamma release assay (IGRA)",
+      "Chest X-ray"
+    ],
+    "correct_answer": ["Sputum acid-fast bacilli (AFB) smear and culture"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Respiratory Infections",
     "level": 2,
     "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
+    "exam_title": "Acute Care NP Exam Prep 2024"
   },
   {
-    "uuid": "38i9j0k1l2m3n4o5p6q7r",
-    "question": "What is the purpose of an electrical panel cover?",
+    "uuid": "q137",
+    "question":
+        "Which of the following is the primary mechanism of hypoxemia in acute respiratory distress syndrome (ARDS)?",
     "explanation":
-        "An electrical panel cover protects the internal components from dust, moisture, and unauthorized access, ensuring safety.",
-    "incorrect_answer":
-        '["【1】To increase efficiency", "【2】To cool the system", "【3】To enhance performance"]',
-    "correct_answer": '["【0】To protect internal components"]',
-    "topic_name": "Electrical Equipment and Devices",
-    "category": "Panel Components",
-    "level": 1,
-    "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
-  },
-  {
-    "uuid": "39j0k1l2m3n4o5p6q7r8s",
-    "question": "What does a power quality analyzer measure?",
-    "explanation":
-        "A power quality analyzer measures various electrical parameters including voltage, current, frequency, and harmonics, helping to assess system performance.",
-    "incorrect_answer":
-        '["【1】Only voltage", "【2】Energy consumption", "【3】Load analysis only"]',
-    "correct_answer": '["【0】Multiple electrical parameters"]',
-    "topic_name": "Fundamentals of Electrical Theory",
-    "category": "Measurement Tools",
+        "Shunting occurs in ARDS as blood flows through non-ventilated alveoli, leading to hypoxemia.",
+    "incorrect_answer": [
+      "Hypoventilation",
+      "Ventilation-perfusion (V/Q) mismatch",
+      "Diffusion impairment"
+    ],
+    "correct_answer": ["Shunting"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Critical Care",
     "level": 2,
     "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
+    "exam_title": "Acute Care NP Exam Prep 2024"
   },
   {
-    "uuid": "40k1l2m3n4o5p6q7r8s9t",
+    "uuid": "q138",
     "question":
-        "What is the main advantage of using programmable logic controllers (PLCs)?",
+        "Which of the following is the preferred treatment for idiopathic pulmonary fibrosis?",
     "explanation":
-        "PLCs offer flexibility and can be easily programmed to perform various control tasks, making them ideal for automation in industrial applications.",
-    "incorrect_answer":
-        '["【1】Fixed operation", "【2】High cost", "【3】Limited functionality"]',
-    "correct_answer": '["【0】Flexibility in programming"]',
-    "topic_name": "Fundamentals of Electrical Theory",
-    "category": "Automation",
-    "level": 1,
+        "Antifibrotic agents such as nintedanib slow the progression of idiopathic pulmonary fibrosis.",
+    "incorrect_answer": [
+      "Systemic corticosteroids",
+      "Inhaled bronchodilators",
+      "Antibiotics"
+    ],
+    "correct_answer": ["Antifibrotic agents such as nintedanib"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Interstitial Lung Diseases",
+    "level": 3,
     "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
+    "exam_title": "Acute Care NP Exam Prep 2024"
   },
   {
-    "uuid": "41l2m3n4o5p6q7r8s9t0a",
-    "question": "What is the role of a photoelectric sensor in automation?",
+    "uuid": "q139",
+    "question":
+        "Which of the following is the most common cause of chronic respiratory acidosis?",
     "explanation":
-        "Photoelectric sensors detect changes in light levels and are commonly used for object detection and position sensing in automation systems.",
-    "incorrect_answer":
-        '["【1】To measure temperature", "【2】To amplify sound", "【3】To control pressure"]',
-    "correct_answer": '["【0】To detect light changes"]',
-    "topic_name": "Fundamentals of Electrical Theory",
-    "category": "Sensing Devices",
+        "Chronic respiratory acidosis is most commonly caused by chronic obstructive pulmonary disease (COPD), which impairs ventilation.",
+    "incorrect_answer": [
+      "Pulmonary embolism",
+      "Obstructive sleep apnea",
+      "Pneumothorax"
+    ],
+    "correct_answer": ["Chronic obstructive pulmonary disease (COPD)"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "COPD Management",
     "level": 2,
     "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
+    "exam_title": "Acute Care NP Exam Prep 2024"
   },
   {
-    "uuid": "42m3n4o5p6q7r8s9t0a1b",
-    "question": "What is the purpose of a fuse in an electrical circuit?",
+    "uuid": "q140",
+    "question":
+        "What is the best initial treatment for a patient presenting with acute exacerbation of chronic bronchitis?",
     "explanation":
-        "A fuse protects an electrical circuit by breaking the circuit when the current exceeds a specified level, preventing damage from overload.",
-    "incorrect_answer":
-        '["【1】To store energy", "【2】To enhance efficiency", "【3】To increase voltage"]',
-    "correct_answer": '["【0】To protect from overload"]',
-    "topic_name": "Electrical Equipment and Devices",
-    "category": "Protection Devices",
+        "Short-acting bronchodilators such as albuterol are the first-line treatment for acute exacerbations of chronic bronchitis.",
+    "incorrect_answer": [
+      "Inhaled corticosteroids",
+      "Oral antibiotics",
+      "Oxygen therapy"
+    ],
+    "correct_answer": ["Short-acting bronchodilators"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "COPD Management",
     "level": 1,
     "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
+    "exam_title": "Acute Care NP Exam Prep 2024"
   },
   {
-    "uuid": "43n4o5p6q7r8s9t0a1b2c",
-    "question": "What is the main purpose of an electrical ground?",
+    "uuid": "q141",
+    "question":
+        "Which of the following pathogens is most commonly associated with ventilator-associated pneumonia (VAP)?",
     "explanation":
-        "The main purpose of an electrical ground is to provide a safe path for fault current to prevent electrical shock and equipment damage.",
-    "incorrect_answer":
-        '["【1】To increase voltage", "【2】To reduce power loss", "【3】To store energy"]',
-    "correct_answer": '["【0】To provide a safe fault current path"]',
-    "topic_name": "Fundamentals of Electrical Theory",
-    "category": "Grounding",
+        "Pseudomonas aeruginosa is a common pathogen responsible for VAP, particularly in patients in the ICU setting.",
+    "incorrect_answer": [
+      "Streptococcus pneumoniae",
+      "Mycoplasma pneumoniae",
+      "Legionella pneumophila"
+    ],
+    "correct_answer": ["Pseudomonas aeruginosa"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Respiratory Infections",
     "level": 2,
     "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
+    "exam_title": "Acute Care NP Exam Prep 2024"
   },
   {
-    "uuid": "44o5p6q7r8s9t0a1b2c3d",
-    "question": "What is the primary purpose of an isolation transformer?",
+    "uuid": "q142",
+    "question":
+        "What is the primary imaging modality for the evaluation of suspected pulmonary hypertension?",
     "explanation":
-        "Isolation transformers provide electrical isolation for equipment, reducing noise and improving safety by isolating sensitive devices from the power supply.",
-    "incorrect_answer":
-        '["【1】To increase voltage", "【2】To amplify current", "【3】To store energy"]',
-    "correct_answer": '["【0】To provide electrical isolation"]',
-    "topic_name": "Fundamentals of Electrical Theory",
-    "category": "Isolation Devices",
+        "Echocardiography is the primary non-invasive test to evaluate pulmonary artery pressure and right heart function.",
+    "incorrect_answer": [
+      "Chest X-ray",
+      "CT pulmonary angiography",
+      "Ventilation-perfusion (V/Q) scan"
+    ],
+    "correct_answer": ["Echocardiography"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Pulmonary Hypertension",
     "level": 2,
     "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
+    "exam_title": "Acute Care NP Exam Prep 2024"
   },
   {
-    "uuid": "45p6q7r8s9t0a1b2c3d4e",
-    "question": "What is the primary purpose of a current transformer?",
-    "explanation":
-        "Current transformers are used to measure alternating current (AC) by producing a secondary current proportional to the primary current, enabling safe monitoring.",
-    "incorrect_answer":
-        '["【1】To increase voltage", "【2】To store energy", "【3】To convert DC to AC"]',
-    "correct_answer": '["【0】To measure AC current"]',
-    "topic_name": "Fundamentals of Electrical Theory",
-    "category": "Measurement Devices",
-    "level": 1,
-    "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
-  },
-  {
-    "uuid": "46q7r8s9t0a1b2c3d4e5f",
+    "uuid": "q143",
     "question":
-        "What is the typical installation location for a service panel?",
+        "Which condition is characterized by the permanent dilation of bronchi due to chronic inflammation and infection?",
     "explanation":
-        "Service panels are typically installed in a dry, accessible location, such as a basement or utility room, to facilitate maintenance and operation.",
-    "incorrect_answer": '["【1】Near windows", "【2】In bathrooms", "【3】Outdoors"]',
-    "correct_answer": '["【0】In dry, accessible locations"]',
-    "topic_name": "Electrical Control Devices and Disconnecting Means",
-    "category": "Installation Standards",
-    "level": 1,
-    "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
-  },
-  {
-    "uuid": "47r8s9t0a1b2c3d4e5f6g",
-    "question": "What is the primary advantage of using smart meters?",
-    "explanation":
-        "Smart meters provide real-time data on energy consumption, enabling consumers to monitor usage and optimize energy efficiency.",
-    "incorrect_answer":
-        '["【1】Only measure voltage", "【2】No remote access", "【3】Higher cost than traditional meters"]',
-    "correct_answer": '["【0】Real-time energy monitoring"]',
-    "topic_name": "Fundamentals of Electrical Theory",
-    "category": "Smart Meters",
-    "level": 1,
-    "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
-  },
-  {
-    "uuid": "48s9t0a1b2c3d4e5f6g7h",
-    "question": "What is the main function of a circuit breaker?",
-    "explanation":
-        "A circuit breaker interrupts the flow of electricity when there is an overload or a short circuit, protecting the wiring and devices.",
-    "incorrect_answer":
-        '["【1】To increase current", "【2】To store energy", "【3】To amplify signals"]',
-    "correct_answer": '["【0】To interrupt the flow of electricity"]',
-    "topic_name": "Branch Circuit Calculations and Conductors",
-    "category": "Safety",
-    "level": 1,
-    "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
-  },
-  {
-    "uuid": "49t0a1b2c3d4e5f6g7h8i",
-    "question":
-        "What is the purpose of a GFCI (Ground Fault Circuit Interrupter)?",
-    "explanation":
-        "A GFCI detects ground faults and interrupts the circuit to prevent electrical shock, particularly in wet locations.",
-    "incorrect_answer":
-        '["【1】To enhance voltage", "【2】To control current", "【3】To store energy"]',
-    "correct_answer": '["【0】To prevent electrical shock"]',
-    "topic_name": "Branch Circuit Calculations and Conductors",
-    "category": "Safety Devices",
+        "Bronchiectasis is characterized by the permanent dilation of airways due to recurrent infections and inflammation.",
+    "incorrect_answer": [
+      "Asthma",
+      "Chronic obstructive pulmonary disease (COPD)",
+      "Pulmonary fibrosis"
+    ],
+    "correct_answer": ["Bronchiectasis"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Chronic Respiratory Disorders",
     "level": 2,
     "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
+    "exam_title": "Acute Care NP Exam Prep 2024"
   },
   {
-    "uuid": "50a1b2c3d4e5f6g7h8i9j",
+    "uuid": "q144",
     "question":
-        "What is the standard voltage for residential electrical systems in North America?",
+        "Which diagnostic test is most commonly used to confirm obstructive sleep apnea (OSA)?",
     "explanation":
-        "The standard voltage for residential systems is 120/240 volts, with 120 volts used for general lighting and outlets.",
-    "incorrect_answer": '["【1】110 volts", "【2】220 volts", "【3】240 volts"]',
-    "correct_answer": '["【0】120/240 volts"]',
-    "topic_name": "Fundamentals of Electrical Theory",
-    "category": "Voltage Standards",
+        "Polysomnography, or a sleep study, is the gold standard for diagnosing OSA.",
+    "incorrect_answer": [
+      "Chest X-ray",
+      "Echocardiography",
+      "Pulmonary function test"
+    ],
+    "correct_answer": ["Polysomnography"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Sleep Disorders",
     "level": 1,
     "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
+    "exam_title": "Acute Care NP Exam Prep 2024"
   },
   {
-    "uuid": "51b2c3d4e5f6g7h8i9j0k",
+    "uuid": "q145",
     "question":
-        "What type of conduit is often used for underground installations?",
+        "What is the most likely cause of sudden onset dyspnea, pleuritic chest pain, and hypoxemia in a hospitalized patient?",
     "explanation":
-        "Rigid PVC conduit is commonly used for underground installations due to its corrosion resistance and durability.",
-    "incorrect_answer":
-        '["【1】Flexible conduit", "【2】Metal conduit", "【3】Non-metallic tubing"]',
-    "correct_answer": '["【0】Rigid PVC conduit"]',
-    "topic_name": "Electrical Wiring Methods and Electrical Materials",
-    "category": "Conduit Types",
-    "level": 1,
-    "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
-  },
-  {
-    "uuid": "52c3d4e5f6g7h8i9j0k1l",
-    "question": "What is the primary purpose of a transformer?",
-    "explanation":
-        "Transformers are used to change the voltage level in AC circuits, either stepping up or stepping down voltage for transmission or distribution.",
-    "incorrect_answer":
-        '["【1】To measure current", "【2】To store energy", "【3】To amplify signals"]',
-    "correct_answer": '["【0】To change voltage levels"]',
-    "topic_name": "Fundamentals of Electrical Theory",
-    "category": "Electrical Devices",
-    "level": 1,
-    "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
-  },
-  {
-    "uuid": "53d4e5f6g7h8i9j0k1l2m",
-    "question": "What does NEC stand for in electrical work?",
-    "explanation":
-        "NEC stands for National Electrical Code, which provides standards for safe electrical installation in the U.S.",
-    "incorrect_answer":
-        '["【1】National Energy Code", "【2】National Electric Commission", "【3】New Energy Code"]',
-    "correct_answer": '["【0】National Electrical Code"]',
-    "topic_name": "Fundamentals of Electrical Theory",
-    "category": "Regulations",
-    "level": 1,
-    "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
-  },
-  {
-    "uuid": "54e5f6g7h8i9j0k1l2m3n",
-    "question": "What is the purpose of a junction box?",
-    "explanation":
-        "A junction box protects electrical connections and provides a safe enclosure for splices and junctions in wiring systems.",
-    "incorrect_answer":
-        '["【1】To amplify signals", "【2】To reduce voltage", "【3】To store energy"]',
-    "correct_answer": '["【0】To protect electrical connections"]',
-    "topic_name": "Electrical Wiring Methods and Electrical Materials",
-    "category": "Junctions",
-    "level": 1,
-    "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
-  },
-  {
-    "uuid": "55f6g7h8i9j0k1l2m3n4o",
-    "question": "What is the typical use of an RCD (Residual Current Device)?",
-    "explanation":
-        "RCDs are used to prevent electric shock by disconnecting the supply when a fault is detected, such as when current leaks to earth.",
-    "incorrect_answer":
-        '["【1】To store energy", "【2】To amplify signals", "【3】To control lighting"]',
-    "correct_answer": '["【0】To prevent electric shock"]',
-    "topic_name": "Branch Circuit Calculations and Conductors",
-    "category": "Safety Devices",
+        "Pulmonary embolism is a common cause of sudden dyspnea, chest pain, and hypoxemia in hospitalized patients, particularly those at risk of thrombosis.",
+    "incorrect_answer": [
+      "Pneumothorax",
+      "Pneumonia",
+      "Acute myocardial infarction"
+    ],
+    "correct_answer": ["Pulmonary embolism"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Pulmonary Embolism",
     "level": 2,
     "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
+    "exam_title": "Acute Care NP Exam Prep 2024"
   },
   {
-    "uuid": "56g7h8i9j0k1l2m3n4o5p",
-    "question": "What is the difference between a volt and an ampere?",
-    "explanation":
-        "A volt is a measure of electrical potential difference, while an ampere measures the flow of electric current.",
-    "incorrect_answer":
-        '["【1】Both measure power", "【2】Volts measure current", "【3】Amperes measure voltage"]',
-    "correct_answer":
-        '["【0】Volts measure potential difference, amperes measure current"]',
-    "topic_name": "Fundamentals of Electrical Theory",
-    "category": "Basic Concepts",
-    "level": 1,
-    "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
-  },
-  {
-    "uuid": "57h8i9j0k1l2m3n4o5p6q",
-    "question": "What is the role of a neutral wire in an electrical system?",
-    "explanation":
-        "The neutral wire provides a return path for current and is essential for the operation of single-phase systems.",
-    "incorrect_answer":
-        '["【1】To increase voltage", "【2】To provide ground", "【3】To store energy"]',
-    "correct_answer": '["【0】To provide a return path for current"]',
-    "topic_name": "Electrical Wiring Methods and Electrical Materials",
-    "category": "Wiring Concepts",
-    "level": 1,
-    "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
-  },
-  {
-    "uuid": "58i9j0k1l2m3n4o5p6q7r",
+    "uuid": "q146",
     "question":
-        "What type of electrical device is used to reduce voltage in a circuit?",
+        "What is the initial management step in a patient presenting with tension pneumothorax?",
     "explanation":
-        "A step-down transformer is used to reduce voltage in an electrical circuit.",
-    "incorrect_answer": '["【1】Generator", "【2】Capacitor", "【3】Inductor"]',
-    "correct_answer": '["【0】Step-down transformer"]',
-    "topic_name": "Fundamentals of Electrical Theory",
-    "category": "Voltage Reduction",
-    "level": 1,
-    "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
-  },
-  {
-    "uuid": "59j0k1l2m3n4o5p6q7r8s",
-    "question": "What is the primary purpose of an electrical circuit diagram?",
-    "explanation":
-        "An electrical circuit diagram provides a visual representation of the electrical connections and components in a circuit, aiding in understanding and troubleshooting.",
-    "incorrect_answer":
-        '["【1】To increase efficiency", "【2】To store energy", "【3】To amplify signals"]',
-    "correct_answer": '["【0】To represent electrical connections visually"]',
-    "topic_name": "Fundamentals of Electrical Theory",
-    "category": "Design",
-    "level": 1,
-    "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
-  },
-  {
-    "uuid": "60k1l2m3n4o5p6q7r8s9t",
-    "question": "What does a circuit's load refer to?",
-    "explanation":
-        "The load of a circuit refers to the total amount of electrical power consumed by all devices connected to it.",
-    "incorrect_answer":
-        '["【1】The total voltage", "【2】The number of wires", "【3】The type of circuit"]',
-    "correct_answer": '["【0】The total power consumed"]',
-    "topic_name": "Fundamentals of Electrical Theory",
-    "category": "Load Calculations",
-    "level": 1,
-    "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
-  },
-  {
-    "uuid": "61l2m3n4o5p6q7r8s9t0a",
-    "question":
-        "What is the common color coding for a 240V circuit in North America?",
-    "explanation":
-        "In North America, black and red wires are commonly used for 240V circuits, with the white wire serving as the neutral.",
-    "incorrect_answer": '["【1】Green", "【2】Blue", "【3】Yellow"]',
-    "correct_answer": '["【0】Black and red"]',
-    "topic_name": "Electrical Wiring Methods and Electrical Materials",
-    "category": "Voltage Circuits",
-    "level": 1,
-    "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
-  },
-  {
-    "uuid": "62m3n4o5p6q7r8s9t0a1b",
-    "question": "What device is used to control the speed of a motor?",
-    "explanation":
-        "A variable frequency drive (VFD) is used to control the speed of a motor by varying the frequency and voltage supplied to the motor.",
-    "incorrect_answer": '["【1】Capacitor", "【2】Resistor", "【3】Inductor"]',
-    "correct_answer": '["【0】Variable frequency drive"]',
-    "topic_name": "Motors and Generators",
-    "category": "Motor Control",
+        "Immediate needle decompression is the first step in managing tension pneumothorax to relieve pressure and restore ventilation.",
+    "incorrect_answer": [
+      "Chest tube placement",
+      "Supplemental oxygen",
+      "Endotracheal intubation"
+    ],
+    "correct_answer": ["Needle decompression"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Pleural Diseases",
     "level": 2,
     "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
+    "exam_title": "Acute Care NP Exam Prep 2024"
   },
   {
-    "uuid": "63n4o5p6q7r8s9t0a1b2c",
-    "question": "What is the function of a relay in electrical systems?",
+    "uuid": "q147",
+    "question":
+        "Which of the following is the hallmark symptom of chronic bronchitis?",
     "explanation":
-        "A relay is an electrically operated switch that uses a small control signal to switch a larger load, enabling remote control of circuits.",
-    "incorrect_answer":
-        '["【1】To amplify voltage", "【2】To store energy", "【3】To measure resistance"]',
-    "correct_answer": '["【0】To switch larger loads remotely"]',
-    "topic_name": "Electrical Control Devices and Disconnecting Means",
-    "category": "Control Devices",
+        "Chronic productive cough for at least three months over two consecutive years is the hallmark of chronic bronchitis.",
+    "incorrect_answer": ["Hemoptysis", "Wheezing", "Dyspnea"],
+    "correct_answer": ["Chronic productive cough"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "COPD Management",
+    "level": 1,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q148",
+    "question":
+        "Which of the following is a potential complication of untreated obstructive sleep apnea (OSA)?",
+    "explanation":
+        "Untreated OSA can lead to systemic complications such as hypertension, arrhythmias, and heart failure.",
+    "incorrect_answer": [
+      "Pulmonary embolism",
+      "Chronic bronchitis",
+      "Pulmonary fibrosis"
+    ],
+    "correct_answer": ["Hypertension and cardiovascular complications"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Sleep Disorders",
+    "level": 1,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q149",
+    "question":
+        "What is the most common risk factor for spontaneous pneumothorax in a young, otherwise healthy individual?",
+    "explanation":
+        "Spontaneous pneumothorax in young adults is most commonly associated with smoking and tall, thin body habitus.",
+    "incorrect_answer": ["Asthma", "COPD", "Bronchiectasis"],
+    "correct_answer": ["Smoking"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Pleural Diseases",
+    "level": 1,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q150",
+    "question":
+        "Which of the following treatments is considered first-line for acute bronchospasm in an asthma exacerbation?",
+    "explanation":
+        "Inhaled short-acting beta-agonists (SABAs) like albuterol are the first-line treatment for acute bronchospasm in asthma.",
+    "incorrect_answer": [
+      "Inhaled corticosteroids",
+      "Leukotriene receptor antagonists",
+      "Long-acting beta-agonists"
+    ],
+    "correct_answer": ["Inhaled short-acting beta-agonists"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Asthma Management",
+    "level": 1,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q151",
+    "question":
+        "What is the most common pathogen causing nosocomial pneumonia in intubated patients?",
+    "explanation":
+        "Acinetobacter species are a common cause of hospital-acquired and ventilator-associated pneumonia, especially in intubated patients.",
+    "incorrect_answer": [
+      "Streptococcus pneumoniae",
+      "Legionella pneumophila",
+      "Mycoplasma pneumoniae"
+    ],
+    "correct_answer": ["Acinetobacter species"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Respiratory Infections",
     "level": 2,
     "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
+    "exam_title": "Acute Care NP Exam Prep 2024"
   },
   {
-    "uuid": "64o5p6q7r8s9t0a1b2c3d",
+    "uuid": "q152",
     "question":
-        "What is the primary purpose of a capacitor in an electrical circuit?",
+        "What is the primary mechanism of hypoxemia in acute respiratory distress syndrome (ARDS)?",
     "explanation":
-        "Capacitors store and release electrical energy, used for filtering, smoothing, and timing applications in circuits.",
-    "incorrect_answer":
-        '["【1】To increase current", "【2】To convert AC to DC", "【3】To amplify signals"]',
-    "correct_answer": '["【0】To store and release electrical energy"]',
-    "topic_name": "Electrical Equipment and Devices",
-    "category": "Capacitance",
-    "level": 1,
+        "In ARDS, impaired gas exchange occurs due to alveolar collapse, decreased lung compliance, and shunting.",
+    "incorrect_answer": [
+      "Hypercapnia",
+      "Alveolar hyperventilation",
+      "Increased diffusion capacity"
+    ],
+    "correct_answer": ["Shunting"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Critical Care",
+    "level": 3,
     "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
+    "exam_title": "Acute Care NP Exam Prep 2024"
   },
   {
-    "uuid": "65p6q7r8s9t0a1b2c3d4e",
-    "question": "What is the purpose of a surge protector?",
-    "explanation":
-        "Surge protectors safeguard electrical devices from voltage spikes by diverting excess voltage away from the connected equipment.",
-    "incorrect_answer":
-        '["【1】To increase voltage", "【2】To amplify current", "【3】To measure energy consumption"]',
-    "correct_answer": '["【0】To protect against voltage spikes"]',
-    "topic_name": "Electrical Equipment and Devices",
-    "category": "Protection Devices",
-    "level": 1,
-    "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
-  },
-  {
-    "uuid": "66q7r8s9t0a1b2c3d4e5f",
-    "question": "What is the main function of a motor starter?",
-    "explanation":
-        "A motor starter provides the necessary power and control to start and stop an electric motor safely.",
-    "incorrect_answer":
-        '["【1】To increase efficiency", "【2】To measure current", "【3】To convert AC to DC"]',
-    "correct_answer": '["【0】To start and stop motors safely"]',
-    "topic_name": "Motors and Generators",
-    "category": "Motor Control",
-    "level": 1,
-    "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
-  },
-  {
-    "uuid": "67r8s9t0a1b2c3d4e5f6g",
-    "question": "What is the common cause of electrical fires?",
-    "explanation":
-        "Electrical fires are commonly caused by overloaded circuits, faulty wiring, or the misuse of electrical equipment.",
-    "incorrect_answer":
-        '["【1】Overheating devices", "【2】High humidity", "【3】Old age"]',
-    "correct_answer": '["【0】Overloaded circuits"]',
-    "topic_name": "Fundamentals of Electrical Theory",
-    "category": "Fire Hazards",
-    "level": 1,
-    "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
-  },
-  {
-    "uuid": "68s9t0a1b2c3d4e5f6g7h",
+    "uuid": "q153",
     "question":
-        "What is the purpose of using circuit diagrams in electrical work?",
+        "Which of the following is the most appropriate treatment for a patient with sarcoidosis and severe pulmonary symptoms?",
     "explanation":
-        "Circuit diagrams are used to represent electrical systems visually, making it easier to understand connections and troubleshoot problems.",
-    "incorrect_answer":
-        '["【1】To store energy", "【2】To amplify signals", "【3】To increase voltage"]',
-    "correct_answer": '["【0】To represent electrical systems visually"]',
-    "topic_name": "Fundamentals of Electrical Theory",
-    "category": "Design",
-    "level": 1,
-    "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
-  },
-  {
-    "uuid": "69t0a1b2c3d4e5f6g7h8i",
-    "question": "What is a primary benefit of using renewable energy sources?",
-    "explanation":
-        "Renewable energy sources reduce dependence on fossil fuels, decrease greenhouse gas emissions, and promote sustainable energy practices.",
-    "incorrect_answer":
-        '["【1】Higher costs", "【2】Limited availability", "【3】Complex installation"]',
-    "correct_answer": '["【0】Reduction of greenhouse gas emissions"]',
-    "topic_name": "Renewable Energy Technologies",
-    "category": "Sustainability",
-    "level": 1,
-    "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
-  },
-  {
-    "uuid": "70a1b2c3d4e5f6g7h8i9j",
-    "question": "What is the primary function of a photovoltaic (PV) cell?",
-    "explanation":
-        "PV cells convert sunlight directly into electricity, making them essential components of solar panels.",
-    "incorrect_answer":
-        '["【1】To store energy", "【2】To increase current", "【3】To reduce voltage"]',
-    "correct_answer": '["【0】To convert sunlight into electricity"]',
-    "topic_name": "Renewable Energy Technologies",
-    "category": "Solar Energy",
-    "level": 1,
-    "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
-  },
-  {
-    "uuid": "71b2c3d4e5f6g7h8i9j0k",
-    "question":
-        "What is the primary purpose of an inverter in solar energy systems?",
-    "explanation":
-        "An inverter converts the direct current (DC) generated by solar panels into alternating current (AC) for use in homes and businesses.",
-    "incorrect_answer":
-        '["【1】To store energy", "【2】To increase voltage", "【3】To measure current"]',
-    "correct_answer": '["【0】To convert DC to AC"]',
-    "topic_name": "Renewable Energy Technologies",
-    "category": "Solar Power Systems",
-    "level": 1,
-    "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
-  },
-  {
-    "uuid": "72c3d4e5f6g7h8i9j0k1l",
-    "question": "What is the main advantage of using LED lighting?",
-    "explanation":
-        "LED lighting is energy-efficient, has a longer lifespan, and produces less heat compared to traditional incandescent bulbs.",
-    "incorrect_answer":
-        '["【1】Higher energy consumption", "【2】Shorter lifespan", "【3】More heat production"]',
-    "correct_answer": '["【0】Energy efficiency"]',
-    "topic_name": "Electrical Equipment and Devices",
-    "category": "Lighting",
-    "level": 1,
-    "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
-  },
-  {
-    "uuid": "73d4e5f6g7h8i9j0k1l2m",
-    "question": "What is the importance of grounding in electrical systems?",
-    "explanation":
-        "Grounding provides a safe path for electrical current to reduce the risk of shock and equipment damage in case of a fault.",
-    "incorrect_answer":
-        '["【1】To increase voltage", "【2】To store energy", "【3】To amplify signals"]',
-    "correct_answer": '["【0】To provide safety against electrical faults"]',
-    "topic_name": "Fundamentals of Electrical Theory",
-    "category": "Grounding",
-    "level": 1,
-    "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
-  },
-  {
-    "uuid": "74e5f6g7h8i9j0k1l2m3n",
-    "question": "What is the function of a fuse in an electrical circuit?",
-    "explanation":
-        "A fuse protects electrical circuits by melting and breaking the connection when current exceeds a safe level.",
-    "incorrect_answer":
-        '["【1】To increase current", "【2】To store energy", "【3】To measure voltage"]',
-    "correct_answer": '["【0】To protect against overcurrent"]',
-    "topic_name": "Branch Circuit Calculations and Conductors",
-    "category": "Fuses",
-    "level": 1,
-    "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
-  },
-  {
-    "uuid": "75f6g7h8i9j0k1l2m3n4o",
-    "question": "What is the role of an ammeter in electrical circuits?",
-    "explanation":
-        "An ammeter measures the current flowing through a circuit, allowing for monitoring and troubleshooting.",
-    "incorrect_answer":
-        '["【1】To measure voltage", "【2】To increase power", "【3】To store energy"]',
-    "correct_answer": '["【0】To measure current"]',
-    "topic_name": "Electrical Equipment and Devices",
-    "category": "Measurement Tools",
-    "level": 1,
-    "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
-  },
-  {
-    "uuid": "76g7h8i9j0k1l2m3n4o5p",
-    "question": "What is the function of a contactor in motor control systems?",
-    "explanation":
-        "A contactor is an electrically controlled switch used for switching a power circuit, often used to control electric motors.",
-    "incorrect_answer":
-        '["【1】To increase voltage", "【2】To measure current", "【3】To store energy"]',
-    "correct_answer": '["【0】To switch power circuits"]',
-    "topic_name": "Electrical Control Devices and Disconnecting Means",
-    "category": "Motor Control",
-    "level": 1,
-    "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
-  },
-  {
-    "uuid": "77h8i9j0k1l2m3n4o5p6q",
-    "question": "What is the purpose of a relay in an electrical circuit?",
-    "explanation":
-        "A relay is a switch operated by an electromagnet that can control a circuit by opening or closing contacts.",
-    "incorrect_answer":
-        '["【1】To increase current", "【2】To store energy", "【3】To measure resistance"]',
-    "correct_answer": '["【0】To control a circuit with an electromagnet"]',
-    "topic_name": "Electrical Control Devices and Disconnecting Means",
-    "category": "Control Devices",
-    "level": 1,
-    "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
-  },
-  {
-    "uuid": "78i9j0k1l2m3n4o5p6q7r",
-    "question": "What does a power factor of less than 1 indicate?",
-    "explanation":
-        "A power factor of less than 1 indicates that not all the power supplied is being used effectively for work, which can lead to wasted energy.",
-    "incorrect_answer":
-        '["【1】Efficiency is maximized", "【2】Power is not available", "【3】Voltage is excessive"]',
-    "correct_answer": '["【0】Inefficient use of power"]',
-    "topic_name": "Fundamentals of Electrical Theory",
-    "category": "Power Factor",
-    "level": 1,
-    "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
-  },
-  {
-    "uuid": "79j0k1l2m3n4o5p6q7r8s",
-    "question": "What is the primary function of a distribution board?",
-    "explanation":
-        "A distribution board distributes electrical power to various circuits while providing protection via fuses or circuit breakers.",
-    "incorrect_answer":
-        '["【1】To store energy", "【2】To amplify signals", "【3】To measure current"]',
-    "correct_answer": '["【0】To distribute electrical power"]',
-    "topic_name": "Electrical Equipment and Devices",
-    "category": "Distribution Systems",
-    "level": 1,
-    "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
-  },
-  {
-    "uuid": "80k1l2m3n4o5p6q7r8s9",
-    "question":
-        "What is the purpose of using a ground fault circuit interrupter (GFCI)?",
-    "explanation":
-        "A GFCI protects against electric shock by detecting ground faults and quickly shutting off power to prevent injury.",
-    "incorrect_answer":
-        '["【1】To increase voltage", "【2】To measure resistance", "【3】To reduce current"]',
-    "correct_answer": '["【0】To protect against ground faults"]',
-    "topic_name": "Fundamentals of Electrical Theory",
-    "category": "Protection Devices",
-    "level": 1,
-    "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
-  },
-  {
-    "uuid": "81l2m3n4o5p6q7r8s9t0",
-    "question":
-        "What type of wiring is typically used for underground installations?",
-    "explanation":
-        "Type UF (Underground Feeder) cable is used for underground wiring as it is resistant to moisture and suitable for direct burial.",
-    "incorrect_answer": '["【1】NM cable", "【2】BX cable", "【3】THHN wire"]',
-    "correct_answer": '["【0】UF cable"]',
-    "topic_name": "Electrical Wiring Methods and Electrical Materials",
-    "category": "Wiring Materials",
+        "Corticosteroids, such as prednisone, are the mainstay of treatment for symptomatic sarcoidosis.",
+    "incorrect_answer": [
+      "Methotrexate",
+      "Azathioprine",
+      "Inhaled bronchodilators"
+    ],
+    "correct_answer": ["Corticosteroids"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Interstitial Lung Diseases",
     "level": 2,
     "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
+    "exam_title": "Acute Care NP Exam Prep 2024"
   },
   {
-    "uuid": "82m3n4o5p6q7r8s9t0a1",
-    "question": "What type of current does a generator produce?",
-    "explanation":
-        "Generators produce alternating current (AC), which can be used directly in AC systems or converted to DC if necessary.",
-    "incorrect_answer":
-        '["【1】Direct current only", "【2】Voltage only", "【3】No current"]',
-    "correct_answer": '["【0】Alternating current"]',
-    "topic_name": "Motors and Generators",
-    "category": "Power Sources",
-    "level": 1,
-    "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
-  },
-  {
-    "uuid": "83n4o5p6q7r8s9t0a1b2",
+    "uuid": "q154",
     "question":
-        "What is the purpose of an arc fault circuit interrupter (AFCI)?",
+        "What is the most common complication of a massive pulmonary embolism?",
     "explanation":
-        "An AFCI detects and interrupts electrical arcs that could cause fires, providing protection against arc faults.",
-    "incorrect_answer":
-        '["【1】To reduce voltage", "【2】To increase current", "【3】To measure resistance"]',
-    "correct_answer": '["【0】To prevent electrical fires"]',
-    "topic_name": "Fundamentals of Electrical Theory",
-    "category": "Protection Devices",
-    "level": 1,
+        "A massive pulmonary embolism can lead to acute right ventricular failure, which is the primary cause of morbidity and mortality.",
+    "incorrect_answer": [
+      "Myocardial infarction",
+      "Pneumothorax",
+      "Hypovolemic shock"
+    ],
+    "correct_answer": ["Right ventricular failure"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Pulmonary Embolism",
+    "level": 3,
     "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
+    "exam_title": "Acute Care NP Exam Prep 2024"
   },
   {
-    "uuid": "84o5p6q7r8s9t0a1b2c3",
+    "uuid": "q155",
     "question":
-        "What is the primary purpose of using conduit in wiring installations?",
+        "What is the first-line treatment for acute COPD exacerbation with severe hypoxemia?",
     "explanation":
-        "Conduits protect electrical wiring from physical damage and provide a safe, organized route for wires.",
-    "incorrect_answer":
-        '["【1】To reduce voltage", "【2】To conduct electricity", "【3】To increase current"]',
-    "correct_answer": '["【0】To protect and route wiring"]',
-    "topic_name": "Electrical Wiring Methods and Electrical Materials",
-    "category": "Wiring Protection",
+        "Non-invasive positive pressure ventilation (NIPPV) is the preferred first-line treatment for acute COPD exacerbations with hypercapnic respiratory failure.",
+    "incorrect_answer": [
+      "Oral corticosteroids",
+      "Intravenous antibiotics",
+      "High-flow nasal cannula oxygen"
+    ],
+    "correct_answer": ["Non-invasive positive pressure ventilation"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "COPD Management",
+    "level": 3,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q156",
+    "question":
+        "What is the most common imaging finding in patients with idiopathic pulmonary fibrosis (IPF)?",
+    "explanation":
+        "A reticular pattern with subpleural honeycombing is characteristic of IPF on high-resolution CT scans.",
+    "incorrect_answer": [
+      "Centrilobular nodules",
+      "Bilateral pleural effusion",
+      "Diffuse ground-glass opacities"
+    ],
+    "correct_answer": ["Subpleural honeycombing"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Interstitial Lung Diseases",
     "level": 2,
     "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
+    "exam_title": "Acute Care NP Exam Prep 2024"
   },
   {
-    "uuid": "85p6q7r8s9t0a1b2c3d4",
+    "uuid": "q157",
     "question":
-        "In North America, which color wire is commonly used for neutral in AC circuits?",
+        "Which intervention is most effective for smoking cessation in patients with COPD?",
     "explanation":
-        "The white wire is commonly used as the neutral conductor in AC circuits in North America.",
-    "incorrect_answer": '["【1】Black", "【2】Green", "【3】Blue"]',
-    "correct_answer": '["【0】White"]',
-    "topic_name": "Electrical Wiring Methods and Electrical Materials",
-    "category": "Neutral Conductor",
+        "Nicotine replacement therapy is one of the most effective tools for smoking cessation in COPD patients.",
+    "incorrect_answer": [
+      "Long-term oxygen therapy",
+      "Pulmonary rehabilitation",
+      "Beta-agonist inhalers"
+    ],
+    "correct_answer": ["Nicotine replacement therapy"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Preventive Care",
     "level": 1,
     "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
+    "exam_title": "Acute Care NP Exam Prep 2024"
   },
   {
-    "uuid": "86q7r8s9t0a1b2c3d4e5",
-    "question": "What is the primary function of a step-down transformer?",
-    "explanation":
-        "A step-down transformer reduces the voltage of an electrical circuit to a safer or required level for specific applications.",
-    "incorrect_answer":
-        '["【1】To increase voltage", "【2】To change frequency", "【3】To convert AC to DC"]',
-    "correct_answer": '["【0】To reduce voltage"]',
-    "topic_name": "Electrical Equipment and Devices",
-    "category": "Fundamentals of Electrical Theory",
-    "level": 1,
-    "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
-  },
-  {
-    "uuid": "87r8s9t0a1b2c3d4e5f6",
-    "question": "What is the function of a load center?",
-    "explanation":
-        "A load center is used to distribute electrical power throughout a building by housing circuit breakers and protecting circuits.",
-    "incorrect_answer":
-        '["【1】To measure voltage", "【2】To store energy", "【3】To convert AC to DC"]',
-    "correct_answer": '["【0】To distribute power to circuits"]',
-    "topic_name": "Electrical Equipment and Devices",
-    "category": "Distribution Systems",
-    "level": 1,
-    "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
-  },
-  {
-    "uuid": "88s9t0a1b2c3d4e5f6g7",
-    "question": "What is the role of a diode in electrical circuits?",
-    "explanation":
-        "Diodes allow current to flow in one direction only, preventing backflow and providing rectification in circuits.",
-    "incorrect_answer":
-        '["【1】To amplify signals", "【2】To measure current", "【3】To store energy"]',
-    "correct_answer": '["【0】To control current direction"]',
-    "topic_name": "Electrical Equipment and Devices",
-    "category": "Semiconductors",
-    "level": 1,
-    "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
-  },
-  {
-    "uuid": "89t0a1b2c3d4e5f6g7h8",
-    "question": "What is the purpose of using twist-on wire connectors?",
-    "explanation":
-        "Twist-on wire connectors are used to join and insulate wires securely in a junction box or other enclosure.",
-    "incorrect_answer":
-        '["【1】To increase voltage", "【2】To reduce current", "【3】To measure resistance"]',
-    "correct_answer": '["【0】To join and insulate wires"]',
-    "topic_name": "Electrical Wiring Methods and Electrical Materials",
-    "category": "Connectors",
-    "level": 1,
-    "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
-  },
-  {
-    "uuid": "103a1b2c3d4e5f6g7h8i",
+    "uuid": "q158",
     "question":
-        "What is the purpose of a service disconnect in an electrical service system?",
+        "What is the preferred diagnostic test for identifying pleural effusion etiology?",
     "explanation":
-        "A service disconnect allows the complete isolation of electrical power from the service equipment for maintenance or emergency situations.",
-    "incorrect_answer":
-        '["【1】To increase voltage", "【2】To control lighting", "【3】To measure current"]',
-    "correct_answer": '["【0】To disconnect electrical power from the service"]',
-    "topic_name":
-        "Electrical Services, Service Equipment, and Separately Derived Systems",
-    "category": "Service Disconnect",
-    "level": 1,
-    "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
-  },
-  {
-    "uuid": "104b2c3d4e5f6g7h8i9j",
-    "question":
-        "In an electrical service, what is the purpose of a main bonding jumper?",
-    "explanation":
-        "The main bonding jumper ensures electrical continuity between the grounded service conductor and the equipment grounding conductors.",
-    "incorrect_answer":
-        '["【1】To increase current", "【2】To reduce resistance", "【3】To measure voltage"]',
-    "correct_answer": '["【0】To bond grounded and grounding conductors"]',
-    "topic_name":
-        "Electrical Services, Service Equipment, and Separately Derived Systems",
-    "category": "Grounding and Bonding",
+        "Thoracentesis allows for fluid sampling, enabling analysis of protein, LDH, and other markers to determine transudative versus exudative effusion.",
+    "incorrect_answer": [
+      "Chest X-ray",
+      "High-resolution CT scan",
+      "Pulmonary angiography"
+    ],
+    "correct_answer": ["Thoracentesis"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Pleural Diseases",
     "level": 2,
     "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
+    "exam_title": "Acute Care NP Exam Prep 2024"
   },
   {
-    "uuid": "105c3d4e5f6g7h8i9j0k",
-    "question": "What is a separately derived system?",
+    "uuid": "q159",
+    "question":
+        "What is the mechanism of action of ipratropium in the treatment of COPD?",
     "explanation":
-        "A separately derived system is an electrical system that has no direct connection to circuit conductors of any other system, typically powered by a transformer or generator.",
-    "incorrect_answer":
-        '["【1】A secondary service line", "【2】A backup circuit", "【3】A battery-powered device"]',
-    "correct_answer": '["【0】An isolated electrical system"]',
-    "topic_name":
-        "Electrical Services, Service Equipment, and Separately Derived Systems",
-    "category": "System Isolation",
+        "Ipratropium is an anticholinergic bronchodilator that reduces airway resistance by blocking muscarinic receptors in the lungs.",
+    "incorrect_answer": [
+      "Beta-2 receptor agonism",
+      "Reduction of airway inflammation",
+      "Suppression of leukotriene production"
+    ],
+    "correct_answer": ["Blocking muscarinic receptors"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Pharmacology",
+    "level": 1,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q160",
+    "question":
+        "Which of the following conditions is most likely to present with pulsus paradoxus?",
+    "explanation":
+        "Pulsus paradoxus is commonly seen in conditions causing increased intrathoracic pressure, such as severe asthma or cardiac tamponade.",
+    "incorrect_answer": [
+      "Pulmonary fibrosis",
+      "COPD",
+      "Pulmonary hypertension"
+    ],
+    "correct_answer": ["Severe asthma"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Clinical Signs",
     "level": 2,
     "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
+    "exam_title": "Acute Care NP Exam Prep 2024"
   },
   {
-    "uuid": "106d4e5f6g7h8i9j0k1l",
+    "uuid": "q161",
     "question":
-        "Which component provides overcurrent protection for service equipment?",
+        "Which of the following is the hallmark spirometry finding in obstructive lung diseases such as asthma or COPD?",
     "explanation":
-        "The main breaker provides overcurrent protection, disconnecting power when a fault or overload occurs.",
-    "incorrect_answer":
-        '["【1】Bonding jumper", "【2】Grounding electrode", "【3】Insulating bushing"]',
-    "correct_answer": '["【0】Main breaker"]',
-    "topic_name":
-        "Electrical Services, Service Equipment, and Separately Derived Systems",
-    "category": "Protection Devices",
+        "A decreased FEV1/FVC ratio is the hallmark finding in obstructive lung diseases due to airway obstruction.",
+    "incorrect_answer": [
+      "Increased FEV1",
+      "Normal FEV1/FVC ratio",
+      "Increased total lung capacity"
+    ],
+    "correct_answer": ["Decreased FEV1/FVC ratio"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Pulmonary Function Testing",
     "level": 1,
     "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
+    "exam_title": "Acute Care NP Exam Prep 2024"
   },
   {
-    "uuid": "107e5f6g7h8i9j0k1l2m",
+    "uuid": "q162",
     "question":
-        "What type of equipment grounding conductor is typically used in a residential service panel?",
+        "What is the most common cause of chronic cough in non-smoking patients with normal chest X-ray findings?",
     "explanation":
-        "Bare copper or green insulated grounding conductors are used to provide a safe grounding path in a residential service panel.",
-    "incorrect_answer":
-        '["【1】Red insulated wire", "【2】White neutral wire", "【3】Black hot wire"]',
-    "correct_answer": '["【0】Bare copper or green wire"]',
-    "topic_name":
-        "Electrical Services, Service Equipment, and Separately Derived Systems",
-    "category": "Grounding Conductors",
+        "Postnasal drip is the leading cause of chronic cough in non-smokers and is often due to allergic rhinitis or sinusitis.",
+    "incorrect_answer": ["GERD", "Asthma", "Vocal cord dysfunction"],
+    "correct_answer": ["Postnasal drip"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Cough Evaluation",
     "level": 1,
     "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
+    "exam_title": "Acute Care NP Exam Prep 2024"
   },
   {
-    "uuid": "108f6g7h8i9j0k1l2m3n",
+    "uuid": "q163",
     "question":
-        "What is the purpose of an electrical meter in service equipment?",
+        "What is the most common presenting symptom of pulmonary hypertension?",
     "explanation":
-        "An electrical meter measures the amount of electric power consumed by a building or service panel.",
-    "incorrect_answer":
-        '["【1】To provide overcurrent protection", "【2】To control voltage", "【3】To ground the system"]',
-    "correct_answer": '["【0】To measure power consumption"]',
-    "topic_name":
-        "Electrical Services, Service Equipment, and Separately Derived Systems",
-    "category": "Metering Devices",
-    "level": 1,
-    "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
-  },
-  {
-    "uuid": "109g7h8i9j0k1l2m3n4o",
-    "question":
-        "What does the National Electrical Code (NEC) require for service grounding?",
-    "explanation":
-        "The NEC requires that a service be grounded using an approved grounding electrode, such as a ground rod or metal water pipe.",
-    "incorrect_answer":
-        '["【1】No grounding is needed", "【2】Use of any metal object", "【3】Any non-conductive material"]',
-    "correct_answer": '["【0】An approved grounding electrode"]',
-    "topic_name":
-        "Electrical Services, Service Equipment, and Separately Derived Systems",
-    "category": "Grounding Requirements",
+        "Exertional dyspnea is the most common symptom of pulmonary hypertension and results from increased pulmonary vascular resistance.",
+    "incorrect_answer": ["Chest pain", "Hemoptysis", "Peripheral edema"],
+    "correct_answer": ["Exertional dyspnea"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Pulmonary Hypertension",
     "level": 2,
     "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
+    "exam_title": "Acute Care NP Exam Prep 2024"
   },
   {
-    "uuid": "110h8i9j0k1l2m3n4o5p",
+    "uuid": "q164",
     "question":
-        "What type of equipment should be bonded to the ground in a separately derived system?",
+        "Which of the following conditions is associated with an increased risk of spontaneous pneumothorax?",
     "explanation":
-        "All metal parts of electrical equipment should be bonded to the grounding conductor to prevent accidental shock.",
-    "incorrect_answer":
-        '["【1】Only high-voltage equipment", "【2】Only control circuits", "【3】No bonding is required"]',
-    "correct_answer": '["【0】All metal parts of electrical equipment"]',
-    "topic_name":
-        "Electrical Services, Service Equipment, and Separately Derived Systems",
-    "category": "Grounding and Bonding",
+        "Marfan syndrome is associated with increased risk of spontaneous pneumothorax due to connective tissue abnormalities.",
+    "incorrect_answer": ["Obstructive sleep apnea", "Asthma", "Bronchiectasis"],
+    "correct_answer": ["Marfan syndrome"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Pleural Diseases",
     "level": 2,
     "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
+    "exam_title": "Acute Care NP Exam Prep 2024"
   },
   {
-    "uuid": "111i9j0k1l2m3n4o5p6q",
-    "question":
-        "What is the purpose of an automatic transfer switch in a service panel?",
+    "uuid": "q165",
+    "question": "What is the most common occupational lung disease worldwide?",
     "explanation":
-        "An automatic transfer switch automatically switches power to a backup source during a main power outage.",
-    "incorrect_answer":
-        '["【1】To reduce voltage", "【2】To measure resistance", "【3】To isolate circuits for maintenance"]',
-    "correct_answer": '["【0】To switch to backup power during an outage"]',
-    "topic_name":
-        "Electrical Services, Service Equipment, and Separately Derived Systems",
-    "category": "Power Backup",
-    "level": 1,
-    "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
-  },
-  {
-    "uuid": "112j0k1l2m3n4o5p6q7r",
-    "question":
-        "How is a service entrance cable typically protected from weather exposure?",
-    "explanation":
-        "Service entrance cables are covered in weather-resistant insulation to protect against elements.",
-    "incorrect_answer":
-        '["【1】Using bare wire", "【2】Using plastic ties", "【3】Exposed directly to the weather"]',
-    "correct_answer": '["【0】Using weather-resistant insulation"]',
-    "topic_name":
-        "Electrical Services, Service Equipment, and Separately Derived Systems",
-    "category": "Service Cables",
-    "level": 1,
-    "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
-  },
-  {
-    "uuid": "113k1l2m3n4o5p6q7r8s",
-    "question":
-        "What is a grounding electrode conductor's purpose in a service panel?",
-    "explanation":
-        "A grounding electrode conductor connects the service panel to a grounding electrode, providing a safe path for fault currents.",
-    "incorrect_answer":
-        '["【1】To conduct hot current", "【2】To increase resistance", "【3】To measure voltage"]',
-    "correct_answer": '["【0】To connect the service to a grounding electrode"]',
-    "topic_name":
-        "Electrical Services, Service Equipment, and Separately Derived Systems",
-    "category": "Grounding Conductors",
-    "level": 1,
-    "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
-  },
-  {
-    "uuid": "114l2m3n4o5p6q7r8s9t",
-    "question":
-        "What does the NEC specify for electrical service entrance conductors?",
-    "explanation":
-        "The NEC specifies requirements for insulation, grounding, and the routing of service entrance conductors to ensure safety.",
-    "incorrect_answer":
-        '["【1】No specific requirements", "【2】Allows bare wiring", "【3】No grounding required"]',
-    "correct_answer": '["【0】Insulation, grounding, and routing requirements"]',
-    "topic_name":
-        "Electrical Services, Service Equipment, and Separately Derived Systems",
-    "category": "Service Conductors",
+        "Silicosis is the most common occupational lung disease worldwide, primarily affecting workers exposed to silica dust.",
+    "incorrect_answer": [
+      "Asbestosis",
+      "Coal workers' pneumoconiosis",
+      "Hypersensitivity pneumonitis"
+    ],
+    "correct_answer": ["Silicosis"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Occupational Lung Diseases",
     "level": 2,
     "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
+    "exam_title": "Acute Care NP Exam Prep 2024"
   },
   {
-    "uuid": "115m3n4o5p6q7r8s9t0a",
+    "uuid": "q166",
     "question":
-        "What is an acceptable grounding electrode for a separately derived system according to the NEC?",
+        "What is the initial imaging modality of choice for evaluating a suspected pleural effusion?",
     "explanation":
-        "Acceptable grounding electrodes include ground rods, metal water pipes, or building steel bonded to the grounding system.",
-    "incorrect_answer":
-        '["【1】Plastic pipes", "【2】Insulated rods", "【3】Non-metallic conductors"]',
-    "correct_answer":
-        '["【0】Metal water pipes, ground rods, or building steel"]',
-    "topic_name":
-        "Electrical Services, Service Equipment, and Separately Derived Systems",
-    "category": "Grounding Requirements",
+        "Chest X-ray is the initial imaging test for suspected pleural effusion and may show blunting of the costophrenic angle.",
+    "incorrect_answer": [
+      "Chest CT",
+      "Ultrasound",
+      "Ventilation-perfusion (V/Q) scan"
+    ],
+    "correct_answer": ["Chest X-ray"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Pleural Diseases",
+    "level": 1,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q167",
+    "question":
+        "Which of the following is the most common type of lung cancer in non-smokers?",
+    "explanation":
+        "Adenocarcinoma is the most common type of lung cancer in non-smokers and often arises in the peripheral lung fields.",
+    "incorrect_answer": [
+      "Small cell carcinoma",
+      "Squamous cell carcinoma",
+      "Large cell carcinoma"
+    ],
+    "correct_answer": ["Adenocarcinoma"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Oncology",
     "level": 2,
     "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
+    "exam_title": "Acute Care NP Exam Prep 2024"
   },
   {
-    "uuid": "116n4o5p6q7r8s9t0a1b",
-    "question":
-        "What component limits the fault current in a service equipment setup?",
+    "uuid": "q168",
+    "question": "Which biomarker is elevated in eosinophilic pneumonia?",
     "explanation":
-        "A current-limiting fuse or circuit breaker reduces the amount of fault current by opening the circuit before it reaches dangerous levels.",
-    "incorrect_answer":
-        '["【1】Service entrance conductor", "【2】Grounding electrode", "【3】Main bonding jumper"]',
-    "correct_answer": '["【0】Current-limiting fuse"]',
-    "topic_name":
-        "Electrical Services, Service Equipment, and Separately Derived Systems",
-    "category": "Protection Devices",
+        "Eosinophilic pneumonia is associated with elevated eosinophil counts in the peripheral blood and bronchoalveolar lavage fluid.",
+    "incorrect_answer": ["D-dimer", "Troponin", "Procalcitonin"],
+    "correct_answer": ["Eosinophils"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Pulmonary Inflammation",
     "level": 2,
     "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
+    "exam_title": "Acute Care NP Exam Prep 2024"
   },
   {
-    "uuid": "117o5p6q7r8s9t0a1b2c",
-    "question": "How does the NEC define a grounding electrode?",
-    "explanation":
-        "A grounding electrode is a conducting element, like a ground rod or metal water pipe, that establishes an earth connection for the electrical system.",
-    "incorrect_answer":
-        '["【1】An insulator", "【2】A control device", "【3】A resistor"]',
-    "correct_answer": '["【0】A conducting element connected to earth"]',
-    "topic_name":
-        "Electrical Services, Service Equipment, and Separately Derived Systems",
-    "category": "Grounding Requirements",
-    "level": 1,
-    "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
-  },
-  {
-    "uuid": "118p6q7r8s9t0a1b2c3d",
+    "uuid": "q169",
     "question":
-        "What is the purpose of a ground fault circuit interrupter (GFCI) in a service panel?",
+        "What is the best initial treatment for a patient presenting with tension pneumothorax?",
     "explanation":
-        "GFCIs protect against electrical shock by detecting imbalances in current flow between the hot and neutral wires.",
-    "incorrect_answer":
-        '["【1】Increases voltage output", "【2】Reduces system impedance", "【3】Detects high voltage surges"]',
-    "correct_answer":
-        '["【0】Protects against electrical shock from current imbalances"]',
-    "topic_name":
-        "Electrical Services, Service Equipment, and Separately Derived Systems",
-    "category": "Protection Devices",
-    "level": 1,
+        "Immediate needle decompression is the first-line treatment for tension pneumothorax to relieve intrathoracic pressure.",
+    "incorrect_answer": [
+      "Chest tube placement",
+      "High-flow oxygen",
+      "Observation"
+    ],
+    "correct_answer": ["Needle decompression"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Emergency Management",
+    "level": 3,
     "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
+    "exam_title": "Acute Care NP Exam Prep 2024"
   },
   {
-    "uuid": "119q7r8s9t0a1b2c3d4e",
+    "uuid": "q170",
     "question":
-        "What kind of transformer is commonly used in a separately derived system?",
+        "What is the preferred diagnostic tool for assessing diaphragmatic paralysis?",
     "explanation":
-        "An isolation transformer is commonly used in separately derived systems to isolate the primary and secondary systems.",
-    "incorrect_answer":
-        '["【1】Auto transformer", "【2】Step-up transformer", "【3】Inductive transformer"]',
-    "correct_answer": '["【0】Isolation transformer"]',
-    "topic_name":
-        "Electrical Services, Service Equipment, and Separately Derived Systems",
-    "category": "Transformers",
+        "Fluoroscopy with a sniff test is the preferred diagnostic tool for diaphragmatic paralysis, evaluating diaphragmatic movement.",
+    "incorrect_answer": ["Chest X-ray", "CT scan", "MRI"],
+    "correct_answer": ["Fluoroscopy"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Diagnostics",
     "level": 2,
     "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
+    "exam_title": "Acute Care NP Exam Prep 2024"
   },
   {
-    "uuid": "120r8s9t0a1b2c3d4e5f",
+    "uuid": "q171",
     "question":
-        "Which type of service entrance conductor is suitable for outdoor use in wet conditions?",
+        "Which of the following clinical features is most specific for a diagnosis of chronic bronchitis?",
     "explanation":
-        "Type SE cable is suitable for outdoor service entrance installations and is resistant to moisture.",
-    "incorrect_answer":
-        '["【1】Type NM cable", "【2】Type AC cable", "【3】Type MC cable"]',
-    "correct_answer": '["【0】Type SE cable"]',
-    "topic_name": "Electrical Services",
-    "category":
-        "Electrical Services, Service Equipment, and Separately Derived Systems",
+        "Chronic productive cough lasting at least three months in two consecutive years is the hallmark of chronic bronchitis.",
+    "incorrect_answer": ["Wheezing", "Dyspnea on exertion", "Weight loss"],
+    "correct_answer": ["Chronic productive cough"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "COPD Management",
+    "level": 1,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q172",
+    "question":
+        "What is the recommended duration of corticosteroid therapy in acute COPD exacerbation?",
+    "explanation":
+        "A 5- to 7-day course of systemic corticosteroids is recommended to manage inflammation in COPD exacerbations.",
+    "incorrect_answer": ["3 days", "10 days", "14 days"],
+    "correct_answer": ["5 to 7 days"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "COPD Management",
+    "level": 1,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q173",
+    "question": "What is the most common symptom in patients with lung cancer?",
+    "explanation":
+        "Cough is the most common symptom of lung cancer and may be persistent or associated with hemoptysis.",
+    "incorrect_answer": ["Chest pain", "Weight loss", "Dyspnea"],
+    "correct_answer": ["Cough"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Oncology",
     "level": 2,
     "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
+    "exam_title": "Acute Care NP Exam Prep 2024"
   },
   {
-    "uuid": "121s9t0a1b2c3d4e5f6g",
+    "uuid": "q174",
     "question":
-        "How does an overcurrent protection device help in electrical safety?",
+        "Which of the following conditions is associated with the formation of a cavitary lung lesion?",
     "explanation":
-        "An overcurrent protection device, like a breaker or fuse, opens the circuit when current exceeds safe levels, preventing overheating or fire.",
-    "incorrect_answer":
-        '["【1】Increases voltage", "【2】Controls circuit impedance", "【3】Balances current load"]',
-    "correct_answer": '["【0】Prevents overheating by opening the circuit"]',
-    "topic_name":
-        "Electrical Services, Service Equipment, and Separately Derived Systems",
-    "category": "Protection Devices",
-    "level": 1,
-    "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
-  },
-  {
-    "uuid": "122t0a1b2c3d4e5f6g7h",
-    "question":
-        "What color is typically used for grounding conductors in a separately derived system?",
-    "explanation":
-        "Green or bare conductors are used to denote grounding in a separately derived system, ensuring easy identification.",
-    "incorrect_answer": '["【1】Black", "【2】Red", "【3】Blue"]',
-    "correct_answer": '["【0】Green or bare"]',
-    "topic_name":
-        "Electrical Services, Service Equipment, and Separately Derived Systems",
-    "category": "Grounding Conductors",
-    "level": 1,
-    "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
-  },
-  {
-    "uuid": "123a1b2c3d4e5f6g7h8i",
-    "question":
-        "What is required to bond a service panel to the grounding electrode?",
-    "explanation":
-        "A bonding jumper is used to ensure continuity between the grounding electrode and the service panel, preventing stray voltages.",
-    "incorrect_answer":
-        '["【1】Control wire", "【2】Insulated conductor", "【3】Neutral wire"]',
-    "correct_answer": '["【0】Bonding jumper"]',
-    "topic_name":
-        "Electrical Services, Service Equipment, and Separately Derived Systems",
-    "category": "Bonding Requirements",
+        "Tuberculosis is a classic cause of cavitary lung lesions, often in the upper lobes of the lungs.",
+    "incorrect_answer": [
+      "Pulmonary edema",
+      "Pulmonary fibrosis",
+      "Sarcoidosis"
+    ],
+    "correct_answer": ["Tuberculosis"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Respiratory Infections",
     "level": 2,
     "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
+    "exam_title": "Acute Care NP Exam Prep 2024"
   },
   {
-    "uuid": "124b2c3d4e5f6g7h8i9j",
-    "question": "What is a surge protector’s function in a service panel?",
-    "explanation":
-        "A surge protector limits voltage spikes to protect devices connected to the service from damage due to power surges.",
-    "incorrect_answer":
-        '["【1】Increases voltage", "【2】Measures current", "【3】Reduces current flow"]',
-    "correct_answer": '["【0】Limits voltage spikes"]',
-    "topic_name":
-        "Electrical Services, Service Equipment, and Separately Derived Systems",
-    "category": "Protection Devices",
-    "level": 1,
-    "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
-  },
-  {
-    "uuid": "125c3d4e5f6g7h8i9j0k",
+    "uuid": "q175",
     "question":
-        "What is the NEC requirement for bonding the neutral to the ground in a service panel?",
+        "What is the primary mechanism of hypoxemia in acute respiratory distress syndrome (ARDS)?",
     "explanation":
-        "The NEC requires bonding of the neutral to the ground in the main service panel to maintain a clear return path for fault currents.",
-    "incorrect_answer":
-        '["【1】Never bond neutral to ground", "【2】Only in secondary panels", "【3】Only during testing"]',
-    "correct_answer": '["【0】Bond neutral to ground in the main service panel"]',
-    "topic_name":
-        "Electrical Services, Service Equipment, and Separately Derived Systems",
-    "category": "Bonding Requirements",
+        "Shunting, caused by alveolar collapse and fluid-filled alveoli, is the primary mechanism of hypoxemia in ARDS.",
+    "incorrect_answer": [
+      "Decreased inspired oxygen",
+      "Hypoventilation",
+      "Diffusion limitation"
+    ],
+    "correct_answer": ["Shunting"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Critical Care",
+    "level": 3,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q176",
+    "question":
+        "Which of the following is the first-line treatment for high-altitude pulmonary edema (HAPE)?",
+    "explanation":
+        "Immediate descent to a lower altitude is the most effective treatment for HAPE, improving oxygenation and reducing pulmonary pressure.",
+    "incorrect_answer": [
+      "Diuretics",
+      "High-flow oxygen",
+      "Inhaled nitric oxide"
+    ],
+    "correct_answer": ["Immediate descent to a lower altitude"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Environmental Lung Diseases",
+    "level": 3,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q177",
+    "question":
+        "What is the definitive diagnostic test for obstructive sleep apnea?",
+    "explanation":
+        "Polysomnography is the gold standard for diagnosing obstructive sleep apnea by evaluating apneas, hypopneas, and oxygen desaturation.",
+    "incorrect_answer": [
+      "Overnight pulse oximetry",
+      "Home sleep apnea testing",
+      "Arterial blood gas"
+    ],
+    "correct_answer": ["Polysomnography"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Sleep Disorders",
     "level": 2,
     "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
+    "exam_title": "Acute Care NP Exam Prep 2024"
   },
   {
-    "uuid": "200a1b2c3d4e5f6g7h8i",
-    "question": "What is Ohm's Law?",
-    "explanation":
-        "Ohm's Law defines the relationship between voltage, current, and resistance, represented by the formula V = IR.",
-    "incorrect_answer": '["【1】P = IV", "【2】V = P/I", "【3】V = I + R"]',
-    "correct_answer": '["【0】V = IR"]',
-    "topic_name": "Definitions, Calculations, Theory, and Plans",
-    "category": "Basic Electrical Theory",
-    "level": 1,
-    "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
-  },
-  {
-    "uuid": "201b2c3d4e5f6g7h8i9j",
+    "uuid": "q178",
     "question":
-        "What is the formula to calculate power in an electrical circuit?",
+        "Which of the following is the most common complication of bronchoscopy?",
     "explanation":
-        "The formula to calculate power is P = IV, where P is power, I is current, and V is voltage.",
-    "incorrect_answer": '["【1】P = V/I", "【2】P = I^2", "【3】P = IR"]',
-    "correct_answer": '["【0】P = IV"]',
-    "topic_name": "Definitions, Calculations, Theory, and Plans",
-    "category": "Power Calculations",
-    "level": 1,
-    "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
-  },
-  {
-    "uuid": "202c3d4e5f6g7h8i9j0k",
-    "question": "What is the unit of resistance?",
-    "explanation":
-        "Resistance is measured in ohms, which is denoted by the symbol Ω.",
-    "incorrect_answer": '["【1】Watts", "【2】Volts", "【3】Amperes"]',
-    "correct_answer": '["【0】Ohms"]',
-    "topic_name": "Definitions, Calculations, Theory, and Plans",
-    "category": "Electrical Units",
-    "level": 1,
-    "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
-  },
-  {
-    "uuid": "203d4e5f6g7h8i9j0k1l",
-    "question":
-        "What does the National Electrical Code (NEC) define as a 'circuit'?",
-    "explanation":
-        "A circuit is defined as a complete path for current flow, usually consisting of conductors, load, and source.",
-    "incorrect_answer":
-        '["【1】A device that stores charge", "【2】A disconnected line", "【3】A component that reduces current"]',
-    "correct_answer": '["【0】A complete path for current flow"]',
-    "topic_name": "Definitions, Calculations, Theory, and Plans",
-    "category": "NEC Terms",
+        "Bleeding is the most common complication of bronchoscopy, especially in patients with underlying coagulopathies or during biopsy procedures.",
+    "incorrect_answer": ["Pneumothorax", "Infection", "Aspiration"],
+    "correct_answer": ["Bleeding"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Diagnostics",
     "level": 2,
     "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
+    "exam_title": "Acute Care NP Exam Prep 2024"
   },
   {
-    "uuid": "204e5f6g7h8i9j0k1l2m",
-    "question": "How is total resistance calculated in a series circuit?",
+    "uuid": "q179",
+    "question":
+        "Which imaging modality is most sensitive for detecting interstitial lung disease?",
     "explanation":
-        "In a series circuit, the total resistance is the sum of all resistances.",
-    "incorrect_answer":
-        '["【1】Total resistance is the product of all resistances", "【2】Total resistance is zero", "【3】Total resistance is the inverse of each resistance"]',
-    "correct_answer": '["【0】The sum of all resistances"]',
-    "topic_name": "Definitions, Calculations, Theory, and Plans",
-    "category": "Series Circuits",
-    "level": 1,
-    "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
-  },
-  {
-    "uuid": "205f6g7h8i9j0k1l2m3n",
-    "question": "What is a schematic diagram?",
-    "explanation":
-        "A schematic diagram represents the elements of a system using symbols rather than physical layout, showing the circuit configuration and components.",
-    "incorrect_answer":
-        '["【1】A wiring diagram", "【2】A physical layout", "【3】A document with only labels"]',
-    "correct_answer":
-        '["【0】A representation using symbols to show components and connections"]',
-    "topic_name": "Definitions, Calculations, Theory, and Plans",
-    "category": "Fundamentals of Electrical Theory",
-    "level": 1,
-    "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
-  },
-  {
-    "uuid": "206g7h8i9j0k1l2m3n4o",
-    "question": "What does 'ampacity' refer to in electrical terms?",
-    "explanation":
-        "Ampacity is the maximum amount of electrical current a conductor or device can safely carry.",
-    "incorrect_answer":
-        '["【1】Voltage capacity", "【2】Power rating", "【3】Resistance level"]',
-    "correct_answer": '["【0】Current-carrying capacity"]',
-    "topic_name": "Definitions, Calculations, Theory, and Plans",
-    "category": "Electrical Ratings",
+        "High-resolution CT is the most sensitive imaging modality for diagnosing interstitial lung disease, revealing detailed lung parenchyma abnormalities.",
+    "incorrect_answer": ["Chest X-ray", "MRI", "PET scan"],
+    "correct_answer": ["High-resolution CT"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Interstitial Lung Diseases",
     "level": 2,
     "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
+    "exam_title": "Acute Care NP Exam Prep 2024"
   },
   {
-    "uuid": "207h8i9j0k1l2m3n4o5p",
-    "question": "What is the purpose of using a fuse in a circuit?",
-    "explanation":
-        "A fuse is a protective device that melts and opens the circuit when current exceeds safe levels, protecting against overloads.",
-    "incorrect_answer":
-        '["【1】Increase voltage", "【2】Control current flow", "【3】Store electric charge"]',
-    "correct_answer": '["【0】Protect against overloads"]',
-    "topic_name": "Definitions, Calculations, Theory, and Plans",
-    "category": "Branch Circuit Calculations and Conductors",
-    "level": 1,
-    "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
-  },
-  {
-    "uuid": "208i9j0k1l2m3n4o5p6q",
+    "uuid": "q180",
     "question":
-        "In a parallel circuit, what happens to the total resistance as more resistors are added?",
+        "What is the primary pharmacologic treatment for pulmonary arterial hypertension (PAH)?",
     "explanation":
-        "In a parallel circuit, the total resistance decreases as more resistors are added.",
-    "incorrect_answer":
-        '["【1】Total resistance increases", "【2】Total resistance remains the same", "【3】Total resistance doubles"]',
-    "correct_answer": '["【0】Total resistance decreases"]',
-    "topic_name": "Definitions, Calculations, Theory, and Plans",
-    "category": "Parallel Circuits",
-    "level": 1,
+        "Endothelin receptor antagonists, such as bosentan, are commonly used to reduce pulmonary vascular resistance in PAH.",
+    "incorrect_answer": ["Corticosteroids", "Anticoagulants", "Beta-blockers"],
+    "correct_answer": ["Endothelin receptor antagonists"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Pulmonary Hypertension",
+    "level": 3,
     "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
+    "exam_title": "Acute Care NP Exam Prep 2024"
   },
   {
-    "uuid": "209j0k1l2m3n4o5p6q7r",
-    "question": "What is the symbol for an AC voltage source on a schematic?",
-    "explanation":
-        "An AC voltage source is typically represented by a circle with a sine wave symbol inside.",
-    "incorrect_answer":
-        '["【1】A square wave symbol", "【2】A straight line", "【3】A plus and minus symbol"]',
-    "correct_answer": '["【0】A circle with a sine wave"]',
-    "topic_name": "Definitions, Calculations, Theory, and Plans",
-    "category": "Symbols",
-    "level": 1,
-    "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
-  },
-  {
-    "uuid": "300a2b3c4d5e6f7g8h9i",
+    "uuid": "q181",
     "question":
-        "What is the formula for calculating total capacitance in a series circuit?",
+        "Which lung condition is associated with alpha-1 antitrypsin deficiency?",
     "explanation":
-        "In a series circuit, the total capacitance is found using 1/C_total = 1/C1 + 1/C2 + ... + 1/Cn.",
-    "incorrect_answer":
-        '["【1】C_total = C1 + C2", "【2】C_total = C1 × C2", "【3】C_total = C1 - C2"]',
-    "correct_answer": '["【0】1/C_total = 1/C1 + 1/C2 + ..."]',
-    "topic_name": "Definitions, Calculations, Theory, and Plans",
-    "category": "Capacitance",
+        "Alpha-1 antitrypsin deficiency is associated with early-onset emphysema, particularly in the lower lobes of the lungs.",
+    "incorrect_answer": [
+      "Asthma",
+      "Bronchiectasis",
+      "Interstitial lung disease"
+    ],
+    "correct_answer": ["Emphysema"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Genetic Disorders",
     "level": 2,
     "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
+    "exam_title": "Acute Care NP Exam Prep 2024"
   },
   {
-    "uuid": "301b3c4d5e6f7g8h9i0j",
+    "uuid": "q182",
     "question":
-        "In a three-phase circuit, what is the phase angle difference between phases?",
+        "What is the most common causative agent of ventilator-associated pneumonia (VAP)?",
     "explanation":
-        "In a three-phase system, each phase is 120 degrees apart to ensure balanced power delivery.",
-    "incorrect_answer": '["【1】90 degrees", "【2】60 degrees", "【3】45 degrees"]',
-    "correct_answer": '["【0】120 degrees"]',
-    "topic_name": "Definitions, Calculations, Theory, and Plans",
-    "category": "Three-Phase Systems",
+        "Pseudomonas aeruginosa is a common cause of ventilator-associated pneumonia in critically ill patients.",
+    "incorrect_answer": [
+      "Staphylococcus aureus",
+      "Escherichia coli",
+      "Klebsiella pneumoniae"
+    ],
+    "correct_answer": ["Pseudomonas aeruginosa"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Respiratory Infections",
     "level": 2,
     "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
+    "exam_title": "Acute Care NP Exam Prep 2024"
   },
   {
-    "uuid": "302c4d5e6f7g8h9i0j1k",
+    "uuid": "q183",
     "question":
-        "What does the symbol 'μ' stand for in electrical calculations?",
+        "Which diagnostic test is most useful in confirming the presence of pleural effusion?",
     "explanation":
-        "The Greek letter μ (mu) represents the prefix micro-, denoting 10^-6.",
-    "incorrect_answer": '["【1】Mili", "【2】Mega", "【3】Kilo"]',
-    "correct_answer": '["【0】Micro"]',
-    "topic_name": "Definitions, Calculations, Theory, and Plans",
-    "category": "Metric Prefixes",
-    "level": 1,
-    "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
-  },
-  {
-    "uuid": "303d5e6f7g8h9i0j1k2l",
-    "question": "How is total inductance calculated in a parallel circuit?",
-    "explanation":
-        "For inductors in parallel, the total inductance is calculated using 1/L_total = 1/L1 + 1/L2 + ...",
-    "incorrect_answer":
-        '["【1】L_total = L1 + L2", "【2】L_total = L1 × L2", "【3】L_total = L1 - L2"]',
-    "correct_answer": '["【0】1/L_total = 1/L1 + 1/L2 + ..."]',
-    "topic_name": "Definitions, Calculations, Theory, and Plans",
-    "category": "Inductance",
+        "Ultrasound is highly sensitive for detecting pleural effusions and can guide thoracentesis.",
+    "incorrect_answer": [
+      "Chest X-ray",
+      "CT scan",
+      "Pulmonary function testing"
+    ],
+    "correct_answer": ["Ultrasound"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Pleural Diseases",
     "level": 2,
     "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
+    "exam_title": "Acute Care NP Exam Prep 2024"
   },
   {
-    "uuid": "304e6f7g8h9i0j1k2l3m",
-    "question": "What is 'kVA' a measure of in an electrical system?",
+    "uuid": "q184",
+    "question":
+        "Which treatment is recommended for idiopathic pulmonary fibrosis (IPF) to slow disease progression?",
     "explanation":
-        "kVA (kilovolt-ampere) is a unit of apparent power in an electrical system, factoring both real power and reactive power.",
-    "incorrect_answer": '["【1】True power", "【2】Current flow", "【3】Heat loss"]',
-    "correct_answer": '["【0】Apparent power"]',
-    "topic_name": "Definitions, Calculations, Theory, and Plans",
-    "category": "Power Measurement",
+        "Antifibrotic agents such as nintedanib are used to slow the progression of idiopathic pulmonary fibrosis.",
+    "incorrect_answer": [
+      "Systemic corticosteroids",
+      "Immunosuppressants",
+      "Long-term antibiotics"
+    ],
+    "correct_answer": ["Antifibrotic agents"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Interstitial Lung Diseases",
+    "level": 3,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q185",
+    "question":
+        "Which of the following physical examination findings is commonly associated with tension pneumothorax?",
+    "explanation":
+        "Tension pneumothorax is often associated with tracheal deviation away from the affected side due to pressure changes.",
+    "incorrect_answer": [
+      "Hyperresonance on percussion on the affected side",
+      "Decreased breath sounds on the affected side",
+      "Tachycardia"
+    ],
+    "correct_answer": ["Tracheal deviation away from the affected side"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Pleural Diseases",
+    "level": 3,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q186",
+    "question":
+        "What is the typical chest X-ray finding in a patient with primary spontaneous pneumothorax?",
+    "explanation":
+        "Primary spontaneous pneumothorax is characterized by a visible pleural line with no lung markings beyond it.",
+    "incorrect_answer": [
+      "Consolidation",
+      "Ground-glass opacities",
+      "Bilateral hilar lymphadenopathy"
+    ],
+    "correct_answer": ["Visible pleural line with no lung markings"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Pleural Diseases",
     "level": 1,
     "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
+    "exam_title": "Acute Care NP Exam Prep 2024"
   },
   {
-    "uuid": "305f7g8h9i0j1k2l3m4n",
+    "uuid": "q187",
     "question":
-        "What formula is used to calculate the impedance in an AC circuit?",
+        "Which clinical condition is characterized by the presence of 'honeycomb lung' on imaging?",
     "explanation":
-        "In an AC circuit, impedance Z is calculated as Z = √(R^2 + (XL - XC)^2).",
-    "incorrect_answer":
-        '["【1】Z = R + XL + XC", "【2】Z = V/I", "【3】Z = R × (XL - XC)"]',
-    "correct_answer": '["【0】Z = √(R^2 + (XL - XC)^2)"]',
-    "topic_name": "Definitions, Calculations, Theory, and Plans",
-    "category": "Impedance",
+        "'Honeycomb lung' is a classic finding in advanced interstitial lung disease, particularly idiopathic pulmonary fibrosis.",
+    "incorrect_answer": [
+      "Chronic obstructive pulmonary disease",
+      "Acute respiratory distress syndrome",
+      "Sarcoidosis"
+    ],
+    "correct_answer": ["Idiopathic pulmonary fibrosis"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Interstitial Lung Diseases",
+    "level": 3,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q188",
+    "question":
+        "Which of the following is a key diagnostic criterion for allergic bronchopulmonary aspergillosis (ABPA)?",
+    "explanation":
+        "Elevated serum IgE levels are a hallmark diagnostic criterion for allergic bronchopulmonary aspergillosis.",
+    "incorrect_answer": [
+      "Positive D-dimer",
+      "Low serum albumin",
+      "Hypocapnia on arterial blood gas"
+    ],
+    "correct_answer": ["Elevated serum IgE levels"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Respiratory Infections",
+    "level": 3,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q189",
+    "question":
+        "What is the first-line treatment for acute bronchospasm in a patient with asthma?",
+    "explanation":
+        "Short-acting beta-agonists (e.g., albuterol) are the first-line treatment for acute bronchospasm.",
+    "incorrect_answer": [
+      "Inhaled corticosteroids",
+      "Leukotriene receptor antagonists",
+      "Long-acting beta-agonists"
+    ],
+    "correct_answer": ["Short-acting beta-agonists"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Asthma Management",
+    "level": 1,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q190",
+    "question":
+        "Which of the following tests is most useful in diagnosing pulmonary hypertension?",
+    "explanation":
+        "Right heart catheterization is the gold standard for diagnosing pulmonary hypertension by directly measuring pulmonary artery pressures.",
+    "incorrect_answer": [
+      "Echocardiogram",
+      "CT angiography",
+      "Pulmonary function testing"
+    ],
+    "correct_answer": ["Right heart catheterization"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Pulmonary Hypertension",
+    "level": 3,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q191",
+    "question":
+        "Which of the following is the hallmark feature of chronic bronchitis in COPD?",
+    "explanation":
+        "Chronic bronchitis is characterized by excessive mucus production and a productive cough for at least three months in two consecutive years.",
+    "incorrect_answer": [
+      "Wheezing",
+      "Airway hyperresponsiveness",
+      "Parenchymal destruction"
+    ],
+    "correct_answer": ["Excessive mucus production"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "COPD Management",
+    "level": 1,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q192",
+    "question":
+        "Which pathogen is most commonly associated with post-viral pneumonia?",
+    "explanation":
+        "Staphylococcus aureus is a common cause of secondary bacterial pneumonia following a viral infection.",
+    "incorrect_answer": [
+      "Klebsiella pneumoniae",
+      "Mycoplasma pneumoniae",
+      "Legionella pneumophila"
+    ],
+    "correct_answer": ["Staphylococcus aureus"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Respiratory Infections",
     "level": 2,
     "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
+    "exam_title": "Acute Care NP Exam Prep 2024"
   },
   {
-    "uuid": "306g8h9i0j1k2l3m4n5o",
-    "question": "What is the main difference between AC and DC current?",
+    "uuid": "q193",
+    "question":
+        "What is the most appropriate initial diagnostic test for suspected pulmonary embolism in a hemodynamically unstable patient?",
     "explanation":
-        "AC (alternating current) changes direction periodically, while DC (direct current) flows in one direction.",
-    "incorrect_answer":
-        '["【1】AC is only used in batteries", "【2】DC changes direction", "【3】AC flows in one direction"]',
-    "correct_answer": '["【0】AC changes direction; DC flows in one direction"]',
-    "topic_name": "Definitions, Calculations, Theory, and Plans",
-    "category": "Basic Electrical Theory",
-    "level": 1,
+        "Bedside echocardiography can rapidly detect right ventricular dysfunction, a sign of massive pulmonary embolism, in unstable patients.",
+    "incorrect_answer": [
+      "CT pulmonary angiography",
+      "D-dimer assay",
+      "Chest X-ray"
+    ],
+    "correct_answer": ["Bedside echocardiography"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Pulmonary Embolism",
+    "level": 3,
     "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
+    "exam_title": "Acute Care NP Exam Prep 2024"
   },
   {
-    "uuid": "307h9i0j1k2l3m4n5o6p",
-    "question": "What is Kirchhoff’s Voltage Law?",
+    "uuid": "q194",
+    "question":
+        "Which condition is characterized by a decreased diffusing capacity for carbon monoxide (DLCO)?",
     "explanation":
-        "Kirchhoff's Voltage Law states that the sum of all voltages around a closed loop is zero.",
-    "incorrect_answer":
-        '["【1】Voltage is constant across all components", "【2】Current is constant around a loop", "【3】Power is the product of voltage and current"]',
-    "correct_answer": '["【0】Sum of voltages around a closed loop is zero"]',
-    "topic_name": "Definitions, Calculations, Theory, and Plans",
-    "category": "Circuit Laws",
+        "Emphysema is associated with destruction of alveolar walls, leading to decreased DLCO.",
+    "incorrect_answer": [
+      "Asthma",
+      "Chronic bronchitis",
+      "Pulmonary hypertension"
+    ],
+    "correct_answer": ["Emphysema"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Pulmonary Function Testing",
     "level": 2,
     "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
+    "exam_title": "Acute Care NP Exam Prep 2024"
   },
   {
-    "uuid": "308i0j1k2l3m4n5o6p7q",
-    "question": "What tool measures electrical current in a circuit?",
+    "uuid": "q195",
+    "question":
+        "Which condition presents with inspiratory stridor and is caused by upper airway obstruction?",
     "explanation":
-        "An ammeter is used to measure the current flowing in a circuit.",
-    "incorrect_answer": '["【1】Voltmeter", "【2】Ohmmeter", "【3】Wattmeter"]',
-    "correct_answer": '["【0】Ammeter"]',
-    "topic_name": "Definitions, Calculations, Theory, and Plans",
-    "category": "Measurement Tools",
+        "Inspiratory stridor is a hallmark sign of laryngotracheobronchitis (croup), a common cause of upper airway obstruction.",
+    "incorrect_answer": ["Asthma", "Bronchiectasis", "Pulmonary fibrosis"],
+    "correct_answer": ["Laryngotracheobronchitis (croup)"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Respiratory Disorders",
     "level": 1,
     "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
+    "exam_title": "Acute Care NP Exam Prep 2024"
   },
   {
-    "uuid": "309j1k2l3m4n5o6p7q8r",
-    "question": "In a transformer, what does the turns ratio affect?",
+    "uuid": "q196",
+    "question":
+        "Which of the following is a common complication of untreated obstructive sleep apnea?",
     "explanation":
-        "The turns ratio of a transformer determines the change in voltage from primary to secondary windings.",
-    "incorrect_answer":
-        '["【1】Current frequency", "【2】Core material", "【3】Impedance of primary coil"]',
-    "correct_answer": '["【0】Voltage between primary and secondary windings"]',
-    "topic_name": "Definitions, Calculations, Theory, and Plans",
-    "category": "Transformers",
+        "Untreated obstructive sleep apnea can lead to systemic hypertension due to repetitive hypoxia and sympathetic activation.",
+    "incorrect_answer": [
+      "Pulmonary embolism",
+      "Pneumothorax",
+      "Acute respiratory distress syndrome"
+    ],
+    "correct_answer": ["Systemic hypertension"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Sleep Disorders",
     "level": 2,
     "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
+    "exam_title": "Acute Care NP Exam Prep 2024"
   },
   {
-    "uuid": "1a2b3c4d5e6f7g8h9i0j",
-    "question": "What is the minimum depth for buried non-metallic conduit?",
-    "explanation":
-        "Non-metallic conduit must be buried at least 18 inches below the surface for safety.",
-    "incorrect_answer": '["【1】12 inches", "【2】24 inches", "【3】30 inches"]',
-    "correct_answer": '["【0】18 inches"]',
-    "topic_name": "Electrical Wiring Methods and Electrical Materials",
-    "category": "Installation Standards",
-    "level": 1,
-    "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
-  },
-  {
-    "uuid": "2a3b4c5d6e7f8g9h0i1j",
-    "question": "What is the primary function of a circuit breaker?",
-    "explanation":
-        "A circuit breaker protects an electrical circuit from overload or short circuits by interrupting the flow of electricity.",
-    "incorrect_answer":
-        '["【1】To increase current", "【2】To store energy", "【3】To enhance voltage"]',
-    "correct_answer": '["【0】To interrupt the flow of electricity"]',
-    "topic_name": "Electrical Wiring Methods and Electrical Materials",
-    "category": "Protection Devices",
-    "level": 1,
-    "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
-  },
-  {
-    "uuid": "3a4b5c6d7e8f9g0h1i2j",
-    "question": "What is the primary advantage of using insulated wires?",
-    "explanation":
-        "Insulated wires prevent accidental contact with conductive materials, reducing the risk of electrical shock.",
-    "incorrect_answer":
-        '["【1】To reduce cost", "【2】To enhance signal strength", "【3】To increase resistance"]',
-    "correct_answer": '["【0】To prevent electrical shock"]',
-    "topic_name": "Electrical Wiring Methods and Electrical Materials",
-    "category": "Wire Insulation",
-    "level": 1,
-    "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
-  },
-  {
-    "uuid": "4a5b6c7d8e9f0g1h2i3j",
+    "uuid": "q197",
     "question":
-        "What type of connector is used to join two pieces of electrical wire?",
+        "Which ventilator setting is adjusted to directly improve oxygenation in ARDS?",
     "explanation":
-        "Wire connectors, such as wire nuts or crimp connectors, are used to join two or more wires together.",
-    "incorrect_answer": '["【1】Locknut", "【2】Bushing", "【3】Coupling"]',
-    "correct_answer": '["【0】Wire connector"]',
-    "topic_name": "Electrical Wiring Methods and Electrical Materials",
-    "category": "Connectors",
-    "level": 1,
+        "Increasing the positive end-expiratory pressure (PEEP) helps improve oxygenation by preventing alveolar collapse.",
+    "incorrect_answer": [
+      "Tidal volume",
+      "Inspiratory-to-expiratory (I:E) ratio",
+      "Respiratory rate"
+    ],
+    "correct_answer": ["Positive end-expiratory pressure (PEEP)"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Ventilator Management",
+    "level": 2,
     "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
+    "exam_title": "Acute Care NP Exam Prep 2024"
   },
   {
-    "uuid": "5a6b7c8d9e0f1g2h3i4j",
+    "uuid": "q198",
+    "question": "What is the most common cause of hemoptysis worldwide?",
+    "explanation":
+        "Tuberculosis is the most common cause of hemoptysis, particularly in developing countries.",
+    "incorrect_answer": [
+      "Bronchogenic carcinoma",
+      "Pulmonary embolism",
+      "Bronchiectasis"
+    ],
+    "correct_answer": ["Tuberculosis"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Respiratory Infections",
+    "level": 1,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q199",
+    "question": "Which of the following is the primary symptom of pleuritis?",
+    "explanation":
+        "Sharp, localized chest pain that worsens with inspiration or coughing is characteristic of pleuritis.",
+    "incorrect_answer": ["Wheezing", "Hemoptysis", "Chronic cough"],
+    "correct_answer": ["Sharp chest pain with inspiration"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Pleural Diseases",
+    "level": 1,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q200",
     "question":
-        "Which type of wire is rated for use in high-temperature environments?",
+        "Which imaging modality is most appropriate for evaluating interstitial lung disease?",
     "explanation":
-        "Silicone-insulated wire is rated for high-temperature environments due to its ability to withstand high heat.",
-    "incorrect_answer": '["【1】PVC wire", "【2】Rubber wire", "【3】Aluminum wire"]',
-    "correct_answer": '["【0】Silicone-insulated wire"]',
-    "topic_name": "Electrical Wiring Methods and Electrical Materials",
-    "category": "Wire Types",
-    "level": 1,
+        "High-resolution CT is the preferred imaging study for evaluating interstitial lung disease as it provides detailed visualization of lung parenchyma.",
+    "incorrect_answer": [
+      "Chest X-ray",
+      "Pulmonary angiography",
+      "Ventilation-perfusion (V/Q) scan"
+    ],
+    "correct_answer": ["High-resolution CT"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Interstitial Lung Diseases",
+    "level": 2,
     "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
+    "exam_title": "Acute Care NP Exam Prep 2024"
   },
   {
-    "uuid": "6a7b8c9d0e1f2g3h4i5j",
-    "question": "What does the term 'ampacity' refer to?",
-    "explanation":
-        "'Ampacity' refers to the maximum amount of electric current a conductor or device can carry before sustaining immediate or progressive deterioration.",
-    "incorrect_answer":
-        '["【1】Voltage rating", "【2】Resistance", "【3】Power rating"]',
-    "correct_answer": '["【0】Maximum current capacity"]',
-    "topic_name": "Electrical Wiring Methods and Electrical Materials",
-    "category": "Basic Concepts",
-    "level": 1,
-    "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
-  },
-  {
-    "uuid": "7a8b9c0d1e2f3g4h5i6j",
-    "question": "Which wiring method uses a metal conduit for protection?",
-    "explanation":
-        "Metal conduit wiring provides physical protection for electrical wires and is often used in exposed locations.",
-    "incorrect_answer":
-        '["【1】Open wiring", "【2】Romex wiring", "【3】Knob and tube wiring"]',
-    "correct_answer": '["【0】Metal conduit wiring"]',
-    "topic_name": "Electrical Wiring Methods and Electrical Materials",
-    "category": "Wiring Methods",
-    "level": 1,
-    "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
-  },
-  {
-    "uuid": "8a9b0c1d2e3f4g5h6i7j",
-    "question": "What is the main purpose of using circuit grounding?",
-    "explanation":
-        "Circuit grounding provides a path for electrical current to flow safely to the ground in the event of a fault, reducing the risk of shock or fire.",
-    "incorrect_answer":
-        '["【1】To increase resistance", "【2】To reduce current", "【3】To enhance voltage"]',
-    "correct_answer": '["【0】To provide a safe path for current"]',
-    "topic_name": "Electrical Wiring Methods and Electrical Materials",
-    "category": "Grounding",
-    "level": 1,
-    "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
-  },
-  {
-    "uuid": "9a0b1c2d3e4f5g6h7i8j",
-    "question": "What is the typical insulation rating for residential wiring?",
-    "explanation":
-        "Typical insulation rating for residential wiring is 600 volts, suitable for most home applications.",
-    "incorrect_answer": '["【1】300 volts", "【2】1000 volts", "【3】2000 volts"]',
-    "correct_answer": '["【0】600 volts"]',
-    "topic_name": "Electrical Wiring Methods and Electrical Materials",
-    "category": "Insulation Ratings",
-    "level": 1,
-    "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
-  },
-  {
-    "uuid": "0a1b2c3d4e5f6g7h8i9j",
+    "uuid": "q201",
     "question":
-        "Which type of wire is often used for low-voltage lighting systems?",
+        "Which of the following pulmonary conditions is associated with digital clubbing?",
     "explanation":
-        "Low-voltage landscape lighting systems typically use 12 or 14 AWG wire for safety and efficiency.",
-    "incorrect_answer": '["【1】8 AWG", "【2】10 AWG", "【3】16 AWG"]',
-    "correct_answer": '["【0】12 or 14 AWG"]',
-    "topic_name": "Electrical Wiring Methods and Electrical Materials",
-    "category": "Wire Sizes",
-    "level": 1,
+        "Digital clubbing is commonly seen in pulmonary conditions like lung cancer, bronchiectasis, and interstitial lung disease.",
+    "incorrect_answer": ["Chronic bronchitis", "Asthma", "Acute bronchitis"],
+    "correct_answer": ["Bronchiectasis"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Physical Examination Findings",
+    "level": 2,
     "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
+    "exam_title": "Acute Care NP Exam Prep 2024"
   },
   {
-    "uuid": "1a2b3c4d5e6f7g8h9j0k",
+    "uuid": "q202",
+    "question": "What is the most common cause of exudative pleural effusion?",
+    "explanation":
+        "Pneumonia is the leading cause of exudative pleural effusion, which results from increased capillary permeability.",
+    "incorrect_answer": [
+      "Congestive heart failure",
+      "Cirrhosis",
+      "Nephrotic syndrome"
+    ],
+    "correct_answer": ["Pneumonia"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Pleural Diseases",
+    "level": 1,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q203",
     "question":
-        "What type of wiring method involves running wires inside walls and ceilings?",
+        "Which medication is recommended for the prevention of exercise-induced bronchospasm?",
     "explanation":
-        "Concealed wiring involves running electrical wires inside walls and ceilings to provide a clean look.",
-    "incorrect_answer":
-        '["【1】Surface-mounted wiring", "【2】Open wiring", "【3】Exposed wiring"]',
-    "correct_answer": '["【0】Concealed wiring"]',
-    "topic_name": "Electrical Wiring Methods and Electrical Materials",
-    "category": "Wiring Methods",
+        "Short-acting beta-agonists like albuterol are the treatment of choice for preventing exercise-induced bronchospasm.",
+    "incorrect_answer": [
+      "Inhaled corticosteroids",
+      "Long-acting beta-agonists",
+      "Leukotriene receptor antagonists"
+    ],
+    "correct_answer": ["Short-acting beta-agonists"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Asthma Management",
     "level": 1,
     "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
+    "exam_title": "Acute Care NP Exam Prep 2024"
   },
   {
-    "uuid": "2a3b4c5d6e7f8g9h0j1k",
-    "question": "Which device is used to measure electrical current?",
-    "explanation":
-        "An ammeter is used to measure the amount of electrical current in a circuit.",
-    "incorrect_answer": '["【1】Voltmeter", "【2】Wattmeter", "【3】Ohmmeter"]',
-    "correct_answer": '["【0】Ammeter"]',
-    "topic_name": "Electrical Wiring Methods and Electrical Materials",
-    "category": "Measuring Devices",
-    "level": 1,
-    "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
-  },
-  {
-    "uuid": "3a4b5c6d7e8f9g0h1j2k",
+    "uuid": "q204",
     "question":
-        "What type of wiring is considered the safest for residential use?",
+        "What is the mechanism of hypoxemia in acute respiratory distress syndrome (ARDS)?",
     "explanation":
-        "Romex wiring is designed for safety and ease of installation in residential settings.",
-    "incorrect_answer":
-        '["【1】Knob and tube wiring", "【2】BX wiring", "【3】Flexible cord wiring"]',
-    "correct_answer": '["【0】Romex wiring"]',
-    "topic_name": "Electrical Wiring Methods and Electrical Materials",
-    "category": "Wiring Types",
-    "level": 1,
+        "ARDS is characterized by intrapulmonary shunting due to alveolar collapse and fluid accumulation, leading to refractory hypoxemia.",
+    "incorrect_answer": [
+      "Hypoventilation",
+      "High V/Q mismatch",
+      "Diffusion limitation"
+    ],
+    "correct_answer": ["Intrapulmonary shunting"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Critical Care",
+    "level": 2,
     "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
+    "exam_title": "Acute Care NP Exam Prep 2024"
   },
   {
-    "uuid": "4a5b6c7d8e9f0g1h2j3k",
-    "question": "What does the 'N' in NM cable stand for?",
-    "explanation":
-        "The 'N' in NM cable stands for non-metallic, indicating that the cable is insulated.",
-    "incorrect_answer": '["【1】New", "【2】Neutral", "【3】Normal"]',
-    "correct_answer": '["【0】Non-metallic"]',
-    "topic_name": "Electrical Wiring Methods and Electrical Materials",
-    "category": "Cable Types",
-    "level": 1,
-    "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
-  },
-  {
-    "uuid": "5a6b7c8d9e0f1g2h3j4k",
-    "question": "What is the purpose of a GFCI outlet?",
-    "explanation":
-        "A GFCI outlet protects against electrical shocks by cutting off power if it detects an imbalance in current.",
-    "incorrect_answer":
-        '["【1】To increase voltage", "【2】To measure current", "【3】To reduce energy consumption"]',
-    "correct_answer": '["【0】To protect against electrical shocks"]',
-    "topic_name": "Electrical Wiring Methods and Electrical Materials",
-    "category": "Outlets",
-    "level": 1,
-    "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
-  },
-  {
-    "uuid": "6a7b8c9d0e1f2g3h4j5k",
+    "uuid": "q205",
     "question":
-        "What type of wire is typically used for heavy-duty applications?",
+        "Which pulmonary function test finding is consistent with obstructive lung disease?",
     "explanation":
-        "Larger gauge wires, such as 6 AWG or 8 AWG, are used for heavy-duty applications to handle higher current loads.",
-    "incorrect_answer": '["【1】14 AWG", "【2】16 AWG", "【3】20 AWG"]',
-    "correct_answer": '["【0】6 AWG or 8 AWG"]',
-    "topic_name": "Electrical Wiring Methods and Electrical Materials",
-    "category": "Wire Sizes",
+        "A decreased FEV1/FVC ratio is a hallmark feature of obstructive lung diseases such as COPD and asthma.",
+    "incorrect_answer": [
+      "Increased FEV1",
+      "Normal FEV1/FVC ratio",
+      "Decreased total lung capacity"
+    ],
+    "correct_answer": ["Decreased FEV1/FVC ratio"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Pulmonary Function Testing",
     "level": 1,
     "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
+    "exam_title": "Acute Care NP Exam Prep 2024"
   },
   {
-    "uuid": "7a8b9c0d1e2f3g4h5j6k",
-    "question": "What is the purpose of a disconnect switch?",
-    "explanation":
-        "A disconnect switch provides a way to safely cut off power to a circuit for maintenance or repair.",
-    "incorrect_answer":
-        '["【1】To increase voltage", "【2】To connect circuits", "【3】To measure current"]',
-    "correct_answer": '["【0】To safely cut off power"]',
-    "topic_name": "Electrical Wiring Methods and Electrical Materials",
-    "category": "Switches",
-    "level": 1,
-    "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
-  },
-  {
-    "uuid": "8a9b0c1d2e3f4g5h6j7k",
+    "uuid": "q206",
     "question":
-        "What is the standard wire gauge (AWG) for most household outlets?",
+        "What is the next step in the management of a patient with a pneumothorax occupying 20% of the hemithorax and stable vital signs?",
     "explanation":
-        "Most household outlets are typically wired with 12 AWG wire, suitable for most circuits.",
-    "incorrect_answer": '["【1】10 AWG", "【2】14 AWG", "【3】16 AWG"]',
-    "correct_answer": '["【0】12 AWG"]',
-    "topic_name": "Electrical Wiring Methods and Electrical Materials",
-    "category": "Wire Sizes",
-    "level": 1,
+        "Observation with supplemental oxygen is appropriate for small, stable pneumothoraces as it can accelerate reabsorption of air.",
+    "incorrect_answer": [
+      "Immediate chest tube placement",
+      "Needle decompression",
+      "Thoracotomy"
+    ],
+    "correct_answer": ["Observation with supplemental oxygen"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Pleural Diseases",
+    "level": 2,
     "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
+    "exam_title": "Acute Care NP Exam Prep 2024"
   },
   {
-    "uuid": "9a0b1c2d3e4f5g6h7j8k",
-    "question": "What is the primary function of electrical conduit?",
-    "explanation":
-        "Electrical conduit protects electrical wiring from physical damage and environmental conditions.",
-    "incorrect_answer":
-        '["【1】To increase voltage", "【2】To store energy", "【3】To reduce resistance"]',
-    "correct_answer": '["【0】To protect electrical wiring"]',
-    "topic_name": "Electrical Wiring Methods and Electrical Materials",
-    "category": "Conduit Use",
-    "level": 1,
-    "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
-  },
-  {
-    "uuid": "0a1b2c3d4e5f6g7h8j9k",
-    "question": "Which of the following is NOT a type of electrical conduit?",
-    "explanation":
-        "While PVC, EMT, and flexible metal conduit are common types, 'organic conduit' is not a recognized type.",
-    "incorrect_answer": '["【1】PVC", "【2】EMT", "【3】Flexible metal"]',
-    "correct_answer": '["【0】Organic conduit"]',
-    "topic_name": "Electrical Wiring Methods and Electrical Materials",
-    "category": "Conduit Types",
-    "level": 1,
-    "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
-  },
-  {
-    "uuid": "1a2b3c4d5e6f7g8h9j0k",
-    "question": "What is the role of a wire gauge in electrical systems?",
-    "explanation":
-        "Wire gauge determines the current-carrying capacity of the wire; smaller gauges can carry more current.",
-    "incorrect_answer":
-        '["【1】To measure voltage", "【2】To reduce heat", "【3】To increase resistance"]',
-    "correct_answer": '["【0】To determine current-carrying capacity"]',
-    "topic_name": "Electrical Wiring Methods and Electrical Materials",
-    "category": "Wire Gauge",
-    "level": 1,
-    "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
-  },
-  {
-    "uuid": "2a3b4c5d6e7f8g9h0j1k",
+    "uuid": "q207",
     "question":
-        "What type of cable is used for outdoor applications and is UV-resistant?",
+        "Which of the following is the hallmark imaging finding in idiopathic pulmonary fibrosis?",
     "explanation":
-        "UF (Underground Feeder) cable is designed for outdoor use and is resistant to ultraviolet light.",
-    "incorrect_answer": '["【1】NM cable", "【2】THHN cable", "【3】MC cable"]',
-    "correct_answer": '["【0】UF cable"]',
-    "topic_name": "Electrical Wiring Methods and Electrical Materials",
-    "category": "Cable Types",
-    "level": 1,
+        "Bilateral basal reticulonodular opacities with honeycombing on high-resolution CT are characteristic of idiopathic pulmonary fibrosis.",
+    "incorrect_answer": [
+      "Bilateral pleural effusions",
+      "Ground-glass opacities",
+      "Centrilobular nodules"
+    ],
+    "correct_answer": ["Honeycombing and basal reticulonodular opacities"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Interstitial Lung Diseases",
+    "level": 2,
     "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
+    "exam_title": "Acute Care NP Exam Prep 2024"
   },
   {
-    "uuid": "3a4b5c6d7e8f9g0h1j2k",
-    "question": "Which color indicates a hot wire in electrical systems?",
-    "explanation":
-        "Red and black wires typically indicate hot wires in electrical circuits.",
-    "incorrect_answer": '["【1】White", "【2】Green", "【3】Blue"]',
-    "correct_answer": '["【0】Red or black"]',
-    "topic_name": "Electrical Wiring Methods and Electrical Materials",
-    "category": "Wire Color Codes",
-    "level": 1,
-    "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
-  },
-  {
-    "uuid": "4a5b6c7d8e9f0g1h2j3k",
-    "question": "What is the main purpose of a circuit panel?",
-    "explanation":
-        "A circuit panel distributes electrical power to various circuits in a building and houses circuit breakers.",
-    "incorrect_answer":
-        '["【1】To store energy", "【2】To measure voltage", "【3】To increase power"]',
-    "correct_answer": '["【0】To distribute electrical power"]',
-    "topic_name": "Electrical Wiring Methods and Electrical Materials",
-    "category": "Panels",
-    "level": 1,
-    "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
-  },
-  {
-    "uuid": "5a6b7c8d9e0f1g2h3j4k",
+    "uuid": "q208",
     "question":
-        "What type of device is used to protect circuits from overloads?",
+        "What is the most appropriate treatment for tension pneumothorax in the emergency setting?",
     "explanation":
-        "Circuit breakers are devices that automatically stop the flow of electricity when an overload occurs.",
-    "incorrect_answer": '["【1】Fuses", "【2】Transformers", "【3】Switches"]',
-    "correct_answer": '["【0】Circuit breakers"]',
-    "topic_name": "Electrical Wiring Methods and Electrical Materials",
-    "category": "Protection Devices",
+        "Needle decompression is the immediate life-saving treatment for tension pneumothorax, followed by chest tube placement.",
+    "incorrect_answer": ["Supplemental oxygen", "Thoracentesis", "Observation"],
+    "correct_answer": ["Needle decompression"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Critical Care",
     "level": 1,
     "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
+    "exam_title": "Acute Care NP Exam Prep 2024"
   },
   {
-    "uuid": "6a7b8c9d0e1f2g3h4j5k",
-    "question": "What is the typical use of 14 AWG wire?",
-    "explanation":
-        "14 AWG wire is commonly used for general-purpose circuits, including lighting and receptacle circuits.",
-    "incorrect_answer":
-        '["【1】Heavy-duty equipment", "【2】Low-voltage systems", "【3】High-power appliances"]',
-    "correct_answer": '["【0】General-purpose circuits"]',
-    "topic_name": "Electrical Wiring Methods and Electrical Materials",
-    "category": "Wire Uses",
-    "level": 1,
-    "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
-  },
-  {
-    "uuid": "7a8b9c0d1e2f3g4h5j6k",
-    "question": "Which of the following is a common type of flexible cable?",
-    "explanation":
-        "SO cord is a common type of flexible cable used in power supply applications.",
-    "incorrect_answer": '["【1】THHN", "【2】NM", "【3】EMT"]',
-    "correct_answer": '["【0】SO cord"]',
-    "topic_name": "Electrical Wiring Methods and Electrical Materials",
-    "category": "Cable Types",
-    "level": 1,
-    "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
-  },
-  {
-    "uuid": "8a9b0c1d2e3f4g5h6j7k",
-    "question": "What type of wire is suitable for wet locations?",
-    "explanation":
-        "Wires rated for wet locations, such as UF or THWN, are designed to withstand moisture.",
-    "incorrect_answer": '["【1】NM cable", "【2】Romex", "【3】Aluminum wire"]',
-    "correct_answer": '["【0】UF or THWN"]',
-    "topic_name": "Electrical Wiring Methods and Electrical Materials",
-    "category": "Wire Ratings",
-    "level": 1,
-    "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
-  },
-  {
-    "uuid": "9a0b1c2d3e4f5g6h7j8k",
+    "uuid": "q209",
     "question":
-        "Which material is commonly used for residential electrical wire?",
+        "Which of the following is an early sign of hypercapnia in patients with chronic obstructive pulmonary disease?",
     "explanation":
-        "Copper is the most commonly used material for residential electrical wiring due to its excellent conductivity.",
-    "incorrect_answer": '["【1】Aluminum", "【2】Steel", "【3】Plastic"]',
-    "correct_answer": '["【0】Copper"]',
-    "topic_name": "Electrical Wiring Methods and Electrical Materials",
-    "category": "Wire Materials",
-    "level": 1,
+        "Morning headaches are an early sign of hypercapnia due to nocturnal hypoventilation in patients with COPD.",
+    "incorrect_answer": [
+      "Cyanosis",
+      "Peripheral edema",
+      "Altered mental status"
+    ],
+    "correct_answer": ["Morning headaches"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "COPD Management",
+    "level": 2,
     "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
+    "exam_title": "Acute Care NP Exam Prep 2024"
   },
   {
-    "uuid": "0a1b2c3d4e5f6g7h8j9k",
-    "question": "What is the typical installation method for wiring in attics?",
-    "explanation":
-        "Wiring in attics is usually installed in conduit or secured to the framing to protect it from physical damage.",
-    "incorrect_answer":
-        '["【1】Loosely placed", "【2】Exposed on the floor", "【3】Hanging freely"]',
-    "correct_answer": '["【0】Secured to framing or in conduit"]',
-    "topic_name": "Electrical Wiring Methods and Electrical Materials",
-    "category": "Installation Methods",
-    "level": 1,
-    "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
-  },
-  {
-    "uuid": "1a2b3c4d5e6f7g8h9j0k",
-    "question": "Which device is commonly used to convert AC to DC?",
-    "explanation":
-        "A rectifier is used to convert alternating current (AC) to direct current (DC).",
-    "incorrect_answer": '["【1】Inverter", "【2】Transformer", "【3】Capacitor"]',
-    "correct_answer": '["【0】Rectifier"]',
-    "topic_name": "Electrical Wiring Methods and Electrical Materials",
-    "category": "Conversion Devices",
-    "level": 1,
-    "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
-  },
-  {
-    "uuid": "2a3b4c5d6e7f8g9h0j1k",
-    "question": "What is the purpose of a transformer?",
-    "explanation":
-        "A transformer is used to change the voltage level in an AC circuit, either increasing or decreasing it.",
-    "incorrect_answer":
-        '["【1】To store energy", "【2】To convert DC to AC", "【3】To measure current"]',
-    "correct_answer": '["【0】To change voltage levels"]',
-    "topic_name": "Electrical Wiring Methods and Electrical Materials",
-    "category": "Transformers",
-    "level": 1,
-    "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
-  },
-  {
-    "uuid": "3a4b5c6d7e8f9g0h1j2k",
+    "uuid": "q210",
     "question":
-        "Which is a common type of electrical box used for wiring connections?",
+        "Which inhaled medication class is considered the first-line treatment for stable COPD to improve airflow and reduce symptoms?",
     "explanation":
-        "Junction boxes are commonly used for making electrical connections and protecting them.",
-    "incorrect_answer": '["【1】Toolbox", "【2】Storage box", "【3】Control box"]',
-    "correct_answer": '["【0】Junction box"]',
-    "topic_name": "Electrical Wiring Methods and Electrical Materials",
-    "category": "Boxes",
+        "Long-acting beta-agonists (LABAs) improve airflow and are the cornerstone of maintenance therapy for stable COPD.",
+    "incorrect_answer": [
+      "Short-acting beta-agonists",
+      "Inhaled corticosteroids",
+      "Oral theophylline"
+    ],
+    "correct_answer": ["Long-acting beta-agonists"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "COPD Management",
     "level": 1,
     "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
+    "exam_title": "Acute Care NP Exam Prep 2024"
   },
   {
-    "uuid": "4a5b6c7d8e9f0g1h2j3k",
-    "question": "What is the function of a relay in an electrical circuit?",
-    "explanation":
-        "A relay is an electrically operated switch used to control a circuit by a low-power signal.",
-    "incorrect_answer":
-        '["【1】To increase current", "【2】To measure voltage", "【3】To store energy"]',
-    "correct_answer": '["【0】To control a circuit"]',
-    "topic_name": "Electrical Wiring Methods and Electrical Materials",
-    "category": "Control Devices",
-    "level": 1,
-    "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
-  },
-  {
-    "uuid": "5a6b7c8d9e0f1g2h3j4k",
-    "question": "What is a common cause of electrical fires?",
-    "explanation":
-        "Electrical fires can often be caused by overloaded circuits or faulty wiring.",
-    "incorrect_answer":
-        '["【1】Low power consumption", "【2】Proper installation", "【3】Quality materials"]',
-    "correct_answer": '["【0】Overloaded circuits"]',
-    "topic_name": "Electrical Wiring Methods and Electrical Materials",
-    "category": "Safety",
-    "level": 1,
-    "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
-  },
-  {
-    "uuid": "6a7b8c9d0e1f2g3h4j5k",
-    "question": "What does the term 'voltage drop' refer to?",
-    "explanation":
-        "Voltage drop is the reduction in voltage in an electrical circuit as energy is used.",
-    "incorrect_answer":
-        '["【1】Voltage increase", "【2】Power gain", "【3】Energy storage"]',
-    "correct_answer": '["【0】Reduction in voltage"]',
-    "topic_name": "Electrical Wiring Methods and Electrical Materials",
-    "category": "Basic Concepts",
-    "level": 1,
-    "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
-  },
-  {
-    "uuid": "7a8b9c0d1e2f3g4h5j6k",
-    "question": "What is the role of a capacitor in electrical circuits?",
-    "explanation":
-        "A capacitor stores and releases electrical energy in a circuit, smoothing out fluctuations.",
-    "incorrect_answer":
-        '["【1】To convert AC to DC", "【2】To increase voltage", "【3】To measure current"]',
-    "correct_answer": '["【0】To store electrical energy"]',
-    "topic_name": "Electrical Wiring Methods and Electrical Materials",
-    "category": "Passive Components",
-    "level": 1,
-    "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
-  },
-  {
-    "uuid": "8a9b0c1d2e3f4g5h6j7k",
-    "question": "What does the term 'short circuit' mean?",
-    "explanation":
-        "A short circuit occurs when a low-resistance path forms, allowing excess current to flow and potentially causing a fire.",
-    "incorrect_answer":
-        '["【1】High resistance flow", "【2】Normal current flow", "【3】Power loss"]',
-    "correct_answer": '["【0】Low-resistance path for current"]',
-    "topic_name": "Electrical Wiring Methods and Electrical Materials",
-    "category": "Basic Concepts",
-    "level": 1,
-    "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
-  },
-  {
-    "uuid": "9a0b1c2d3e4f5g6h7j8k",
+    "uuid": "q211",
     "question":
-        "What does the term 'grounding' refer to in electrical systems?",
+        "A 60-year-old patient with COPD presents with an acute exacerbation. Which blood gas finding is most consistent with acute-on-chronic respiratory failure?",
     "explanation":
-        "Grounding provides a safe path for electricity to follow in case of a fault, reducing the risk of shock or fire.",
-    "incorrect_answer":
-        '["【1】Storing energy", "【2】Increasing voltage", "【3】Measuring current"]',
-    "correct_answer": '["【0】Providing a safe path for electricity"]',
-    "topic_name": "Electrical Wiring Methods and Electrical Materials",
-    "category": "Safety",
+        "Acute-on-chronic respiratory failure in COPD is characterized by elevated PaCO2 and decreased pH, indicating respiratory acidosis.",
+    "incorrect_answer": [
+      "pH 7.45, PaCO2 30 mm Hg",
+      "pH 7.50, PaCO2 25 mm Hg",
+      "pH 7.35, PaCO2 40 mm Hg"
+    ],
+    "correct_answer": ["pH 7.30, PaCO2 55 mm Hg"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "COPD Management",
+    "level": 2,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q212",
+    "question":
+        "Which diagnostic test is used to confirm obstructive sleep apnea (OSA)?",
+    "explanation":
+        "Polysomnography is the gold standard for diagnosing obstructive sleep apnea, as it monitors sleep patterns, airflow, and oxygen saturation.",
+    "incorrect_answer": [
+      "Chest X-ray",
+      "Spirometry",
+      "Arterial blood gas analysis"
+    ],
+    "correct_answer": ["Polysomnography"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Sleep Disorders",
     "level": 1,
     "status": 1,
-    "exam_title": "Electrician Exam Prep Pro 2024"
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q213",
+    "question":
+        "What is the most likely cause of post-operative hypoxemia in a patient who underwent major abdominal surgery?",
+    "explanation":
+        "Atelectasis is the most common cause of hypoxemia in post-operative patients due to shallow breathing and impaired cough reflex.",
+    "incorrect_answer": [
+      "Pulmonary embolism",
+      "Pneumothorax",
+      "Pleural effusion"
+    ],
+    "correct_answer": ["Atelectasis"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Post-Operative Complications",
+    "level": 1,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q214",
+    "question":
+        "A 45-year-old male presents with sudden onset dyspnea and pleuritic chest pain. His D-dimer is elevated. What is the next step in management?",
+    "explanation":
+        "CT pulmonary angiography is the preferred imaging modality to confirm the diagnosis of pulmonary embolism in patients with elevated D-dimer.",
+    "incorrect_answer": [
+      "Perform a chest X-ray",
+      "Start anticoagulation without further testing",
+      "Order a ventilation-perfusion (V/Q) scan"
+    ],
+    "correct_answer": ["Order CT pulmonary angiography"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Pulmonary Embolism",
+    "level": 2,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q215",
+    "question":
+        "Which of the following is the primary treatment for a patient diagnosed with primary spontaneous pneumothorax with minimal symptoms?",
+    "explanation":
+        "Observation with supplemental oxygen is appropriate for small, spontaneous pneumothoraces in stable patients.",
+    "incorrect_answer": [
+      "Needle decompression",
+      "Chest tube placement",
+      "Thoracotomy"
+    ],
+    "correct_answer": ["Observation with supplemental oxygen"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Pleural Diseases",
+    "level": 1,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q216",
+    "question":
+        "What is the characteristic finding on pulmonary function testing for restrictive lung disease?",
+    "explanation":
+        "Restrictive lung diseases are characterized by reduced total lung capacity (TLC) and preserved or increased FEV1/FVC ratio.",
+    "incorrect_answer": [
+      "Decreased FEV1/FVC ratio",
+      "Increased residual volume",
+      "Increased total lung capacity"
+    ],
+    "correct_answer": ["Decreased total lung capacity"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Pulmonary Function Testing",
+    "level": 2,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q217",
+    "question":
+        "Which of the following medications is most effective for the treatment of sarcoidosis with pulmonary involvement?",
+    "explanation":
+        "Corticosteroids are the first-line treatment for sarcoidosis to reduce inflammation and improve symptoms.",
+    "incorrect_answer": ["Methotrexate", "Azathioprine", "Cyclophosphamide"],
+    "correct_answer": ["Corticosteroids"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Interstitial Lung Diseases",
+    "level": 2,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q218",
+    "question":
+        "Which intervention is recommended to prevent ventilator-associated pneumonia (VAP) in intubated patients?",
+    "explanation":
+        "Head-of-bed elevation to 30–45 degrees reduces the risk of ventilator-associated pneumonia by minimizing aspiration.",
+    "incorrect_answer": [
+      "Prophylactic antibiotics",
+      "Frequent suctioning of the endotracheal tube",
+      "Routine changing of ventilator circuits"
+    ],
+    "correct_answer": ["Head-of-bed elevation to 30–45 degrees"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Critical Care",
+    "level": 2,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q219",
+    "question":
+        "What is the best initial diagnostic test for a suspected pleural effusion?",
+    "explanation":
+        "Chest X-ray is the first-line diagnostic tool for detecting pleural effusions and assessing their size and location.",
+    "incorrect_answer": [
+      "CT scan of the chest",
+      "Ultrasound of the chest",
+      "Thoracentesis"
+    ],
+    "correct_answer": ["Chest X-ray"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Pleural Diseases",
+    "level": 1,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q220",
+    "question":
+        "Which organism is the most common cause of ventilator-associated pneumonia (VAP)?",
+    "explanation":
+        "Pseudomonas aeruginosa is a common pathogen in ventilator-associated pneumonia, particularly in hospitalized patients.",
+    "incorrect_answer": [
+      "Streptococcus pneumoniae",
+      "Legionella pneumophila",
+      "Mycoplasma pneumoniae"
+    ],
+    "correct_answer": ["Pseudomonas aeruginosa"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Respiratory Infections",
+    "level": 2,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q221",
+    "question":
+        "Which of the following is the most common cause of chronic cough in non-smokers with normal chest X-rays?",
+    "explanation":
+        "Postnasal drip syndrome is the leading cause of chronic cough in non-smokers with normal imaging studies.",
+    "incorrect_answer": [
+      "Chronic obstructive pulmonary disease",
+      "Asthma",
+      "Gastroesophageal reflux disease"
+    ],
+    "correct_answer": ["Postnasal drip syndrome"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Cough and Airway Disorders",
+    "level": 1,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q222",
+    "question":
+        "A patient presents with hemoptysis, weight loss, and night sweats. Chest imaging shows a cavitary lesion in the upper lobe. What is the most likely diagnosis?",
+    "explanation":
+        "Tuberculosis typically presents with upper lobe cavitary lesions, hemoptysis, weight loss, and night sweats.",
+    "incorrect_answer": ["Lung abscess", "Pulmonary embolism", "Sarcoidosis"],
+    "correct_answer": ["Tuberculosis"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Respiratory Infections",
+    "level": 2,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q223",
+    "question": "What is the primary treatment for tension pneumothorax?",
+    "explanation":
+        "Needle decompression followed by chest tube placement is the life-saving intervention for tension pneumothorax.",
+    "incorrect_answer": [
+      "High-flow oxygen therapy",
+      "Observation and monitoring",
+      "Thoracentesis"
+    ],
+    "correct_answer": ["Needle decompression followed by chest tube placement"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Pleural Diseases",
+    "level": 1,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q224",
+    "question":
+        "Which of the following conditions is most likely to cause a chronic hypoxemic respiratory failure?",
+    "explanation":
+        "Chronic obstructive pulmonary disease is a common cause of hypoxemic respiratory failure due to impaired gas exchange.",
+    "incorrect_answer": [
+      "Acute pulmonary embolism",
+      "Pneumothorax",
+      "Bronchiectasis"
+    ],
+    "correct_answer": ["Chronic obstructive pulmonary disease"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Chronic Respiratory Diseases",
+    "level": 2,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q225",
+    "question":
+        "Which diagnostic finding is characteristic of asthma on spirometry?",
+    "explanation":
+        "Reversible airway obstruction, defined as an increase in FEV1 of 12% or more after bronchodilator administration, is a hallmark of asthma.",
+    "incorrect_answer": [
+      "Decreased FVC with normal FEV1/FVC",
+      "Normal spirometry with exercise-induced symptoms",
+      "Reduced DLCO without obstruction"
+    ],
+    "correct_answer": ["Reversible airway obstruction"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Asthma Management",
+    "level": 2,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q226",
+    "question":
+        "A patient with cystic fibrosis presents with increased cough and purulent sputum. Which organism is most likely responsible for the infection?",
+    "explanation":
+        "Pseudomonas aeruginosa is a common pathogen in cystic fibrosis exacerbations, particularly in older patients.",
+    "incorrect_answer": [
+      "Klebsiella pneumoniae",
+      "Staphylococcus aureus",
+      "Haemophilus influenzae"
+    ],
+    "correct_answer": ["Pseudomonas aeruginosa"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Respiratory Infections",
+    "level": 2,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q227",
+    "question":
+        "Which of the following is a common complication of untreated obstructive sleep apnea (OSA)?",
+    "explanation":
+        "Untreated OSA can lead to systemic hypertension, increasing cardiovascular risks.",
+    "incorrect_answer": ["Pulmonary embolism", "Pneumothorax", "Lung fibrosis"],
+    "correct_answer": ["Systemic hypertension"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Sleep Disorders",
+    "level": 1,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q228",
+    "question":
+        "What is the recommended initial treatment for acute respiratory distress syndrome (ARDS)?",
+    "explanation":
+        "Low tidal volume mechanical ventilation reduces ventilator-induced lung injury in ARDS patients.",
+    "incorrect_answer": [
+      "High tidal volume ventilation",
+      "Routine use of corticosteroids",
+      "Early tracheostomy"
+    ],
+    "correct_answer": ["Low tidal volume mechanical ventilation"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Critical Care",
+    "level": 2,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q229",
+    "question":
+        "A 35-year-old male with a recent upper respiratory infection presents with pleuritic chest pain and dyspnea. A chest X-ray shows small pleural effusions. What is the likely diagnosis?",
+    "explanation":
+        "Viral pleuritis often occurs after a viral upper respiratory infection and can present with pleuritic chest pain and small effusions.",
+    "incorrect_answer": ["Pneumonia", "Pulmonary embolism", "Tuberculosis"],
+    "correct_answer": ["Viral pleuritis"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Pleural Diseases",
+    "level": 1,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q230",
+    "question":
+        "Which of the following is the most effective long-term treatment for smoking cessation in patients with COPD?",
+    "explanation":
+        "Combination therapy with pharmacologic agents like varenicline and counseling increases long-term success rates for smoking cessation.",
+    "incorrect_answer": [
+      "Nicotine gum alone",
+      "Counseling alone",
+      "E-cigarettes"
+    ],
+    "correct_answer": ["Combination of pharmacologic therapy and counseling"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "COPD Management",
+    "level": 1,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q231",
+    "question":
+        "Which of the following is the primary imaging modality for the diagnosis of interstitial lung disease?",
+    "explanation":
+        "High-resolution CT (HRCT) of the chest is the gold standard imaging modality for diagnosing interstitial lung disease due to its ability to visualize fine lung details.",
+    "incorrect_answer": [
+      "Chest X-ray",
+      "Ventilation-perfusion (V/Q) scan",
+      "Pulmonary angiography"
+    ],
+    "correct_answer": ["High-resolution CT (HRCT)"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Interstitial Lung Diseases",
+    "level": 2,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q232",
+    "question":
+        "A patient with advanced COPD presents with hypercapnia. What is the best non-invasive intervention to improve ventilation?",
+    "explanation":
+        "Non-invasive positive pressure ventilation (e.g., BiPAP) improves ventilation and reduces CO2 retention in hypercapnic COPD patients.",
+    "incorrect_answer": [
+      "High-flow nasal cannula (HFNC)",
+      "Supplemental oxygen therapy",
+      "Invasive mechanical ventilation"
+    ],
+    "correct_answer": ["Non-invasive positive pressure ventilation (BiPAP)"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Critical Care",
+    "level": 2,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q233",
+    "question":
+        "What is the preferred diagnostic test for identifying obstructive sleep apnea?",
+    "explanation":
+        "Polysomnography, or sleep study, is the gold standard diagnostic test for obstructive sleep apnea, evaluating apneas, hypopneas, and oxygen desaturations.",
+    "incorrect_answer": [
+      "Chest X-ray",
+      "Arterial blood gas analysis",
+      "Overnight oximetry"
+    ],
+    "correct_answer": ["Polysomnography"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Sleep Disorders",
+    "level": 1,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q234",
+    "question":
+        "A 45-year-old male presents with a history of recurrent lung infections and foul-smelling sputum. High-resolution CT reveals bronchial wall thickening and dilated airways. What is the most likely diagnosis?",
+    "explanation":
+        "Bronchiectasis is characterized by recurrent infections, chronic sputum production, and airway dilation on imaging.",
+    "incorrect_answer": [
+      "Chronic obstructive pulmonary disease",
+      "Pulmonary fibrosis",
+      "Asthma"
+    ],
+    "correct_answer": ["Bronchiectasis"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Chronic Respiratory Diseases",
+    "level": 2,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q235",
+    "question":
+        "Which of the following conditions is most strongly associated with silicosis?",
+    "explanation":
+        "Occupational exposure to silica dust, such as in mining or sandblasting, is a key risk factor for silicosis.",
+    "incorrect_answer": [
+      "Asbestos exposure",
+      "Secondhand smoke",
+      "Chronic asthma"
+    ],
+    "correct_answer": ["Occupational exposure to silica"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Occupational Lung Diseases",
+    "level": 2,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q236",
+    "question":
+        "What is the primary goal of oxygen therapy in patients with chronic hypoxemia?",
+    "explanation":
+        "Oxygen therapy aims to maintain oxygen saturation above 88-92%, preventing hypoxemic complications such as pulmonary hypertension.",
+    "incorrect_answer": [
+      "To improve exercise tolerance",
+      "To cure chronic obstructive pulmonary disease",
+      "To reduce carbon dioxide levels"
+    ],
+    "correct_answer": ["To maintain oxygen saturation >88%"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Chronic Respiratory Diseases",
+    "level": 1,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q237",
+    "question":
+        "Which of the following findings is most characteristic of idiopathic pulmonary fibrosis on chest imaging?",
+    "explanation":
+        "Honeycombing on high-resolution CT is a classic finding in idiopathic pulmonary fibrosis.",
+    "incorrect_answer": [
+      "Pleural effusion",
+      "Bilateral hilar lymphadenopathy",
+      "Consolidation"
+    ],
+    "correct_answer": ["Honeycombing"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Interstitial Lung Diseases",
+    "level": 2,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q238",
+    "question":
+        "A 30-year-old female presents with sudden onset dyspnea and pleuritic chest pain after a long flight. What is the most likely diagnosis?",
+    "explanation":
+        "Pulmonary embolism is a common cause of sudden dyspnea and pleuritic chest pain in patients with prolonged immobility, such as during a long flight.",
+    "incorrect_answer": [
+      "Pneumonia",
+      "Spontaneous pneumothorax",
+      "Asthma exacerbation"
+    ],
+    "correct_answer": ["Pulmonary embolism"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Pulmonary Embolism",
+    "level": 1,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q239",
+    "question":
+        "What is the hallmark feature of bronchial breath sounds heard during auscultation?",
+    "explanation":
+        "Bronchial breath sounds are characterized by a high-pitched, hollow sound, with an equal inspiratory and expiratory phase.",
+    "incorrect_answer": [
+      "Decreased breath sounds",
+      "Vesicular breath sounds",
+      "Crackles"
+    ],
+    "correct_answer": ["High-pitched, hollow sounds with equal phases"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Physical Examination",
+    "level": 1,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q240",
+    "question":
+        "A patient with COPD is started on a long-acting muscarinic antagonist (LAMA). What is the primary effect of this medication?",
+    "explanation":
+        "LAMA medications reduce airway smooth muscle contraction by blocking muscarinic receptors, improving airflow and reducing symptoms.",
+    "incorrect_answer": [
+      "Stimulates beta-2 adrenergic receptors",
+      "Reduces inflammation in the airways",
+      "Thins airway secretions"
+    ],
+    "correct_answer": [
+      "Relaxes airway smooth muscle by blocking muscarinic receptors"
+    ],
+    "topic_name": "Pulmonary Medicine",
+    "category": "COPD Management",
+    "level": 2,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q241",
+    "question":
+        "Which of the following conditions is most commonly associated with exudative pleural effusion?",
+    "explanation":
+        "Exudative pleural effusions are commonly caused by pneumonia, malignancy, or tuberculosis, due to increased capillary permeability.",
+    "incorrect_answer": [
+      "Congestive heart failure",
+      "Nephrotic syndrome",
+      "Cirrhosis"
+    ],
+    "correct_answer": ["Pneumonia"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Pleural Diseases",
+    "level": 2,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q242",
+    "question":
+        "What is the most common presenting symptom of pulmonary hypertension?",
+    "explanation":
+        "Dyspnea on exertion is the most common initial symptom of pulmonary hypertension due to increased pulmonary vascular resistance.",
+    "incorrect_answer": ["Chest pain", "Hemoptysis", "Cough"],
+    "correct_answer": ["Dyspnea on exertion"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Pulmonary Hypertension",
+    "level": 2,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q243",
+    "question":
+        "Which pulmonary function test finding is characteristic of obstructive lung disease?",
+    "explanation":
+        "A decreased FEV1/FVC ratio is the hallmark finding in obstructive lung diseases such as asthma or COPD.",
+    "incorrect_answer": [
+      "Decreased total lung capacity",
+      "Normal FEV1/FVC ratio",
+      "Increased FEV1"
+    ],
+    "correct_answer": ["Decreased FEV1/FVC ratio"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Pulmonary Function Testing",
+    "level": 1,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q244",
+    "question":
+        "A patient with asthma is experiencing frequent nighttime symptoms and requires albuterol use daily. What is the next step in management?",
+    "explanation":
+        "Adding an inhaled corticosteroid is the next step for patients with persistent asthma to reduce inflammation and improve control.",
+    "incorrect_answer": [
+      "Increase the dose of albuterol",
+      "Start a leukotriene receptor antagonist",
+      "Add a long-acting beta-agonist (LABA)"
+    ],
+    "correct_answer": ["Add an inhaled corticosteroid"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Asthma Management",
+    "level": 1,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q245",
+    "question":
+        "What is the classic finding on a chest X-ray for a patient with tension pneumothorax?",
+    "explanation":
+        "Tension pneumothorax often presents with a mediastinal shift to the opposite side due to increased intrathoracic pressure.",
+    "incorrect_answer": [
+      "Ground-glass opacities",
+      "Consolidation",
+      "Pleural effusion"
+    ],
+    "correct_answer": ["Mediastinal shift to the opposite side"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Pleural Diseases",
+    "level": 2,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q246",
+    "question":
+        "Which of the following is the first-line treatment for mild persistent asthma?",
+    "explanation":
+        "Inhaled corticosteroids are the cornerstone treatment for mild persistent asthma to reduce airway inflammation.",
+    "incorrect_answer": [
+      "Short-acting beta-agonists (SABA) alone",
+      "Leukotriene receptor antagonists",
+      "Oral corticosteroids"
+    ],
+    "correct_answer": ["Inhaled corticosteroids"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Asthma Management",
+    "level": 1,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q247",
+    "question": "What is the gold standard diagnostic test for tuberculosis?",
+    "explanation":
+        "Sputum culture is the gold standard test for diagnosing active tuberculosis and identifying the causative organism.",
+    "incorrect_answer": [
+      "Chest X-ray",
+      "Tuberculin skin test",
+      "Interferon-gamma release assay (IGRA)"
+    ],
+    "correct_answer": ["Sputum culture"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Respiratory Infections",
+    "level": 2,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q248",
+    "question":
+        "Which acid-base abnormality is most commonly associated with acute asthma exacerbation?",
+    "explanation":
+        "Respiratory alkalosis occurs early in acute asthma exacerbations due to hyperventilation.",
+    "incorrect_answer": [
+      "Metabolic acidosis",
+      "Respiratory acidosis",
+      "Metabolic alkalosis"
+    ],
+    "correct_answer": ["Respiratory alkalosis"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Acid-Base Disorders",
+    "level": 1,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q249",
+    "question":
+        "A 70-year-old male with COPD presents with new-onset hypoxemia and confusion. Chest X-ray shows hyperinflated lungs. What is the most likely cause of his symptoms?",
+    "explanation":
+        "Hypercapnic respiratory failure is common in COPD exacerbations and leads to confusion and hypoxemia.",
+    "incorrect_answer": [
+      "Pulmonary embolism",
+      "Pneumothorax",
+      "Acute respiratory distress syndrome (ARDS)"
+    ],
+    "correct_answer": ["Hypercapnic respiratory failure"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "COPD Management",
+    "level": 2,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q250",
+    "question":
+        "What is the mechanism of action of long-acting beta-agonists (LABAs) in asthma management?",
+    "explanation":
+        "LABAs stimulate beta-2 adrenergic receptors, causing prolonged relaxation of airway smooth muscles and improved airflow.",
+    "incorrect_answer": [
+      "Inhibit muscarinic receptors",
+      "Reduce airway inflammation",
+      "Block leukotriene pathways"
+    ],
+    "correct_answer": ["Stimulate beta-2 adrenergic receptors"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Asthma Management",
+    "level": 1,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q251",
+    "question":
+        "Which imaging modality is most sensitive for detecting early interstitial lung disease?",
+    "explanation":
+        "High-resolution computed tomography (HRCT) is the most sensitive imaging modality for detecting interstitial lung disease, as it provides detailed visualization of lung parenchyma.",
+    "incorrect_answer": [
+      "Chest X-ray",
+      "Ventilation-perfusion (V/Q) scan",
+      "MRI of the chest"
+    ],
+    "correct_answer": ["High-resolution computed tomography (HRCT)"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Interstitial Lung Diseases",
+    "level": 2,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q252",
+    "question":
+        "Which pathogen is most commonly associated with opportunistic infections in patients with advanced HIV and a CD4 count below 200 cells/μL?",
+    "explanation":
+        "Pneumocystis jirovecii is the most common cause of opportunistic pneumonia in HIV patients with a low CD4 count.",
+    "incorrect_answer": [
+      "Mycobacterium tuberculosis",
+      "Aspergillus fumigatus",
+      "Histoplasma capsulatum"
+    ],
+    "correct_answer": ["Pneumocystis jirovecii"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Respiratory Infections",
+    "level": 3,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q253",
+    "question":
+        "Which medication is recommended for the treatment of exercise-induced bronchoconstriction?",
+    "explanation":
+        "Short-acting beta-agonists (SABAs) like albuterol are effective for preventing exercise-induced bronchoconstriction when used prior to exercise.",
+    "incorrect_answer": [
+      "Inhaled corticosteroids",
+      "Leukotriene receptor antagonists",
+      "Anticholinergics"
+    ],
+    "correct_answer": ["Short-acting beta-agonists (SABAs)"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Asthma Management",
+    "level": 1,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q254",
+    "question":
+        "A 60-year-old patient with a history of asbestos exposure presents with progressive dyspnea and weight loss. Imaging shows pleural thickening and calcifications. What is the most likely diagnosis?",
+    "explanation":
+        "Mesothelioma is strongly associated with asbestos exposure and often presents with pleural thickening and calcifications.",
+    "incorrect_answer": [
+      "Adenocarcinoma of the lung",
+      "Small cell lung cancer",
+      "Pulmonary fibrosis"
+    ],
+    "correct_answer": ["Mesothelioma"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Oncology",
+    "level": 3,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q255",
+    "question": "What is the most common complication of bronchoscopy?",
+    "explanation":
+        "Bleeding is the most common complication of bronchoscopy, especially if a biopsy is performed.",
+    "incorrect_answer": ["Pneumothorax", "Infection", "Respiratory failure"],
+    "correct_answer": ["Bleeding"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Procedures",
+    "level": 2,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q256",
+    "question":
+        "What is the primary mechanism of hypoxemia in acute respiratory distress syndrome (ARDS)?",
+    "explanation":
+        "Shunting is the primary mechanism of hypoxemia in ARDS due to alveolar collapse and non-ventilated perfused lung units.",
+    "incorrect_answer": [
+      "Hypoventilation",
+      "Diffusion impairment",
+      "Decreased cardiac output"
+    ],
+    "correct_answer": ["Shunting"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Critical Care",
+    "level": 3,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q257",
+    "question":
+        "What is the recommended treatment for a 25-year-old patient with primary spontaneous pneumothorax involving 20% of the hemithorax?",
+    "explanation":
+        "Observation is recommended for small primary spontaneous pneumothoraces involving less than 30% of the hemithorax.",
+    "incorrect_answer": [
+      "Needle aspiration",
+      "Chest tube placement",
+      "Surgical intervention"
+    ],
+    "correct_answer": ["Observation"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Pleural Diseases",
+    "level": 1,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q258",
+    "question":
+        "Which of the following is a key component of long-term oxygen therapy in COPD patients?",
+    "explanation":
+        "Long-term oxygen therapy is indicated for COPD patients with chronic hypoxemia (PaO2 ≤ 55 mm Hg or SpO2 ≤ 88%).",
+    "incorrect_answer": [
+      "Used only during exertion",
+      "Recommended for all COPD patients",
+      "Avoided to prevent oxygen toxicity"
+    ],
+    "correct_answer": ["Indicated for patients with PaO2 ≤ 55 mm Hg"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "COPD Management",
+    "level": 2,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q259",
+    "question":
+        "Which cytokine plays a major role in the pathogenesis of sarcoidosis?",
+    "explanation":
+        "Tumor necrosis factor-alpha (TNF-α) is involved in granuloma formation and is a key mediator in sarcoidosis.",
+    "incorrect_answer": [
+      "Interleukin-4 (IL-4)",
+      "Interleukin-10 (IL-10)",
+      "Transforming growth factor-beta (TGF-β)"
+    ],
+    "correct_answer": ["Tumor necrosis factor-alpha (TNF-α)"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Immunology",
+    "level": 3,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q260",
+    "question": "What is the most common presenting symptom of bronchiectasis?",
+    "explanation":
+        "Chronic productive cough with copious sputum is the hallmark symptom of bronchiectasis.",
+    "incorrect_answer": [
+      "Dyspnea on exertion",
+      "Chest pain",
+      "Hemoptysis without sputum"
+    ],
+    "correct_answer": ["Chronic productive cough with copious sputum"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Bronchiectasis",
+    "level": 2,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q261",
+    "question":
+        "Which pulmonary function test result is characteristic of obstructive lung disease?",
+    "explanation":
+        "A reduced FEV1/FVC ratio is the hallmark of obstructive lung diseases such as COPD and asthma.",
+    "incorrect_answer": [
+      "Increased total lung capacity",
+      "Normal FEV1/FVC ratio",
+      "Decreased diffusing capacity of the lungs for carbon monoxide (DLCO)"
+    ],
+    "correct_answer": ["Reduced FEV1/FVC ratio"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Pulmonary Function Testing",
+    "level": 2,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q262",
+    "question":
+        "What is the preferred imaging modality for staging lung cancer?",
+    "explanation":
+        "Positron emission tomography-computed tomography (PET-CT) is used to assess metastatic spread in lung cancer staging.",
+    "incorrect_answer": [
+      "Chest X-ray",
+      "High-resolution CT (HRCT)",
+      "MRI of the chest"
+    ],
+    "correct_answer": [
+      "Positron emission tomography-computed tomography (PET-CT)"
+    ],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Oncology",
+    "level": 3,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q263",
+    "question":
+        "Which condition is characterized by digital clubbing and abnormal proliferation of connective tissue in the nail beds?",
+    "explanation":
+        "Digital clubbing is a common finding in diseases such as bronchiectasis, lung cancer, and interstitial lung disease.",
+    "incorrect_answer": [
+      "Asthma",
+      "Chronic bronchitis",
+      "COPD without bronchiectasis"
+    ],
+    "correct_answer": ["Bronchiectasis"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Clinical Signs",
+    "level": 2,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q264",
+    "question":
+        "What is the recommended diagnostic test for confirming obstructive sleep apnea (OSA)?",
+    "explanation":
+        "Polysomnography (sleep study) is the gold standard for diagnosing obstructive sleep apnea.",
+    "incorrect_answer": [
+      "Spirometry",
+      "Overnight pulse oximetry",
+      "Chest X-ray"
+    ],
+    "correct_answer": ["Polysomnography (sleep study)"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Sleep Disorders",
+    "level": 1,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q265",
+    "question":
+        "What is the primary mechanism of action of inhaled corticosteroids in asthma management?",
+    "explanation":
+        "Inhaled corticosteroids reduce airway inflammation by inhibiting cytokine production and inflammatory cell infiltration.",
+    "incorrect_answer": [
+      "Bronchodilation",
+      "Inhibition of leukotrienes",
+      "Relaxation of airway smooth muscles"
+    ],
+    "correct_answer": ["Reduction of airway inflammation"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Asthma Management",
+    "level": 1,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q266",
+    "question":
+        "A 45-year-old male with a history of chronic bronchitis presents with worsening dyspnea and peripheral edema. Which physical exam finding is most consistent with cor pulmonale?",
+    "explanation":
+        "Jugular venous distension (JVD) is a hallmark sign of cor pulmonale, indicating right heart failure.",
+    "incorrect_answer": [
+      "Wheezing",
+      "Bibasilar crackles",
+      "Tracheal deviation"
+    ],
+    "correct_answer": ["Jugular venous distension (JVD)"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Right Heart Failure",
+    "level": 2,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q267",
+    "question":
+        "Which antibiotic is most commonly used to treat Mycoplasma pneumoniae infection?",
+    "explanation":
+        "Azithromycin, a macrolide antibiotic, is the first-line treatment for Mycoplasma pneumoniae due to its efficacy against atypical pathogens.",
+    "incorrect_answer": [
+      "Amoxicillin",
+      "Ciprofloxacin",
+      "Trimethoprim-sulfamethoxazole"
+    ],
+    "correct_answer": ["Azithromycin"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Respiratory Infections",
+    "level": 1,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q268",
+    "question":
+        "What is the most appropriate initial step in the management of a tension pneumothorax?",
+    "explanation":
+        "Needle decompression is the first-line intervention for tension pneumothorax, relieving pressure and improving ventilation.",
+    "incorrect_answer": [
+      "Chest tube insertion",
+      "Supplemental oxygen therapy",
+      "Observation"
+    ],
+    "correct_answer": ["Needle decompression"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Emergency Management",
+    "level": 2,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q269",
+    "question":
+        "Which biomarker is most commonly used to evaluate exacerbations of chronic obstructive pulmonary disease (COPD)?",
+    "explanation":
+        "Elevated C-reactive protein (CRP) levels are associated with systemic inflammation and can be used to assess COPD exacerbations.",
+    "incorrect_answer": ["Procalcitonin", "D-dimer", "Troponin"],
+    "correct_answer": ["C-reactive protein (CRP)"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "COPD Management",
+    "level": 2,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q270",
+    "question":
+        "What is the most common presenting symptom in patients with pulmonary hypertension?",
+    "explanation":
+        "Dyspnea on exertion is the most common symptom of pulmonary hypertension, as increased pulmonary vascular resistance affects oxygen exchange.",
+    "incorrect_answer": ["Syncope", "Hemoptysis", "Pleuritic chest pain"],
+    "correct_answer": ["Dyspnea on exertion"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Pulmonary Hypertension",
+    "level": 2,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q271",
+    "question":
+        "Which diagnostic criterion is required to confirm the diagnosis of ARDS (Acute Respiratory Distress Syndrome)?",
+    "explanation":
+        "Bilateral infiltrates on chest imaging are essential criteria for diagnosing ARDS, along with other clinical and oxygenation parameters.",
+    "incorrect_answer": [
+      "Pulmonary capillary wedge pressure >18 mm Hg",
+      "FEV1/FVC ratio <70%",
+      "Presence of pleural effusion"
+    ],
+    "correct_answer": ["Bilateral infiltrates on chest imaging"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Critical Care",
+    "level": 3,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q272",
+    "question":
+        "Which imaging study is most sensitive for detecting early interstitial lung disease?",
+    "explanation":
+        "High-resolution CT (HRCT) is the most sensitive imaging modality for evaluating interstitial lung diseases.",
+    "incorrect_answer": ["Chest X-ray", "MRI of the chest", "PET-CT"],
+    "correct_answer": ["High-resolution CT (HRCT)"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Interstitial Lung Diseases",
+    "level": 2,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q273",
+    "question":
+        "What is the first-line pharmacologic treatment for patients with pulmonary arterial hypertension (PAH)?",
+    "explanation":
+        "Endothelin receptor antagonists, such as bosentan, are commonly used as first-line treatment for pulmonary arterial hypertension.",
+    "incorrect_answer": ["Beta-blockers", "Loop diuretics", "Anticoagulants"],
+    "correct_answer": ["Endothelin receptor antagonists"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Pulmonary Hypertension",
+    "level": 3,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q274",
+    "question":
+        "A patient presents with acute onset dyspnea and pleuritic chest pain. What is the most appropriate initial test to evaluate for pulmonary embolism?",
+    "explanation":
+        "A D-dimer test is a useful initial screening tool to rule out pulmonary embolism in patients with low pretest probability.",
+    "incorrect_answer": [
+      "Chest X-ray",
+      "High-resolution CT (HRCT)",
+      "Arterial blood gas"
+    ],
+    "correct_answer": ["D-dimer blood test"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Pulmonary Embolism",
+    "level": 2,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q275",
+    "question":
+        "Which of the following medications is most appropriate for treating exercise-induced bronchoconstriction?",
+    "explanation":
+        "Inhaled short-acting beta-agonists, such as albuterol, are the preferred treatment for exercise-induced bronchoconstriction.",
+    "incorrect_answer": [
+      "Inhaled corticosteroids",
+      "Leukotriene receptor antagonists",
+      "Long-acting beta-agonists"
+    ],
+    "correct_answer": ["Inhaled short-acting beta-agonists"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Asthma Management",
+    "level": 1,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q276",
+    "question":
+        "What is the most common cause of secondary spontaneous pneumothorax?",
+    "explanation":
+        "COPD is the leading cause of secondary spontaneous pneumothorax, as it is associated with bullae formation.",
+    "incorrect_answer": ["Lung cancer", "Tuberculosis", "Asthma"],
+    "correct_answer": ["COPD"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Pleural Diseases",
+    "level": 2,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q277",
+    "question":
+        "A 60-year-old male presents with hemoptysis, weight loss, and a history of asbestos exposure. What is the most likely diagnosis?",
+    "explanation":
+        "Mesothelioma is strongly associated with asbestos exposure and often presents with hemoptysis and weight loss.",
+    "incorrect_answer": [
+      "Lung adenocarcinoma",
+      "Small cell lung cancer",
+      "Pulmonary fibrosis"
+    ],
+    "correct_answer": ["Mesothelioma"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Oncology",
+    "level": 3,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q278",
+    "question":
+        "What is the hallmark histologic feature of granulomatosis with polyangiitis (Wegener’s)?",
+    "explanation":
+        "Necrotizing granulomas are the hallmark histologic feature of granulomatosis with polyangiitis.",
+    "incorrect_answer": [
+      "Caseating granulomas",
+      "Fibrosis with honeycombing",
+      "Lymphoid aggregates"
+    ],
+    "correct_answer": ["Necrotizing granulomas"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Vasculitis",
+    "level": 3,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q279",
+    "question":
+        "Which condition is associated with increased risk of reactivation of latent tuberculosis infection?",
+    "explanation":
+        "Patients on immunosuppressive therapy, such as TNF-alpha inhibitors, are at increased risk of reactivating latent TB.",
+    "incorrect_answer": [
+      "Chronic kidney disease",
+      "Chronic liver disease",
+      "Asthma"
+    ],
+    "correct_answer": ["Use of TNF-alpha inhibitors"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Respiratory Infections",
+    "level": 2,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q280",
+    "question":
+        "What is the most common clinical presentation of bronchiectasis?",
+    "explanation":
+        "Chronic cough with large amounts of purulent sputum is the hallmark symptom of bronchiectasis.",
+    "incorrect_answer": [
+      "Dry cough and hemoptysis",
+      "Exertional dyspnea",
+      "Recurrent pneumothorax"
+    ],
+    "correct_answer": ["Chronic cough with purulent sputum"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Bronchiectasis",
+    "level": 1,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q281",
+    "question":
+        "Which pathogen is most commonly associated with ventilator-associated pneumonia (VAP)?",
+    "explanation":
+        "Pseudomonas aeruginosa is a frequent pathogen in ventilator-associated pneumonia, especially in patients in critical care settings.",
+    "incorrect_answer": [
+      "Streptococcus pneumoniae",
+      "Legionella pneumophila",
+      "Mycoplasma pneumoniae"
+    ],
+    "correct_answer": ["Pseudomonas aeruginosa"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Respiratory Infections",
+    "level": 3,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q282",
+    "question":
+        "What is the primary mechanism of action of ipratropium bromide in managing COPD?",
+    "explanation":
+        "Ipratropium bromide works as a muscarinic antagonist, leading to bronchodilation and improved airflow in COPD patients.",
+    "incorrect_answer": [
+      "Beta-2 receptor agonist",
+      "Phosphodiesterase-4 inhibitor",
+      "Mast cell stabilizer"
+    ],
+    "correct_answer": ["Muscarinic receptor antagonist"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "COPD Management",
+    "level": 2,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q283",
+    "question":
+        "Which of the following is a contraindication to noninvasive positive pressure ventilation (NIPPV)?",
+    "explanation":
+        "NIPPV is contraindicated in patients with hemodynamic instability due to the need for close monitoring and potential for deterioration.",
+    "incorrect_answer": [
+      "Acute exacerbation of COPD",
+      "Cardiogenic pulmonary edema",
+      "Hypoxemic respiratory failure"
+    ],
+    "correct_answer": ["Hemodynamic instability"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Ventilator Management",
+    "level": 3,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q284",
+    "question":
+        "What is the most common presenting symptom in patients with pulmonary sarcoidosis?",
+    "explanation":
+        "Dry cough is a common presenting symptom in pulmonary sarcoidosis, often accompanied by dyspnea.",
+    "incorrect_answer": ["Wheezing", "Hemoptysis", "Chest pain"],
+    "correct_answer": ["Dry cough"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Interstitial Lung Diseases",
+    "level": 2,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q285",
+    "question":
+        "Which oxygen delivery device provides the highest fraction of inspired oxygen (FiO2)?",
+    "explanation":
+        "A non-rebreather mask can deliver nearly 100% FiO2 under optimal conditions.",
+    "incorrect_answer": ["Nasal cannula", "Venturi mask", "Simple face mask"],
+    "correct_answer": ["Non-rebreather mask"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Critical Care",
+    "level": 1,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q286",
+    "question":
+        "A patient with a history of asthma presents with recurrent episodes of productive cough, wheezing, and bronchiectasis. What is the most likely underlying diagnosis?",
+    "explanation":
+        "Allergic bronchopulmonary aspergillosis (ABPA) often presents with asthma, bronchiectasis, and recurrent productive cough.",
+    "incorrect_answer": [
+      "Cystic fibrosis",
+      "Chronic bronchitis",
+      "Bronchiolitis obliterans"
+    ],
+    "correct_answer": ["Allergic bronchopulmonary aspergillosis"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Asthma Management",
+    "level": 3,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q287",
+    "question":
+        "Which biomarker is most commonly used to monitor disease activity in pulmonary fibrosis?",
+    "explanation":
+        "Serum Krebs von den Lungen-6 (KL-6) is commonly used to monitor disease activity in pulmonary fibrosis.",
+    "incorrect_answer": [
+      "D-dimer",
+      "Procalcitonin",
+      "Angiotensin-converting enzyme (ACE)"
+    ],
+    "correct_answer": ["Krebs von den Lungen-6 (KL-6)"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Interstitial Lung Diseases",
+    "level": 2,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q288",
+    "question":
+        "Which imaging finding is most suggestive of tuberculosis (TB) reactivation?",
+    "explanation":
+        "Upper lobe cavitary lesions are a hallmark imaging feature of TB reactivation.",
+    "incorrect_answer": [
+      "Ground-glass opacities",
+      "Bilateral pleural effusion",
+      "Central hilar mass"
+    ],
+    "correct_answer": ["Upper lobe cavitary lesions"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Respiratory Infections",
+    "level": 2,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q289",
+    "question":
+        "What is the primary purpose of prone positioning in patients with ARDS?",
+    "explanation":
+        "Prone positioning improves oxygenation by redistributing perfusion to less dependent, better-ventilated lung areas.",
+    "incorrect_answer": [
+      "To prevent pressure ulcers",
+      "To reduce ventilator-associated pneumonia",
+      "To decrease pulmonary edema"
+    ],
+    "correct_answer": ["To improve oxygenation"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Critical Care",
+    "level": 3,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q290",
+    "question":
+        "Which of the following is the hallmark PFT finding in restrictive lung disease?",
+    "explanation":
+        "Reduced total lung capacity (TLC) is the hallmark finding in restrictive lung diseases.",
+    "incorrect_answer": [
+      "Decreased FEV1/FVC ratio",
+      "Increased residual volume",
+      "Normal diffusing capacity (DLCO)"
+    ],
+    "correct_answer": ["Reduced total lung capacity (TLC)"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Pulmonary Function Tests",
+    "level": 2,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q291",
+    "question":
+        "Which complication is most commonly associated with long-term mechanical ventilation?",
+    "explanation":
+        "Ventilator-associated pneumonia (VAP) is a common complication in patients undergoing prolonged mechanical ventilation.",
+    "incorrect_answer": [
+      "Pneumothorax",
+      "Pulmonary embolism",
+      "Tracheal stenosis"
+    ],
+    "correct_answer": ["Ventilator-associated pneumonia (VAP)"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Critical Care",
+    "level": 2,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q292",
+    "question":
+        "A 45-year-old male presents with dyspnea, fever, and a productive cough. A chest X-ray reveals a right lower lobe infiltrate. What is the most appropriate initial antibiotic for community-acquired pneumonia in a patient with no comorbidities?",
+    "explanation":
+        "Amoxicillin is a first-line treatment for community-acquired pneumonia in healthy adults without comorbidities.",
+    "incorrect_answer": ["Levofloxacin", "Ceftriaxone", "Vancomycin"],
+    "correct_answer": ["Amoxicillin"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Respiratory Infections",
+    "level": 1,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q293",
+    "question":
+        "Which diagnostic test is the gold standard for confirming obstructive sleep apnea?",
+    "explanation":
+        "Polysomnography is the gold standard diagnostic test for obstructive sleep apnea.",
+    "incorrect_answer": ["Chest X-ray", "Arterial blood gas", "Echocardiogram"],
+    "correct_answer": ["Polysomnography"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Sleep Disorders",
+    "level": 2,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q294",
+    "question":
+        "What is the most effective intervention to prevent acute exacerbations of COPD?",
+    "explanation":
+        "Smoking cessation is the most effective intervention to prevent COPD exacerbations and improve overall lung function.",
+    "incorrect_answer": [
+      "Inhaled corticosteroids",
+      "Pulmonary rehabilitation",
+      "Long-term oxygen therapy"
+    ],
+    "correct_answer": ["Smoking cessation"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "COPD Management",
+    "level": 1,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q295",
+    "question":
+        "A 60-year-old patient presents with hemoptysis and weight loss. CT imaging reveals a peripheral lung mass. What is the most likely diagnosis?",
+    "explanation":
+        "Adenocarcinoma is the most common type of lung cancer and is often located peripherally in the lung.",
+    "incorrect_answer": [
+      "Small cell lung cancer",
+      "Squamous cell carcinoma",
+      "Mesothelioma"
+    ],
+    "correct_answer": ["Adenocarcinoma"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Oncology",
+    "level": 3,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q296",
+    "question":
+        "Which of the following is the hallmark finding in chest imaging for interstitial lung disease (ILD)?",
+    "explanation":
+        "Honeycombing on high-resolution CT is a classic finding in advanced interstitial lung disease.",
+    "incorrect_answer": [
+      "Bilateral pleural effusion",
+      "Cavitary lesions",
+      "Solitary pulmonary nodule"
+    ],
+    "correct_answer": ["Honeycombing"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Interstitial Lung Diseases",
+    "level": 2,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q297",
+    "question":
+        "What is the mechanism of action of tiotropium in the treatment of COPD?",
+    "explanation":
+        "Tiotropium is a long-acting muscarinic antagonist (LAMA) that improves airflow by preventing bronchoconstriction.",
+    "incorrect_answer": [
+      "Beta-2 agonist",
+      "Phosphodiesterase-4 inhibitor",
+      "Inhaled corticosteroid"
+    ],
+    "correct_answer": ["Long-acting muscarinic antagonist"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "COPD Management",
+    "level": 2,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q298",
+    "question":
+        "Which of the following is the most common cause of chronic cough in non-smokers?",
+    "explanation":
+        "Postnasal drip syndrome, also known as upper airway cough syndrome, is the leading cause of chronic cough in non-smokers.",
+    "incorrect_answer": [
+      "Gastroesophageal reflux disease (GERD)",
+      "Asthma",
+      "Chronic bronchitis"
+    ],
+    "correct_answer": ["Postnasal drip syndrome"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Respiratory Symptoms",
+    "level": 1,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q299",
+    "question":
+        "A 70-year-old male with a history of COPD is started on long-term oxygen therapy. What is the primary indication for initiating oxygen therapy in such patients?",
+    "explanation":
+        "Long-term oxygen therapy is indicated for patients with chronic hypoxemia, defined as PaO2 ≤ 55 mmHg or SpO2 ≤ 88%.",
+    "incorrect_answer": [
+      "Frequent COPD exacerbations",
+      "Severe dyspnea",
+      "Pulmonary hypertension"
+    ],
+    "correct_answer": ["Chronic hypoxemia (PaO2 ≤ 55 mmHg)"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "COPD Management",
+    "level": 2,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
+  },
+  {
+    "uuid": "q300",
+    "question":
+        "What is the most common cause of pleuritic chest pain in young, healthy adults?",
+    "explanation":
+        "Viral pleuritis, often caused by respiratory viruses, is a common cause of pleuritic chest pain in young adults.",
+    "incorrect_answer": ["Pulmonary embolism", "Pneumothorax", "Lung abscess"],
+    "correct_answer": ["Viral pleuritis"],
+    "topic_name": "Pulmonary Medicine",
+    "category": "Pleural Diseases",
+    "level": 1,
+    "status": 1,
+    "exam_title": "Acute Care NP Exam Prep 2024"
   }
 ];

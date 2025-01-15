@@ -13,12 +13,12 @@ class YourQuestionsScreen extends StatefulWidget {
 
 class _YourQuestionsScreenState extends State<YourQuestionsScreen> {
   List<String> _categories = [
-    "Electrical Safety",
-    "Basic Circuits (Ohm's Law, series/parallel circuits)",
-    "Electrical Tools",
-    "Wiring and Installations",
-    "National Electric Code (NEC)",
-    "Troubleshooting Electrical Systems"
+    "Cardiology",
+    "Diagnostic and Therapeutic Procedures",
+    "Advanced Pathophysiology",
+    "Evidence-Based Practice and Clinical Decision-Making",
+    "Evidence-Based Systems and Multisystem Failure",
+    "Acute Illness and Injury Management"
   ]; // List to store categories
 
   bool _isLoading = false; // Loading state
@@ -85,7 +85,7 @@ class _YourQuestionsScreenState extends State<YourQuestionsScreen> {
                           Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => PDFViewerPage(pdfPath: "assets/pdf/st${index+1}.pdf", title: _categories[index],),
+                                      builder: (context) => PDFViewerPage(pdfPath: "assets/pdf/acnp${index+1}.pdf", title: _categories[index],),
                                     ));
 
 

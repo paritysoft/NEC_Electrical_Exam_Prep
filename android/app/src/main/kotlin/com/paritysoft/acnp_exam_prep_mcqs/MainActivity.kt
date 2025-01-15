@@ -1,4 +1,4 @@
-package com.paritysoft.electricianexam
+package com.paritysoft.acnp_exam_prep_mcqs
 
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine

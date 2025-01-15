@@ -8,9 +8,9 @@ import '../../../util/util.dart';
 import 'model/ElectricianQuestion.dart';
 
 class DatabaseHelper {
-  static final _databaseName = "electrician.db";
+  static final _databaseName = "mydb.db";
   static final _databaseVersion = 1; // Increment this when upgrading schema
-  static final tblName = "tbl_electrician_questions";
+  static final tblName = "tbl_acnp_questions";
 
   // Singleton pattern
   DatabaseHelper._privateConstructor();
@@ -199,7 +199,7 @@ class DatabaseHelper {
   }
 
   Future<void> deleteDatabase(String path) async {
-    path = join(await getDatabasesPath(), "electrician_update.db");
+    path = join(await getDatabasesPath(), "mydb.db");
     await deleteDatabase(path);
     print("Database deleted");
   }

@@ -4,7 +4,7 @@ class StringConstant {
   static const String subscriptionPlans = "Subscription Plans";
   static const String unlockSubscriptionPlans = "Unlock Personal Plan and All Features";
   static const String subscriptionPlansDetails =
-      "• 813 questions and explanations to practice Improve faster based on subject practice and performance analysis "
+      "• 2500+ questions and explanations to practice Improve faster based on subject practice and performance analysis "
       "\n• Unlimited access to all 6 efficient exercise modes\n• Guaranteed to pass the exam";
 
   static const String slashMonth = "/Month";

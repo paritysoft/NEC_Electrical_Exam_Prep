@@ -130,34 +130,45 @@ class _ExploreScreenState extends State<ExploreScreen> {
           //   ],
           // ),
 
-          Container(
-            padding: EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: Colors.amber[600],
-              borderRadius: BorderRadius.circular(16),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              //Center Row contents horizontally,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Opacity(
-                  opacity: 1,
-                  child: Image.asset("assets/images/ic_premium.png",
-                      height: 30, width: 30, fit: BoxFit.cover),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(4, 4, 4, 4),
-                  child: Center(
-                      //child: title15BoldColor(context, 'Unlock All Features')),
-                      child: title15BoldColor(context, 'All Features')),
-                ),
-                Opacity(
-                  opacity: 1,
-                  child: Image.asset("assets/images/ic_premium.png",
-                      height: 30, width: 30, fit: BoxFit.cover),
-                ),
-              ],
+          InkWell(
+            onTap: (){
+                if (SharedPreferenceHelper.getSubscription() == false) {
+                   gotToSubscriptionPage(context);
+                 }else
+                   {
+                     snackBar(context,"Your all features are unlocked");
+                   }
+            },
+            child: Container(
+
+              padding: EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: Colors.amber[600],
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                //Center Row contents horizontally,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Opacity(
+                    opacity: 1,
+                    child: Image.asset("assets/images/ic_premium.png",
+                        height: 30, width: 30, fit: BoxFit.cover),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(4, 4, 4, 4),
+                    child: Center(
+                        child: title15BoldColor(context, 'Unlock All Features')),
+                      //  child: title15BoldColor(context, 'All Features')),
+                  ),
+                  Opacity(
+                    opacity: 1,
+                    child: Image.asset("assets/images/ic_premium.png",
+                        height: 30, width: 30, fit: BoxFit.cover),
+                  ),
+                ],
+              ),
             ),
           ),
           // More Games Section
@@ -182,18 +193,18 @@ class _ExploreScreenState extends State<ExploreScreen> {
                     }),
                 QuizCard(
                     title: 'Practice By Topic',
-                    questions: '1500+ Questions',
+                    questions: '2500+ Questions',
                     isPremium: true,
                     icon: Icons.topic,
                     onTap: () {
-                      // if (SharedPreferenceHelper.getSubscription() == false) {
-                      //   gotToSubscriptionPage(context);
-                      // } else {
+                      if (SharedPreferenceHelper.getSubscription() == false) {
+                        gotToSubscriptionPage(context);
+                      } else {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
                                 builder: (_) => PracticeByTopic()));
-                     // }
+                      }
                     }),
                 QuizCard(
                     title: 'Mock Quiz',
@@ -201,14 +212,14 @@ class _ExploreScreenState extends State<ExploreScreen> {
                     isPremium: true,
                     icon: Icons.quiz_rounded,
                     onTap: () {
-                      // if (SharedPreferenceHelper.getSubscription() == false) {
-                      //   gotToSubscriptionPage(context);
-                      // } else {
+                      if (SharedPreferenceHelper.getSubscription() == false) {
+                        gotToSubscriptionPage(context);
+                      } else {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
                                 builder: (_) => MockQuizScreen()));
-                     // }
+                        }
                     }),
                 QuizCard(
                     title: 'Time Quiz',
@@ -216,11 +227,11 @@ class _ExploreScreenState extends State<ExploreScreen> {
                     isPremium: true,
                     icon: Icons.timelapse,
                     onTap: () {
-                      // if (SharedPreferenceHelper.getSubscription() == false) {
-                      //   gotToSubscriptionPage(context);
-                      // } else {
+                      if (SharedPreferenceHelper.getSubscription() == false) {
+                        gotToSubscriptionPage(context);
+                      } else {
                         _categoryPressed(context, "Time Quiz");
-                     // }
+                      }
                     }),
                 QuizCard(
                     title: 'Your Questions',
@@ -228,14 +239,14 @@ class _ExploreScreenState extends State<ExploreScreen> {
                     isPremium: true,
                     icon: Icons.personal_injury,
                     onTap: () {
-                      // if (SharedPreferenceHelper.getSubscription() == false) {
-                      //   gotToSubscriptionPage(context);
-                      // } else {
+                      if (SharedPreferenceHelper.getSubscription() == false) {
+                        gotToSubscriptionPage(context);
+                      } else {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
                                 builder: (_) => YourQuestionsScreen()));
-                     // }
+                      }
                     }),
                 QuizCard(
                     title: 'Records',
@@ -243,12 +254,12 @@ class _ExploreScreenState extends State<ExploreScreen> {
                     isPremium: true,
                     icon: Icons.fiber_smart_record_sharp,
                     onTap: () {
-                      // if (SharedPreferenceHelper.getSubscription() == false) {
-                      //   gotToSubscriptionPage(context);
-                      // } else {
+                      if (SharedPreferenceHelper.getSubscription() == false) {
+                        gotToSubscriptionPage(context);
+                      } else {
                         Navigator.push(context,
                             MaterialPageRoute(builder: (_) => RecordsScreen()));
-                   //   }
+                      }
                     }),
               ],
             ),
@@ -322,18 +333,18 @@ class QuizCard extends StatelessWidget {
                         color: Colors.deepOrange,
                         borderRadius: BorderRadius.circular(4),
                       ),
-                      child: smallLabel(context, " Recommended ",
+                      child: smallLabel(context, " Premium ",
                           color: Colors.white, textSize: 8))
               ],
             ),
             SizedBox(height: 10),
-            smallLabel(context, title),
+            smallLabel(context, title, textSize: 14),
             SizedBox(height: 10),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Flexible(
-                  child: smallLabel(context, questions, textSize: 10),
+                  child: smallLabel(context, questions, textSize: 12),
                 ),
                 Icon(Icons.bolt, color: Colors.orangeAccent, size: 16),
               ],

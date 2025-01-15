@@ -29,9 +29,9 @@ class _QuizHomePageState extends State<QuizHomePage> {
   @override
   void initState() {
     super.initState();
-    // if (SharedPreferenceHelper.getSubscription() == false) {
-    //   gotToSubscriptionPage(context);
-    // }
+    if (SharedPreferenceHelper.getSubscription() == false) {
+      gotToSubscriptionPage(context);
+    }
   }
 
   @override
@@ -51,8 +51,8 @@ class _QuizHomePageState extends State<QuizHomePage> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                smallLabel(context, app_title,
-                    color: Colors.white),
+                title15BoldColor(context, app_title,
+                    color: Colors.white,),
               ],
             ),
             const Spacer(),
