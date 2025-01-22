@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../../subscription/in-app-purches/InAppPurchasePage.dart';
 import '../../subscription/presentation/subscription/screen/subscription_page.dart';
 import '../../util/AppColors.dart';
 import '../../util/app_constants.dart';
@@ -162,4 +163,10 @@ void gotToSubscriptionPage(BuildContext context) {
             builder: (context) => SubscriptionPage()));
   });
 
+  // Navigator.push(
+  //   context,
+  //   MaterialPageRoute(
+  //     builder: (context) => InAppPurchasePage(),
+  //   ),
+  // );
 }

@@ -2,6 +2,7 @@ import 'package:electrician/ui/widgets/common_widget.dart';
 import 'package:flutter/material.dart';
 import '../../../../util/pixel_size.dart';
 import '../../../../util/string_constant.dart';
+import '../../../core/sharepref_helper.dart';
 import 'common_utils.dart';
 
 
@@ -44,7 +45,9 @@ class _SubscriptionPlanViewState extends State<SubscriptionPlanView> {
             ? () {
                 CommonUtils.displayToast(
                     context, StringConstant.activeSubscription);
-              }
+                SharedPreferenceHelper.setSubscription(true);
+
+        }
             : () {
                 _onPlanViewTap(index);
               },

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>API_KEY</key>
+	<string>AIzaSyCsyFITW64g6PqAbbeUuZGk5DXoi2172F4</string>
+	<key>GCM_SENDER_ID</key>
+	<string>887045764678</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.paritysoft.acnp-exam-prep-mcqs</string>
+	<key>PROJECT_ID</key>
+	<string>quizapps-53615</string>
+	<key>STORAGE_BUCKET</key>
+	<string>quizapps-53615.firebasestorage.app</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:887045764678:ios:890e42d2977228e27cbc47</string>
+</dict>
+</plist>

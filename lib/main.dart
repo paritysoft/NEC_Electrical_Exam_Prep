@@ -1,10 +1,12 @@
-
 import 'dart:io';
 
+import 'package:app_tracking_transparency/app_tracking_transparency.dart';
 import 'package:electrician/subscription/presentation/subscription/bloc/provider_list.dart';
 import 'package:electrician/util/app_constants.dart';
 import 'package:electrician/util/notification.dart';
 import 'package:electrician/util/themes.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -13,44 +15,56 @@ import '../subscription/dependencyinjection/injection_container.dart' as ic;
 import 'ui/pages/onboarding/onboarding_screen.dart';
 import 'package:timezone/data/latest.dart' as tz;
 
-FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+    FlutterLocalNotificationsPlugin();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: '.env');
+
+  await Firebase.initializeApp(); // Initialize Firebase
+
   tz.initializeTimeZones();
-  if(!Platform.isMacOS){
+  if (!Platform.isMacOS) {
     await checkAndRequestExactAlarmPermission();
   }
 
   ic.init();
 
   // Initialize the notifications
-  const AndroidInitializationSettings initializationSettingsAndroid = AndroidInitializationSettings('@mipmap/ic_launcher');
-  const DarwinInitializationSettings initializationSettingsIOS = DarwinInitializationSettings();
+  const AndroidInitializationSettings initializationSettingsAndroid =
+      AndroidInitializationSettings('@mipmap/ic_launcher');
+  const DarwinInitializationSettings initializationSettingsIOS =
+      DarwinInitializationSettings();
   const InitializationSettings initializationSettings = InitializationSettings(
     android: initializationSettingsAndroid,
     iOS: initializationSettingsIOS,
   );
-  if(!Platform.isMacOS) {
+  if (!Platform.isMacOS) {
     await flutterLocalNotificationsPlugin.initialize(initializationSettings);
   }
+
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  static FirebaseAnalytics analytics = FirebaseAnalytics.instance;
+  static FirebaseAnalyticsObserver observer =
+      FirebaseAnalyticsObserver(analytics: analytics);
+
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: providers,
       child: MaterialApp(
-          title: app_title,
-          debugShowCheckedModeBanner: false,
-          themeMode: ThemeMode.light,
-          theme: light,
-          darkTheme: light,
-          home: const OnboardingScreen(),
-
+        title: app_title,
+        navigatorObservers: [observer],
+        // Attach observer for automatic event tracking
+        debugShowCheckedModeBanner: false,
+        themeMode: ThemeMode.light,
+        theme: light,
+        darkTheme: light,
+        home: const OnboardingScreen(),
       ),
     );
   }
@@ -63,3 +77,5 @@ class MyApp extends StatelessWidget {
 //   sl.registerSingleton<SharedPreferences>(sharedPreferences);
 //
 // }
+
+

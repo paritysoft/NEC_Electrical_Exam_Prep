@@ -12,7 +12,8 @@ class StringConstant {
   static const String perMonth = " per month";
   static const String perYear = " per year";
   static const String next = "Continue";
-  static const String restore = "Cancel";
+  static const String cancel = "Cancel";
+  static const String restore = "Restore";
   static const String restoredPlan = "Your subscription plan has been restored";
   static const String purchaseSuccessfully = "Subscription Plan Purchase Successfully";
 

@@ -32,6 +32,15 @@
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
+    <key>NSUserTrackingUsageDescription</key>
+    <string>We use this data to provide a personalized experience and crash analytics</string>
+    <key>NSAppTransportSecurity</key>
+        <dict>
+            <key>NSAllowsArbitraryLoads</key>
+            <true/>
+        </dict>
+        <key>NSAppleMusicUsageDescription</key>
+        <string>This app uses ACNP Exam preparations for purchases and subscriptions.</string>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>

@@ -1,11 +1,19 @@
+import 'dart:io';
+
+import 'package:app_tracking_transparency/app_tracking_transparency.dart';
 import 'package:electrician/ui/pages/explore_screen/mock_quiz_screen.dart';
 import 'package:electrician/ui/pages/explore_screen/practice_by_topic_screen.dart';
 import 'package:electrician/ui/pages/explore_screen/records_screen.dart';
 import 'package:electrician/ui/pages/explore_screen/your_questions_screen.dart';
 import 'package:electrician/ui/widgets/quiz_options_timer_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_inapp_purchase/flutter_inapp_purchase.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../subscription/core/sharepref_helper.dart';
+import '../../../subscription/presentation/subscription/bloc/subscription_bloc.dart';
+import '../../../subscription/presentation/subscription/bloc/subscription_event.dart';
 import '../../../util/app_constants.dart';
 import '../../widgets/common_widget.dart';
 import '../../widgets/quiz_options_dialog.dart';
@@ -19,13 +27,20 @@ class ExploreScreen extends StatefulWidget {
 
 //TodayQuestionsService? questionService;
 int questionsReadToday = 0;
+SubscriptionBloc? _subscriptionBloc;
 
 //List<ElectricianQuestion>? questions10 = [];
 class _ExploreScreenState extends State<ExploreScreen> {
   @override
   void initState() {
     super.initState();
+    requestTrackingPermission();
     _loadData(); // Call the async function without `await`
+
+    SchedulerBinding.instance.addPostFrameCallback((timeStamp) async {
+      _subscriptionBloc = BlocProvider.of<SubscriptionBloc>(context);
+      _subscriptionBloc?.add(InitializeSubscriptionEvent());
+    });
   }
 
   Future<void> _loadData() async {
@@ -41,7 +56,32 @@ class _ExploreScreenState extends State<ExploreScreen> {
     //    questionService = TodayQuestionsService();
     //    questions10 = await questionService?.getTodaysQuestions(questionList);
     //  }
+
+    _getSubscriptionProducts();
   }
+  void _getSubscriptionProducts() async {
+    //await _listenPurchaseStreams();
+    _subscriptionBloc?.add(const GetSubscriptionProductsEvent(
+        productIds: [monthlyPlan, quarterlyPlan, yearlyPlan]));
+    await FlutterInappPurchase.instance.initialize();
+    bool isMonthlyActive =
+    await FlutterInappPurchase.instance.checkSubscribed(sku: monthlyPlan);
+    bool isQuarterlyActive =
+    await FlutterInappPurchase.instance.checkSubscribed(sku: quarterlyPlan);
+    bool isYearlyActive =
+    await FlutterInappPurchase.instance.checkSubscribed(sku: yearlyPlan);
+
+    debugPrint("SubscriptionProducts   $isMonthlyActive $isQuarterlyActive $isYearlyActive");
+    if (isMonthlyActive || isQuarterlyActive || isYearlyActive) {
+      setState(() {
+        SharedPreferenceHelper.setSubscription(true);
+      });
+    }else{
+      SharedPreferenceHelper.setSubscription(false);
+    }
+
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -370,4 +410,15 @@ _categoryPressed(BuildContext context, String category) {
       onClosing: () {},
     ),
   );
+}
+Future<void> requestTrackingPermission() async {
+  if (await AppTrackingTransparency.trackingAuthorizationStatus ==
+      TrackingStatus.notDetermined) {
+    final status =
+    await AppTrackingTransparency.requestTrackingAuthorization();
+    debugPrint('Tracking status: $status');
+  } else {
+    debugPrint(
+        'Tracking status: ${await AppTrackingTransparency.trackingAuthorizationStatus}');
+  }
 }

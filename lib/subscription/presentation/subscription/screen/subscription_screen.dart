@@ -9,6 +9,7 @@ import 'package:flutter_inapp_purchase/flutter_inapp_purchase.dart';
 import 'package:googleapis_auth/auth.dart';
 import 'package:googleapis_auth/auth_io.dart';
 import "package:http/http.dart" as http;
+import '../../../../ui/pages/home_updated.dart';
 import '../../../../util/app_constants.dart';
 import '../../../../util/pixel_size.dart';
 import '../../../../util/screen_size_config.dart';
@@ -126,7 +127,9 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                       _indicatingLoader(),
                     _extraHeight(context, PixelSize.value15),
                     _nextBtn(context, state),
-                    _cancelBtn(context),
+                    _restoreBtn(context),
+                    SizedBox(height: 20,),
+                    _cancelBtn(context)
                   ],
                 ),
               );
@@ -138,27 +141,31 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
   Widget _chooseSubscriptionView() => Padding(
         padding:
             EdgeInsets.only(top: PixelSize.value10, bottom: PixelSize.value5),
-        child: smallLabel(context,
+        child: smallLabel(
+          context,
           StringConstant.subscriptionPlans,
         ),
       );
 
   Widget _unlockSubscriptionView() => Padding(
-    padding:
-    EdgeInsets.only(top: PixelSize.value40, bottom: PixelSize.value5),
-    child: Center(
-      child: smallLabel(context,
-        StringConstant.unlockSubscriptionPlans,
-      ),
-    ),
-  );
+        padding:
+            EdgeInsets.only(top: PixelSize.value40, bottom: PixelSize.value5),
+        child: Center(
+          child: smallLabel(
+            context,
+            StringConstant.unlockSubscriptionPlans,
+          ),
+        ),
+      );
+
   Widget _chooseSubscriptionDetailsView() => Padding(
-    padding:
-    EdgeInsets.only(top: PixelSize.value10, bottom: PixelSize.value10),
-    child: smallLabel(context,
-      StringConstant.subscriptionPlansDetails,
-    ),
-  );
+        padding:
+            EdgeInsets.only(top: PixelSize.value10, bottom: PixelSize.value10),
+        child: smallLabel(
+          context,
+          StringConstant.subscriptionPlansDetails,
+        ),
+      );
 
   Widget _extraHeight(BuildContext context, double value) =>
       SizedBox(height: ScreenSizeConfig.getScaledValue(value, context));
@@ -169,8 +176,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
           shrinkWrap: true,
           itemBuilder: (context, index) {
             return Padding(
-              padding: EdgeInsets.only(bottom: PixelSize.value10)
-                 ,
+              padding: EdgeInsets.only(bottom: PixelSize.value10),
               child: SubscriptionPlanView(
                   isSelected: _selectedIndex == (index + 1),
                   title: Platform.isIOS
@@ -257,40 +263,44 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
       );
 
   Widget _restoreBtn(BuildContext context) => Container(
-        width: ScreenSizeConfig.screenWidth,
-        margin: EdgeInsets.symmetric(horizontal: PixelSize.value10),
-        child: ReusableButton(
-            text: StringConstant.restore,
-            onPressed: _isRestoredEnable
-                ? () {
-                    _onRestoreTap(context);
-                  }
-                : null,
-            textColor:
-                _isRestoredEnable ? Colors.white : Colors.grey,
-            backgroundColor:
-                _isRestoredEnable ? Colors.red : Colors.white),
-      );
-  Widget _cancelBtn(BuildContext context) => Container(
     width: ScreenSizeConfig.screenWidth,
     margin: EdgeInsets.symmetric(horizontal: PixelSize.value10),
     child: ReusableButton(
         text: StringConstant.restore,
-        onPressed: true
+        onPressed: _isRestoredEnable
             ? () {
-          __cancelTap(context);
+          _onRestoreTap(context);
         }
             : null,
-        textColor: Colors.white,
-        backgroundColor: Colors.grey),
+        textColor:
+        _isRestoredEnable ? Colors.white : Colors.grey,
+        backgroundColor:
+        _isRestoredEnable ? Colors.red : Colors.white),
   );
+
   void _onRestoreTap(BuildContext context) {
     //You can save plan detail in your preference
     CommonUtils.displayToast(context, StringConstant.restoredPlan);
   }
+
+  Widget _cancelBtn(BuildContext context) => Container(
+        width: ScreenSizeConfig.screenWidth,
+        margin: EdgeInsets.symmetric(horizontal: PixelSize.value10),
+        child: ReusableButton(
+            text: StringConstant.cancel,
+            onPressed: true
+                ? () {
+                    __cancelTap(context);
+                  }
+                : null,
+            textColor: Colors.white,
+            backgroundColor: Colors.grey),
+      );
+
   void __cancelTap(BuildContext context) {
     Navigator.of(context).pop();
   }
+
   void _subscriptionStateWiseMethod(
       BuildContext context, SubscriptionState state) async {
     if (state is InitializeSubscriptionSuccess) {
@@ -333,6 +343,13 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
           _showBottomSheet(context);
         }
       }
+      // Navigator.push(
+      //   context,
+      //   MaterialPageRoute(
+      //     builder: (context) => QuizHomePage(),
+      //   ),
+      // );
+      //Navigator.pop(context);
     } else if (state is CompleteTransactionFailure) {
       CommonUtils.displayToast(context, state.errorMessage);
     } else if (state is PurchaseSubscriptionProductStopLoading) {
@@ -349,15 +366,16 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
     _subscriptionBloc?.add(const GetSubscriptionProductsEvent(
         productIds: [monthlyPlan, quarterlyPlan, yearlyPlan]));
     await FlutterInappPurchase.instance.initialize();
-    bool isMonthlyActive = await FlutterInappPurchase.instance
-        .checkSubscribed(sku: monthlyPlan);
-    bool isQuarterlyActive = await FlutterInappPurchase.instance
-        .checkSubscribed(sku: quarterlyPlan);
-    bool isYearlyActive = await FlutterInappPurchase.instance
-        .checkSubscribed(sku: yearlyPlan);
+    bool isMonthlyActive =
+        await FlutterInappPurchase.instance.checkSubscribed(sku: monthlyPlan);
+    bool isQuarterlyActive =
+        await FlutterInappPurchase.instance.checkSubscribed(sku: quarterlyPlan);
+    bool isYearlyActive =
+        await FlutterInappPurchase.instance.checkSubscribed(sku: yearlyPlan);
     if (isMonthlyActive || isQuarterlyActive || isYearlyActive) {
       setState(() {
         _isRestoredEnable = true;
+        SharedPreferenceHelper.setSubscription(true);
       });
     }
     setState(() {
@@ -407,6 +425,15 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
             transactionId: state.verifyReceiptIOSRes.purchaseReceiptIOS
                     .receiptBody[StringConstant.transactionId] ??
                 ""));
+
+        SharedPreferenceHelper.setSubscription(true);
+       // Navigator.pop(context);
+        // Navigator.push(
+        //   context,
+        //   MaterialPageRoute(
+        //     builder: (context) => QuizHomePage(),
+        //   ),
+        // );
       }
     }
   }
@@ -464,6 +491,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
   }
 
   void _verifyIOSReceipt(PurchasedItem productItem) {
+    debugPrint('productItem: ${productItem.productId}');
     PurchaseReceiptIOS purchaseReceiptIOS = PurchaseReceiptIOS(receiptBody: {
       StringConstant.receiptData: productItem.transactionReceipt ?? "",
       StringConstant.password: "6146e8949f90433dae3e4c2fb82a494d"
