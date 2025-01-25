@@ -11,14 +11,12 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_inapp_purchase/flutter_inapp_purchase.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../../subscription/core/sharepref_helper.dart';
-import '../../../subscription/presentation/subscription/bloc/subscription_bloc.dart';
-import '../../../subscription/presentation/subscription/bloc/subscription_event.dart';
 import '../../../util/app_constants.dart';
 import '../../widgets/common_widget.dart';
 import '../../widgets/quiz_options_dialog.dart';
 import '../data/QuestionCache.dart';
 import '../quiz_page_today.dart';
+import '../subscription/InAppPurchasePage2.dart';
 
 class ExploreScreen extends StatefulWidget {
   @override
@@ -27,22 +25,37 @@ class ExploreScreen extends StatefulWidget {
 
 //TodayQuestionsService? questionService;
 int questionsReadToday = 0;
-SubscriptionBloc? _subscriptionBloc;
+bool isSubscribed = false;
+String purchasedPlan = '';
+
 
 //List<ElectricianQuestion>? questions10 = [];
 class _ExploreScreenState extends State<ExploreScreen> {
   @override
   void initState() {
     super.initState();
+
     requestTrackingPermission();
+    _checkSubscriptionStatus();
     _loadData(); // Call the async function without `await`
 
-    SchedulerBinding.instance.addPostFrameCallback((timeStamp) async {
-      _subscriptionBloc = BlocProvider.of<SubscriptionBloc>(context);
-      _subscriptionBloc?.add(InitializeSubscriptionEvent());
-    });
   }
 
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _checkSubscriptionStatus(); // Call your method here
+  }
+
+
+  Future<void> _checkSubscriptionStatus() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      isSubscribed = prefs.getBool('isSubscribed') ?? false; // Default to false
+      print("isSubscribed  $isSubscribed");
+      purchasedPlan = prefs.getString('purchasedPlan') ?? ''; // Default to empty string
+    });
+  }
   Future<void> _loadData() async {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
@@ -57,32 +70,13 @@ class _ExploreScreenState extends State<ExploreScreen> {
     //    questions10 = await questionService?.getTodaysQuestions(questionList);
     //  }
 
-    _getSubscriptionProducts();
-  }
-  void _getSubscriptionProducts() async {
-    //await _listenPurchaseStreams();
-    _subscriptionBloc?.add(const GetSubscriptionProductsEvent(
-        productIds: [monthlyPlan, quarterlyPlan, yearlyPlan]));
-    await FlutterInappPurchase.instance.initialize();
-    bool isMonthlyActive =
-    await FlutterInappPurchase.instance.checkSubscribed(sku: monthlyPlan);
-    bool isQuarterlyActive =
-    await FlutterInappPurchase.instance.checkSubscribed(sku: quarterlyPlan);
-    bool isYearlyActive =
-    await FlutterInappPurchase.instance.checkSubscribed(sku: yearlyPlan);
-
-    debugPrint("SubscriptionProducts   $isMonthlyActive $isQuarterlyActive $isYearlyActive");
-    if (isMonthlyActive || isQuarterlyActive || isYearlyActive) {
-      setState(() {
-        SharedPreferenceHelper.setSubscription(true);
-      });
-    }else{
-      SharedPreferenceHelper.setSubscription(false);
-    }
-
   }
 
+  void gotToSubscriptionPage(BuildContext context) {
+      Navigator.of(context).push(new MaterialPageRoute(builder: (_)=>new InAppPurchasePage2()),)
+          .then((val)=>val?_checkSubscriptionStatus():null);
 
+  }
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
@@ -90,221 +84,229 @@ class _ExploreScreenState extends State<ExploreScreen> {
     // Calculate crossAxisCount based on screen width
     int crossAxisCount = screenWidth > 600 ? 3 : 2; // Example: 3 columns on tablets, 2 on phones
 
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Daily Task Card
-          InkWell(
-            onTap: () {
-              //
-              // // Fetch today's 10 questions
-              //List<ElectricianQuestion> todaysQuestions = questionService!.getTodaysQuestions();
+    return WillPopScope(
 
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (_) => QuizPageToday(
-                            category: "Today Quiz",
-                          )));
-            },
-            child: Container(
-              padding: EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(16),
-              ),
-              child: Row(
-                children: [
-                  Icon(Icons.anchor, color: Colors.purple, size: 40),
-                  SizedBox(width: 16),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        smallLabel(
-                          context,
-                          'Daily Task',
-                        ),
-                        smallLabel(context, '10 Questions'),
-                        SizedBox(height: 8),
-                        LinearProgressIndicator(
-                          value: questionsReadToday / 10,
-                          backgroundColor: Colors.grey[300],
-                          color: Colors.orangeAccent,
-                        ),
-                        SizedBox(height: 8),
-                        Row(
-                          children: [
-                            Expanded(
-                                flex: 1,
-                                child: smallLabel(context, 'Progress: ')),
-                            Expanded(
-                                flex: 1,
-                                child: smallLabel(
-                                    context, '$questionsReadToday/10',
-                                    alignment: TextAlign.end))
-                          ],
-                        ),
-                      ],
+      onWillPop: () async {
+        _checkSubscriptionStatus(); // Refresh the subscription status when going back
+        return true;
+      },
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Daily Task Card
+            InkWell(
+              onTap: () {
+                //
+                // // Fetch today's 10 questions
+                //List<ElectricianQuestion> todaysQuestions = questionService!.getTodaysQuestions();
+
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (_) => QuizPageToday(
+                              category: "Today Quiz",
+                            )));
+              },
+              child: Container(
+                padding: EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: Row(
+                  children: [
+                    Icon(Icons.anchor, color: Colors.purple, size: 40),
+                    SizedBox(width: 16),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          smallLabel(
+                            context,
+                            'Daily Task',
+                          ),
+                          smallLabel(context, '10 Questions'),
+                          SizedBox(height: 8),
+                          LinearProgressIndicator(
+                            value: questionsReadToday / 10,
+                            backgroundColor: Colors.grey[300],
+                            color: Colors.orangeAccent,
+                          ),
+                          SizedBox(height: 8),
+                          Row(
+                            children: [
+                              Expanded(
+                                  flex: 1,
+                                  child: smallLabel(context, 'Progress: ')),
+                              Expanded(
+                                  flex: 1,
+                                  child: smallLabel(
+                                      context, '$questionsReadToday/10',
+                                      alignment: TextAlign.end))
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
-          ),
-          SizedBox(height: sizeBox16),
+            SizedBox(height: sizeBox16),
 
-          // Quiz Section
-          // Text('Quiz', style: TextStyle(fontSize: 20)),
-          // SizedBox(height: 10),
-          // Row(
-          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //   children: [
-          //     QuizCategory(icon: Icons.sports_soccer, label: 'Football'),
-          //     QuizCategory(icon: Icons.science, label: 'Science'),
-          //     QuizCategory(icon: Icons.checkroom, label: 'Fashion'),
-          //     QuizCategory(icon: Icons.movie, label: 'Movie'),
-          //     QuizCategory(icon: Icons.music_note, label: 'Music'),
-          //   ],
-          // ),
+            // Quiz Section
+            // Text('Quiz', style: TextStyle(fontSize: 20)),
+            // SizedBox(height: 10),
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //   children: [
+            //     QuizCategory(icon: Icons.sports_soccer, label: 'Football'),
+            //     QuizCategory(icon: Icons.science, label: 'Science'),
+            //     QuizCategory(icon: Icons.checkroom, label: 'Fashion'),
+            //     QuizCategory(icon: Icons.movie, label: 'Movie'),
+            //     QuizCategory(icon: Icons.music_note, label: 'Music'),
+            //   ],
+            // ),
 
-          InkWell(
-            onTap: (){
-                if (SharedPreferenceHelper.getSubscription() == false) {
-                   gotToSubscriptionPage(context);
-                 }else
-                   {
-                     snackBar(context,"Your all features are unlocked");
-                   }
-            },
-            child: Container(
+            InkWell(
+              onTap: (){
+                  if (!isSubscribed) {
+                    gotToSubscriptionPage(context);
 
-              padding: EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: Colors.amber[600],
-                borderRadius: BorderRadius.circular(16),
+                   }else
+                     {
+                       snackBar(context,"Your all features are unlocked");
+                     }
+              },
+              child: Container(
+
+                padding: EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: Colors.amber[600],
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  //Center Row contents horizontally,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Opacity(
+                      opacity: 1,
+                      child: Image.asset("assets/images/ic_premium.png",
+                          height: 30, width: 30, fit: BoxFit.cover),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(4, 4, 4, 4),
+                      child: Center(
+                          child: title15BoldColor(context, 'Unlock All Features')),
+                        //  child: title15BoldColor(context, 'All Features')),
+                    ),
+                    Opacity(
+                      opacity: 1,
+                      child: Image.asset("assets/images/ic_premium.png",
+                          height: 30, width: 30, fit: BoxFit.cover),
+                    ),
+                  ],
+                ),
               ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                //Center Row contents horizontally,
-                crossAxisAlignment: CrossAxisAlignment.center,
+            ),
+            // More Games Section
+            SizedBox(height: sizeBox16),
+            Expanded(
+              child: GridView.count(
+                crossAxisCount: crossAxisCount,
+                mainAxisSpacing: 16,
+                crossAxisSpacing: 16,
                 children: [
-                  Opacity(
-                    opacity: 1,
-                    child: Image.asset("assets/images/ic_premium.png",
-                        height: 30, width: 30, fit: BoxFit.cover),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(4, 4, 4, 4),
-                    child: Center(
-                        child: title15BoldColor(context, 'Unlock All Features')),
-                      //  child: title15BoldColor(context, 'All Features')),
-                  ),
-                  Opacity(
-                    opacity: 1,
-                    child: Image.asset("assets/images/ic_premium.png",
-                        height: 30, width: 30, fit: BoxFit.cover),
-                  ),
+                  QuizCard(
+                      title: 'Random Question',
+                      questions: 'Unlimited Questions',
+                      isPremium: false,
+                      icon: Icons.question_mark_sharp,
+                      onTap: () {
+                        if (!isSubscribed) {
+                          gotToSubscriptionPage(context);
+                        } else {
+                         _categoryPressed(context, "Random Question");
+                        }
+                      }),
+                  QuizCard(
+                      title: 'Practice By Topic',
+                      questions: '2500+ Questions',
+                      isPremium: true,
+                      icon: Icons.topic,
+                      onTap: () {
+                        if (!isSubscribed) {
+                          gotToSubscriptionPage(context);
+                        } else {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (_) => PracticeByTopic()));
+                        }
+                      }),
+                  QuizCard(
+                      title: 'Mock Quiz',
+                      questions: 'Overcome your fears',
+                      isPremium: true,
+                      icon: Icons.quiz_rounded,
+                      onTap: () {
+                        if (!isSubscribed) {
+                          gotToSubscriptionPage(context);
+                        } else {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (_) => MockQuizScreen()));
+                          }
+                      }),
+                  QuizCard(
+                      title: 'Time Quiz',
+                      questions: 'Beat the Clock',
+                      isPremium: true,
+                      icon: Icons.timelapse,
+                      onTap: () {
+                        if (!isSubscribed) {
+                          gotToSubscriptionPage(context);
+                        } else {
+                          _categoryPressed(context, "Time Quiz");
+                        }
+                      }),
+                  QuizCard(
+                      title: 'Your Questions',
+                      questions: 'Challenge Your Knowledge',
+                      isPremium: true,
+                      icon: Icons.personal_injury,
+                      onTap: () {
+                        if (!isSubscribed) {
+                          gotToSubscriptionPage(context);
+                        } else {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (_) => YourQuestionsScreen()));
+                        }
+                      }),
+                  QuizCard(
+                      title: 'Records',
+                      questions: 'Preserve Your Achievements',
+                      isPremium: true,
+                      icon: Icons.fiber_smart_record_sharp,
+                      onTap: () {
+                        if (!isSubscribed) {
+                          gotToSubscriptionPage(context);
+                        } else {
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (_) => RecordsScreen()));
+                        }
+                      }),
                 ],
               ),
             ),
-          ),
-          // More Games Section
-          SizedBox(height: sizeBox16),
-          Expanded(
-            child: GridView.count(
-              crossAxisCount: crossAxisCount,
-              mainAxisSpacing: 16,
-              crossAxisSpacing: 16,
-              children: [
-                QuizCard(
-                    title: 'Random Question',
-                    questions: 'Unlimited Questions',
-                    isPremium: false,
-                    icon: Icons.question_mark_sharp,
-                    onTap: () {
-                      // if (SharedPreferenceHelper.getSubscription() == false) {
-                      //   gotToSubscriptionPage(context);
-                      // } else {
-                        _categoryPressed(context, "Random Question");
-                      //}
-                    }),
-                QuizCard(
-                    title: 'Practice By Topic',
-                    questions: '2500+ Questions',
-                    isPremium: true,
-                    icon: Icons.topic,
-                    onTap: () {
-                      if (SharedPreferenceHelper.getSubscription() == false) {
-                        gotToSubscriptionPage(context);
-                      } else {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (_) => PracticeByTopic()));
-                      }
-                    }),
-                QuizCard(
-                    title: 'Mock Quiz',
-                    questions: 'Overcome your fears',
-                    isPremium: true,
-                    icon: Icons.quiz_rounded,
-                    onTap: () {
-                      if (SharedPreferenceHelper.getSubscription() == false) {
-                        gotToSubscriptionPage(context);
-                      } else {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (_) => MockQuizScreen()));
-                        }
-                    }),
-                QuizCard(
-                    title: 'Time Quiz',
-                    questions: 'Beat the Clock',
-                    isPremium: true,
-                    icon: Icons.timelapse,
-                    onTap: () {
-                      if (SharedPreferenceHelper.getSubscription() == false) {
-                        gotToSubscriptionPage(context);
-                      } else {
-                        _categoryPressed(context, "Time Quiz");
-                      }
-                    }),
-                QuizCard(
-                    title: 'Your Questions',
-                    questions: 'Challenge Your Knowledge',
-                    isPremium: true,
-                    icon: Icons.personal_injury,
-                    onTap: () {
-                      if (SharedPreferenceHelper.getSubscription() == false) {
-                        gotToSubscriptionPage(context);
-                      } else {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (_) => YourQuestionsScreen()));
-                      }
-                    }),
-                QuizCard(
-                    title: 'Records',
-                    questions: 'Preserve Your Achievements',
-                    isPremium: true,
-                    icon: Icons.fiber_smart_record_sharp,
-                    onTap: () {
-                      if (SharedPreferenceHelper.getSubscription() == false) {
-                        gotToSubscriptionPage(context);
-                      } else {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (_) => RecordsScreen()));
-                      }
-                    }),
-              ],
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

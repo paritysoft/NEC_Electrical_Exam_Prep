@@ -24,8 +24,8 @@ const onboardD4 = "Monitor your performance, identify areas for improvement, and
 
  const String yearly = "yearly";
  const String verifyingScope = "https://www.googleapis.com/auth/androidpublisher";
- const String monthlyPlan = "com.paritysoft.acnp_exam_prep_mcqs.weekly";
- const String quarterlyPlan = "com.paritysoft.acnp_exam_prep_mcqs.monthly";
+ const String weeklyPlan = "com.paritysoft.acnp_exam_prep_mcqs.weekly";
+ const String monthlyPlan = "com.paritysoft.acnp_exam_prep_mcqs.monthly";
  const String yearlyPlan = "com.paritysoft.acnp_exam_prep_mcqs.yearly";
  const String inAppPurchases = "com.paritysoft.acnp_exam_prep_mcqs";
 

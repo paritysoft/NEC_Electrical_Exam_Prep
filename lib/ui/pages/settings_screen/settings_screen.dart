@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:electrician/subscription/core/sharepref_helper.dart';
 import 'package:electrician/ui/pages/settings_screen/exam_date_screen.dart';
 import 'package:electrician/ui/pages/settings_screen/privacy_policy_screen.dart';
 import 'package:electrician/ui/widgets/common_widget.dart';

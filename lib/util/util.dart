@@ -1,7 +1,7 @@
 import 'package:encrypt/encrypt.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-import '../subscription/core/sharepref_helper.dart';
+import '../ui/pages/subscription/sharepref_helper.dart';
 
 String aesDecrypt(String encryptedText, String key) {
   // Check if the input is null or empty

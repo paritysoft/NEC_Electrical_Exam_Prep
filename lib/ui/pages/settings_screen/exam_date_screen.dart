@@ -1,4 +1,3 @@
-import 'package:electrician/subscription/core/sharepref_helper.dart';
 import 'package:electrician/ui/pages/data/exam_date_management.dart';
 import 'package:electrician/ui/widgets/common_widget.dart';
 import 'package:electrician/util/AppColors.dart';
@@ -8,6 +7,7 @@ import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:timezone/timezone.dart' as tz;
 import '../../../main.dart';
+import '../subscription/sharepref_helper.dart';
 
 class CalendarPage extends StatefulWidget {
   @override

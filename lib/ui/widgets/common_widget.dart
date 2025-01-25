@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../../subscription/in-app-purches/InAppPurchasePage.dart';
-import '../../subscription/presentation/subscription/screen/subscription_page.dart';
 import '../../util/AppColors.dart';
 import '../../util/app_constants.dart';
+import '../pages/subscription/InAppPurchasePage2.dart';
 
 snackBar(BuildContext context, String message) {
   return ScaffoldMessenger.of(context).showSnackBar(
@@ -154,19 +153,12 @@ appBarCustom(BuildContext context, String message) {
     ),
   );
 }
-void gotToSubscriptionPage(BuildContext context) {
-
-  Future.delayed(const Duration(seconds: 1)).then((val) {
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => SubscriptionPage()));
-  });
-
-  // Navigator.push(
-  //   context,
-  //   MaterialPageRoute(
-  //     builder: (context) => InAppPurchasePage(),
-  //   ),
-  // );
-}
+// void gotToSubscriptionPage(BuildContext context) {
+//
+//   Future.delayed(const Duration(seconds: 1)).then((val) {
+//     Navigator.push(
+//         context,
+//         MaterialPageRoute(
+//             builder: (context) => InAppPurchasePage2()));
+//   });
+// }

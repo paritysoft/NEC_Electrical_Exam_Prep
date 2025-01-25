@@ -1,7 +1,4 @@
 import 'dart:io';
-
-import 'package:app_tracking_transparency/app_tracking_transparency.dart';
-import 'package:electrician/subscription/presentation/subscription/bloc/provider_list.dart';
 import 'package:electrician/util/app_constants.dart';
 import 'package:electrician/util/notification.dart';
 import 'package:electrician/util/themes.dart';
@@ -11,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:provider/provider.dart';
-import '../subscription/dependencyinjection/injection_container.dart' as ic;
 import 'ui/pages/onboarding/onboarding_screen.dart';
 import 'package:timezone/data/latest.dart' as tz;
 
@@ -29,7 +25,6 @@ void main() async {
     await checkAndRequestExactAlarmPermission();
   }
 
-  ic.init();
 
   // Initialize the notifications
   const AndroidInitializationSettings initializationSettingsAndroid =
@@ -54,9 +49,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: providers,
-      child: MaterialApp(
+    return MaterialApp(
         title: app_title,
         navigatorObservers: [observer],
         // Attach observer for automatic event tracking
@@ -65,7 +58,7 @@ class MyApp extends StatelessWidget {
         theme: light,
         darkTheme: light,
         home: const OnboardingScreen(),
-      ),
+
     );
   }
 }
