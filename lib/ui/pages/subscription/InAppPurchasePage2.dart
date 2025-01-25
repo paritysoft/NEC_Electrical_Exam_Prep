@@ -248,18 +248,20 @@ class _InAppPurchasePageState extends State<InAppPurchasePage2> {
                   purchasedPlan = purchaseDetails.productID;
                 });
               }
+            }else{
+              snackBar(context, "No purchases found to restore.");
             }
           }
         },
         onError: (error) {
-          print("Error: $error");
+          print("Restored Error: $error");
           snackBar(context, "Error restoring purchases: $error");
           setState(() {
             isProcessing = false;
           });
         },
         onDone: () {
-          print("Done restoring purchases");
+          print("Done Restored purchases");
           if (restoredAny) {
             snackBar(context, "Purchases restored successfully!");
           } else {
@@ -273,7 +275,7 @@ class _InAppPurchasePageState extends State<InAppPurchasePage2> {
       );
       subscription.cancel();
     } catch (e) {
-      print("Error occurred during restore: $e");
+      print("Error occurred during Restored: $e");
       snackBar(context, "An error occurred: $e");
       setState(() {
         isProcessing = false;
@@ -282,129 +284,12 @@ class _InAppPurchasePageState extends State<InAppPurchasePage2> {
       setState(() {
         isProcessing = false;
       });
-      snackBar(context, "No purchases found to restore.");
+    //  snackBar(context, "No purchases found to restore.");
 
     }
   }
 
-  // Future<void> _restorePurchases() async {
-  //   setState(() {
-  //     isProcessing = true;
-  //   });
-  //
-  //   bool restoredAny = false;
-  //
-  //   try {
-  //     await _inAppPurchase.restorePurchases();
-  //
-  //     // Listen for restored purchases via the purchase stream
-  //     final Stream<List<PurchaseDetails>> purchaseUpdated =
-  //         _inAppPurchase.purchaseStream;
-  //     final subscription = purchaseUpdated.listen(
-  //       (purchases) async {
-  //         for (var purchaseDetails in purchases) {
-  //           if (purchaseDetails.status == PurchaseStatus.restored) {
-  //             restoredAny = true;
-  //
-  //             if (purchaseDetails.pendingCompletePurchase) {
-  //               await _inAppPurchase.completePurchase(purchaseDetails);
-  //             }
-  //
-  //             if (_productIds.contains(purchaseDetails.productID)) {
-  //               // Save subscription details to SharedPreferences
-  //               final prefs = await SharedPreferences.getInstance();
-  //               await prefs.setBool('isSubscribed', true);
-  //               await prefs.setString(
-  //                   'purchasedPlan', purchaseDetails.productID);
-  //
-  //               setState(() {
-  //                 isSubscribed = true;
-  //                 purchasedPlan = purchaseDetails.productID;
-  //               });
-  //             }
-  //           }
-  //         }
-  //       },
-  //       onError: (error) {
-  //         snackBar(context, "Error restoring purchases: $error");
-  //
-  //
-  //       },
-  //       onDone: () {
-  //         if (restoredAny) {
-  //           snackBar(context, "Purchases restored successfully!");
-  //         } else {
-  //           snackBar(context, "No purchases found to restore.");
-  //           _subscription.cancel();
-  //           setState(() {
-  //             isProcessing = false;
-  //           });
-  //         }
-  //       },
-  //     );
-  //   } catch (e) {
-  //     snackBar(context, "An error occurred: $e");
-  //
-  //     setState(() {
-  //       isProcessing = false;
-  //     });
-  //   } finally {
-  //     // snackBar(context, "An error occurred:");
-  //
-  //     setState(() {
-  //       isProcessing = false;
-  //     });
-  //   }
-  // }
 
-  // Future<void> _restorePurchases() async {
-  //   try {
-  //   var ad =  await _inAppPurchase.restorePurchases();
-  //   } catch (e) {
-  //     print("Error restoring purchases: $e");
-  //   }
-  // }
-  // Future<void> _restorePurchases() async {
-  //   try {
-  //     // Trigger the restoration of purchases
-  //     await _inAppPurchase.restorePurchases();
-  //
-  //     // Listen for restored purchases via the purchase stream
-  //     final Stream<List<PurchaseDetails>> purchaseUpdated = _inAppPurchase.purchaseStream;
-  //     final subscription = purchaseUpdated.listen(
-  //           (purchases) async {
-  //         for (var purchaseDetails in purchases) {
-  //           if (purchaseDetails.status == PurchaseStatus.restored) {
-  //             if (purchaseDetails.pendingCompletePurchase) {
-  //               await _inAppPurchase.completePurchase(purchaseDetails);
-  //             }
-  //
-  //             // Verify the product ID exists in your product list
-  //             if (_productIds.contains(purchaseDetails.productID)) {
-  //               // Save subscription details to SharedPreferences
-  //               final prefs = await SharedPreferences.getInstance();
-  //               await prefs.setBool('isSubscribed', true);
-  //               await prefs.setString('purchasedPlan', purchaseDetails.productID);
-  //
-  //               setState(() {
-  //                 isSubscribed = true;
-  //                 purchasedPlan = purchaseDetails.productID;
-  //               });
-  //             }
-  //           }
-  //         }
-  //       },
-  //       onError: (error) {
-  //         print("Error in purchase stream: $error");
-  //       },
-  //       onDone: () {
-  //         _subscription.cancel();
-  //       },
-  //     );
-  //   } catch (e) {
-  //     print("Error restoring purchases: $e");
-  //   }
-  // }
 
   @override
   void dispose() {
