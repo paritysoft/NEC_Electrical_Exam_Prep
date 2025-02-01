@@ -168,23 +168,26 @@ class UpadanSonghro {
   }
 
   // Method to fetch all questions filtered by category with null safety
-  Future<List<ElectricianQuestion>> getQuestionsByCategory(
-      String category) async {
-    final db = await database;
+  Future<List<ElectricianQuestion>> getQuestionsByCategory(String category) async {
+    try {
+      final categoryAes = encryptAES(category, myKey);
+      final db = await database;
 
-    final List<Map<String, dynamic>>? maps = await db.query(
-      '$tblName',
-      where: 'category = ?', // SQL 'where' clause to filter by category
-      whereArgs: [category], // The actual category to filter by
-    );
+      final List<Map<String, dynamic>> maps = await db.query(
+        tblName,
+        where: 'category = ?',
+        whereArgs: [categoryAes],
+      );
 
-    // Ensure maps is not null and contains data
-    if (maps == null || maps.isEmpty) {
+      if (maps.isEmpty) {
+        print('No questions found for category: $category');
+        return [];
+      }
+      return maps.map((map) => ElectricianQuestion.fromMap(map)).toList();
+    } catch (e) {
+      print('Error querying questions by category: $e');
       return [];
     }
-
-    // Convert List<Map<String, dynamic>> to List<ElectricianQuestion>
-    return maps.map((map) => ElectricianQuestion.fromMap(map)).toList();
   }
 
   void fetchQuestionsByCategory(String category) async {

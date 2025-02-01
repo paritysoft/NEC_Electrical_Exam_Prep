@@ -68,24 +68,22 @@ class _RecordsScreenState extends State<RecordsScreen> {
                         trailing: Icon(Icons.arrow_forward_ios),
                         onTap: () {
                           // Handle on tap
-                          List<ElectricianQuestion>? questions =
-                              QuestionCache().getQuestions();
-                          if (questions != null) {
-                            List<ElectricianQuestion>? filterQuestions =
-                                QuestionCache().filterQuestionsByCategory(
-                                    questions, _categories[index]);
+                          UpadanSonghro dbHelper = UpadanSonghro();
 
-                            List<ElectricianQuestion>? filterQuestionByGivenAnswer =
-                            QuestionCache().filterQuestionsByGivenAnswer(
-                                filterQuestions);
+                          Future<List<ElectricianQuestion>?> filterQuestions =
+                          dbHelper.getQuestionsByCategory(_categories[index]);
 
+                          filterQuestions.then((filteredQuestions) {
+
+                            print("filteredQuestions  $filteredQuestions");
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (_) => RecordsAnswersScreen(
-                                          questions: filterQuestionByGivenAnswer,
-                                        )));
-                          }
+                                  builder: (_) => RecordsAnswersScreen(questions: QuestionCache().filterQuestionsByGivenAnswer(filteredQuestions!),
+                                  ),
+                                )
+                            );
+                          });
                         },
                       ),
                     );

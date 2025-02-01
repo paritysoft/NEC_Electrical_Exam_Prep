@@ -92,6 +92,11 @@ class RecordsAnswersScreen extends StatelessWidget {
                       color: question.correctCount == 1 ? Colors.green : Colors.red,
                       fontSize: 18.0,
                       fontWeight: FontWeight.bold
+                  ),),
+                  TextSpan(text: HtmlUnescape().convert(cleanedString(question.explanation).replaceAll('"', '')) , style: TextStyle(
+                      color: question.correctCount == 1 ? Colors.green : Colors.red,
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.bold
                   ),)
                 ]
             ),style: TextStyle(
