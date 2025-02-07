@@ -30,12 +30,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         modelDescription: onboardD2,
       ),
       const CustomOnboardingPageViewModel(
-        imageUrl: 'assets/images/onbImage3.png',
+        imageUrl: 'assets/images/onbImage3.jpg',
         modelTitle: onboardT3,
         modelDescription: onboardD3,
       ),
       const CustomOnboardingPageViewModel(
-        imageUrl: 'assets/images/onbImage4.png',
+        imageUrl: 'assets/images/onbImage4.jpg',
         modelTitle: onboardT4,
         modelDescription: onboardD4,
       ),

@@ -11,7 +11,8 @@ import '../pages/quiz_page.dart';
 
 class QuizOptionsDialog extends StatefulWidget {
   final String? category;
-  const QuizOptionsDialog({super.key, this.category});
+  final bool isSubscribed ;
+  const QuizOptionsDialog({super.key, this.category, required this.isSubscribed});
 
   @override
   _QuizOptionsDialogState createState() => _QuizOptionsDialogState();
@@ -42,10 +43,11 @@ class _QuizOptionsDialogState extends State<QuizOptionsDialog> {
               padding: const EdgeInsets.all(16.0),
               color: Colors.grey.shade200,
               child: title15BoldColor(context,
-                widget.category ?? "", color: Colors.black87
+                  widget.category ?? "", color: Colors.black87
               ),
             ),
             SizedBox(height: 10.0),
+            smallLabel(context, widget.isSubscribed ?"For premium users, all features are unlocked.":"All features will be unlocked for premium users.", textSize: 15),
             smallLabel(context, "Select Total Number of Questions"),
             SizedBox(
               width: double.infinity,
@@ -57,7 +59,7 @@ class _QuizOptionsDialogState extends State<QuizOptionsDialog> {
                 children: <Widget>[
                   SizedBox(width: 0.0),
                   ActionChip(
-                    label: smallLabel(context,"5"),
+                    label: smallLabel(context,"5", color: Colors.white),
                     labelStyle: TextStyle(color: Colors.white),
                     backgroundColor: noOfQuestions == 5
                         ? primary
@@ -65,28 +67,35 @@ class _QuizOptionsDialogState extends State<QuizOptionsDialog> {
                     onPressed: () => _selectNumberOfQuestions(5),
                   ),
                   ActionChip(
-                    label: smallLabel(context,"10"),
-                    labelStyle: TextStyle(color: Colors.white),
-                    backgroundColor: noOfQuestions == 10
-                        ? primary
-                        : Colors.grey.shade600,
-                    onPressed: () => _selectNumberOfQuestions(10),
+                    label: smallLabel(context, "10", color: Colors.white),
+                    labelStyle: TextStyle(
+                      color: widget.isSubscribed ? Colors.white : Colors.grey.shade400, // Dim text when disabled
+                    ),
+                    backgroundColor: widget.isSubscribed
+                        ? (noOfQuestions == 10 ? primary : Colors.grey.shade600)
+                        : Colors.grey.shade400, // Lighten background when disabled
+                    onPressed: widget.isSubscribed ? () => _selectNumberOfQuestions(10) : null, // Fully disable when false
+                  ),
+
+                  ActionChip(
+                    label: smallLabel(context, "15", color: Colors.white),
+                    labelStyle: TextStyle(
+                      color: widget.isSubscribed ? Colors.white : Colors.grey.shade400, // Dim text when disabled
+                    ),
+                    backgroundColor: widget.isSubscribed
+                        ? (noOfQuestions == 15 ? primary : Colors.grey.shade600)
+                        : Colors.grey.shade400, // Lighten background when disabled
+                    onPressed: widget.isSubscribed ? () => _selectNumberOfQuestions(15) : null, // Fully disable when false
                   ),
                   ActionChip(
-                    label: smallLabel(context,"15"),
-                    labelStyle: TextStyle(color: Colors.white),
-                    backgroundColor: noOfQuestions == 15
-                        ? primary
-                        : Colors.grey.shade600,
-                    onPressed: () => _selectNumberOfQuestions(15),
-                  ),
-                  ActionChip(
-                    label: smallLabel(context,"20"),
-                    labelStyle: TextStyle(color: Colors.white),
-                    backgroundColor: noOfQuestions == 20
-                        ? primary
-                        : Colors.grey.shade600,
-                    onPressed: () => _selectNumberOfQuestions(20),
+                    label: smallLabel(context, "20", color: Colors.white),
+                    labelStyle: TextStyle(
+                      color: widget.isSubscribed ? Colors.white : Colors.grey.shade400, // Dim text when disabled
+                    ),
+                    backgroundColor: widget.isSubscribed
+                        ? (noOfQuestions == 20 ? primary : Colors.grey.shade600)
+                        : Colors.grey.shade400, // Lighten background when disabled
+                    onPressed: widget.isSubscribed ? () => _selectNumberOfQuestions(20) : null, // Fully disable when false
                   ),
                   // ActionChip(
                   //   label: smallLabel(context,"50"),
@@ -111,7 +120,7 @@ class _QuizOptionsDialogState extends State<QuizOptionsDialog> {
                 children: <Widget>[
                   SizedBox(width: 0.0),
                   ActionChip(
-                    label: smallLabel(context, "Any"),
+                    label: smallLabel(context, "Any", color: Colors.white),
                     labelStyle: TextStyle(color: Colors.white),
                     backgroundColor: _difficulty == null
                         ? primary
@@ -119,7 +128,7 @@ class _QuizOptionsDialogState extends State<QuizOptionsDialog> {
                     onPressed: () => _selectDifficulty(null),
                   ),
                   ActionChip(
-                    label: smallLabel(context,"Easy"),
+                    label: smallLabel(context,"Easy", color: Colors.white),
                     labelStyle: TextStyle(color: Colors.white),
                     backgroundColor: _difficulty == "easy"
                         ? primary
@@ -127,21 +136,42 @@ class _QuizOptionsDialogState extends State<QuizOptionsDialog> {
                     onPressed: () => _selectDifficulty("easy"),
                   ),
                   ActionChip(
-                    label: smallLabel(context, "Medium"),
-                    labelStyle: TextStyle(color: Colors.white),
-                    backgroundColor: _difficulty == "medium"
-                        ? primary
-                        : Colors.grey.shade600,
-                    onPressed: () => _selectDifficulty("medium"),
+                    label: smallLabel(context, "Medium", color: Colors.white),
+                    labelStyle: TextStyle(
+                      color: widget.isSubscribed ? Colors.white : Colors.grey.shade400, // Dim text when disabled
+                    ),
+                    backgroundColor: widget.isSubscribed
+                        ? (_difficulty == "Medium" ? primary : Colors.grey.shade600)
+                        : Colors.grey.shade400, // Lighten background when disabled
+                    onPressed: widget.isSubscribed ? () => _selectDifficulty("Medium") : null, // Fully disable when false
                   ),
+                  // ActionChip(
+                  //   label: smallLabel(context, "Medium"),
+                  //   labelStyle: TextStyle(color: Colors.white),
+                  //   backgroundColor: _difficulty == "medium"
+                  //       ? primary
+                  //       : Colors.grey.shade600,
+                  //   onPressed: () => _selectDifficulty("medium"),
+                  // ),
+
                   ActionChip(
-                    label: smallLabel(context, "Hard"),
-                    labelStyle: TextStyle(color: Colors.white),
-                    backgroundColor: _difficulty == "hard"
-                        ? primary
-                        : Colors.grey.shade600,
-                    onPressed: () => _selectDifficulty("hard"),
+                    label: smallLabel(context, "Hard", color: Colors.white),
+                    labelStyle: TextStyle(
+                      color: widget.isSubscribed ? Colors.white : Colors.grey.shade400, // Dim text when disabled
+                    ),
+                    backgroundColor: widget.isSubscribed
+                        ? (_difficulty == "Hard" ? primary : Colors.grey.shade600)
+                        : Colors.grey.shade400, // Lighten background when disabled
+                    onPressed: widget.isSubscribed ? () => _selectDifficulty("Hard") : null, // Fully disable when false
                   ),
+                  // ActionChip(
+                  //   label: smallLabel(context, "Hard"),
+                  //   labelStyle: TextStyle(color: Colors.white),
+                  //   backgroundColor: _difficulty == "hard"
+                  //       ? primary
+                  //       : Colors.grey.shade600,
+                  //   onPressed: () => _selectDifficulty("hard"),
+                  // ),
                 ],
               ),
             ),
@@ -149,13 +179,13 @@ class _QuizOptionsDialogState extends State<QuizOptionsDialog> {
             processing
                 ? CircularProgressIndicator()
                 : ElevatedButton(
-                    child: title15BoldColor(context, "Start Quiz", color: Colors.white),
-                    onPressed: _startQuiz,
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all<Color>(Colors.amber[600]!),
-                  ),
+              child: title15BoldColor(context, "Start Quiz", color: Colors.white),
+              onPressed: _startQuiz,
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all<Color>(Colors.amber[600]!),
+              ),
 
-                ),
+            ),
             SizedBox(height: 40.0),
           ],
         ),
@@ -183,14 +213,14 @@ class _QuizOptionsDialogState extends State<QuizOptionsDialog> {
     try {
       List<ElectricianQuestion>? questions = QuestionCache().getQuestions();
 
-      print("questions  ${questions?.length}    ${questions?.last.incorrectAnswer} ");
+      print("questions  ${questions?.length}    ${questions?.last.incorrectAnswer1} ");
       Navigator.pop(context);
       if ((questions?.length ?? 0)< 1) {
         Navigator.of(context).push(MaterialPageRoute(
             builder: (_) => ErrorPage(
-                  message:
-                      "There are not enough questions in the category, with the options you selected.",
-                )));
+              message:
+              "There are not enough questions in the category, with the options you selected.",
+            )));
         return;
       }
       if(questions != null) {
@@ -201,23 +231,24 @@ class _QuizOptionsDialogState extends State<QuizOptionsDialog> {
           context,
           MaterialPageRoute(
               builder: (_) => ErrorPage(
-                    message:
-                        "Can't reach the servers, \n Please check your internet connection.",
-                  )));
+                message:
+                "Can't reach the servers, \n Please check your internet connection.",
+              )));
     } catch (e) {
       print(e.toString());
       Navigator.pushReplacement(
           context,
           MaterialPageRoute(
               builder: (_) => ErrorPage(
-                    message: "Unexpected error trying to connect to the API",
-                  )));
+                message: "Unexpected error trying to connect to the API",
+              )));
     }
     setState(() {
       processing = false;
     });
   }
   void loadRandomQuestions(List<ElectricianQuestion> questions, int count) async {
+
     List<ElectricianQuestion> randomQuestions = await getRandomQuestions(questions, count);
     Navigator.push(
         context,

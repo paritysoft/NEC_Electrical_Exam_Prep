@@ -226,26 +226,26 @@ class _ExploreScreenState extends State<ExploreScreen> {
                       isPremium: false,
                       icon: Icons.question_mark_sharp,
                       onTap: () {
-                        if (!isSubscribed) {
-                          gotToSubscriptionPage(context);
-                        } else {
-                         _categoryPressed(context, "Random Question");
-                        }
+                        // if (!isSubscribed) {
+                        //   gotToSubscriptionPage(context);
+                        // } else {
+                         _categoryPressed(context, "Random Question", isSubscribed);
+                       // }
                       }),
                   QuizCard(
                       title: 'Practice By Topic',
-                      questions: '2500+ Questions',
+                      questions: '1300+ Questions',
                       isPremium: true,
                       icon: Icons.topic,
                       onTap: () {
-                        if (!isSubscribed) {
-                          gotToSubscriptionPage(context);
-                        } else {
+                        // if (!isSubscribed) {
+                        //   gotToSubscriptionPage(context);
+                        // } else {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (_) => PracticeByTopic()));
-                        }
+                                  builder: (_) => PracticeByTopic(isSubscribed: isSubscribed,))).then((val)=>val?_checkSubscriptionStatus():null);
+                       // }
                       }),
                   QuizCard(
                       title: 'Mock Quiz',
@@ -253,14 +253,14 @@ class _ExploreScreenState extends State<ExploreScreen> {
                       isPremium: true,
                       icon: Icons.quiz_rounded,
                       onTap: () {
-                        if (!isSubscribed) {
-                          gotToSubscriptionPage(context);
-                        } else {
+                        // if (!isSubscribed) {
+                        //   gotToSubscriptionPage(context);
+                        // } else {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (_) => MockQuizScreen()));
-                          }
+                                  builder: (_) => MockQuizScreen(isSubscribed: isSubscribed,))).then((val)=>val?_checkSubscriptionStatus():null);
+                         // }
                       }),
                   QuizCard(
                       title: 'Time Quiz',
@@ -271,7 +271,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
                         if (!isSubscribed) {
                           gotToSubscriptionPage(context);
                         } else {
-                          _categoryPressed(context, "Time Quiz");
+                          _categoryPressed(context, "Time Quiz", isSubscribed);
                         }
                       }),
                   QuizCard(
@@ -398,17 +398,18 @@ class QuizCard extends StatelessWidget {
   }
 }
 
-_categoryPressed(BuildContext context, String category) {
+_categoryPressed(BuildContext context, String category, bool isSubscribed) {
   showModalBottomSheet(
     context: context,
     builder: (sheetContext) => BottomSheet(
       builder: (_) => category != "Time Quiz"
           ? QuizOptionsDialog(
-              category: category,
-            )
+        category: category,
+        isSubscribed: isSubscribed,
+      )
           : QuizOptionsTimerDialog(
-              category: category,
-            ),
+        category: category,
+      ),
       onClosing: () {},
     ),
   );

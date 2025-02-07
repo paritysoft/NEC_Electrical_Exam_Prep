@@ -88,16 +88,12 @@ class RecordsAnswersScreen extends StatelessWidget {
                       fontSize: 18.0,
                       fontWeight: FontWeight.bold
                   ),),
-                  TextSpan(text: HtmlUnescape().convert(cleanedString(question.givenAnswer).replaceAll('"', '')) , style: TextStyle(
+                  TextSpan(text: HtmlUnescape().convert(question.givenAnswer.replaceAll('"', '')) , style: TextStyle(
                       color: question.correctCount == 1 ? Colors.green : Colors.red,
                       fontSize: 18.0,
                       fontWeight: FontWeight.bold
                   ),),
-                  TextSpan(text: HtmlUnescape().convert(cleanedString(question.explanation).replaceAll('"', '')) , style: TextStyle(
-                      color: question.correctCount == 1 ? Colors.green : Colors.red,
-                      fontSize: 18.0,
-                      fontWeight: FontWeight.bold
-                  ),)
+
                 ]
             ),style: TextStyle(
                 fontSize: 16.0
@@ -106,12 +102,22 @@ class RecordsAnswersScreen extends StatelessWidget {
             question.correctCount == 1 ? Container(): Text.rich(TextSpan(
               children: [
                 TextSpan(text: "Correct Answer: "),
-                TextSpan(text: HtmlUnescape().convert(cleanedString(question.correctAnswer).replaceAll('"', '')) , style: TextStyle(
+                TextSpan(text: HtmlUnescape().convert(question.correctAnswer.replaceAll('"', '')) , style: TextStyle(
                   fontWeight: FontWeight.w500
                 ))
               ]
             ),style: TextStyle(
               fontSize: 16.0
+            ),),
+            question.correctCount == 1 ? Container(): Text.rich(TextSpan(
+                children: [
+                  TextSpan(text: "Explanation: "),
+                  TextSpan(text: HtmlUnescape().convert(question.explanation.replaceAll('"', '')) , style: TextStyle(
+                      fontWeight: FontWeight.w500
+                  ))
+                ]
+            ),style: TextStyle(
+                fontSize: 16.0
             ),)
           ],
         ),

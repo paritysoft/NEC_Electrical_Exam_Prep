@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../util/AppColors.dart';
 import '../widgets/common_widget.dart';
+import 'analysis_screen/ScoreBarChart.dart';
 import 'check_answers.dart';
 import 'data/QuestionCache.dart';
 import 'data/model/ElectricianQuestion.dart';
@@ -36,8 +37,7 @@ class _QuizFinishedPageState extends State<QuizFinishedPage> {
 
     int correct = 0;
     this.widget.answers.forEach((index, value) {
-      if (cleanedString(this.widget.questions[index].correctAnswer)
-              .replaceAll('"', '') ==
+      if (this.widget.questions[index].correctAnswer ==
           value) {
         correct++;
         print("Answers correct  ${this.widget.answers[index]}");
@@ -58,11 +58,14 @@ class _QuizFinishedPageState extends State<QuizFinishedPage> {
           padding: const EdgeInsets.all(16.0),
           child: Column(
             children: <Widget>[
+
+              ScoreGaugeChart(totalQuestions: widget.questions.length, score: correct),
+
               Card(
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10.0)),
                 child: ListTile(
-                  contentPadding: const EdgeInsets.all(16.0),
+                  contentPadding: const EdgeInsets.all(10.0),
                   title: smallLabel(context, "Total Questions"),
                   trailing: trailingStyle(
                     context,
@@ -70,12 +73,12 @@ class _QuizFinishedPageState extends State<QuizFinishedPage> {
                   ),
                 ),
               ),
-              SizedBox(height: 10.0),
+              SizedBox(height: 5.0),
               Card(
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10.0)),
                 child: ListTile(
-                  contentPadding: EdgeInsets.all(16.0),
+                  contentPadding: EdgeInsets.all(10.0),
                   title: smallLabel(
                     context,
                     "Score",
@@ -86,12 +89,12 @@ class _QuizFinishedPageState extends State<QuizFinishedPage> {
                   ),
                 ),
               ),
-              SizedBox(height: 10.0),
+              SizedBox(height: 5.0),
               Card(
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10.0)),
                 child: ListTile(
-                  contentPadding: EdgeInsets.all(16.0),
+                  contentPadding: EdgeInsets.all(10.0),
                   title: smallLabel(
                     context,
                     "Correct Answers",
@@ -102,12 +105,12 @@ class _QuizFinishedPageState extends State<QuizFinishedPage> {
                   ),
                 ),
               ),
-              SizedBox(height: 10.0),
+              SizedBox(height: 5.0),
               Card(
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10.0)),
                 child: ListTile(
-                  contentPadding: EdgeInsets.all(16.0),
+                  contentPadding: EdgeInsets.all(10.0),
                   title: smallLabel(
                     context,
                     "Incorrect Answers",
@@ -118,7 +121,7 @@ class _QuizFinishedPageState extends State<QuizFinishedPage> {
                   ),
                 ),
               ),
-              SizedBox(height: 20.0),
+              SizedBox(height: 10.0),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[

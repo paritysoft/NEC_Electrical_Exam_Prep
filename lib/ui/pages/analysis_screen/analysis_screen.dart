@@ -5,7 +5,9 @@ import 'package:electrician/ui/widgets/common_widget.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
+import '../data/upadansonghro.dart';
 import 'CategoryQuestionDataList.dart';
+import 'CompletionChart.dart';
 
 class AnalysisScreen extends StatelessWidget {
   @override
@@ -33,10 +35,25 @@ class AnalysisScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
 
+                FutureBuilder<Map<String, int>>(
+                  future: UpadanSonghro().getCompletionStats(),
+                  builder: (context, snapshot) {
+                    if (!snapshot.hasData) {
+                      return Center(child: CircularProgressIndicator());
+                    }
+
+                    final data = snapshot.data!;
+                    return CompletionProgress(
+                      answered: data['answered']!,
+                      total: data['total']!,
+                    );
+                  },
+                ),
+
                 // Circular Accuracy Chart
                /// QuizActivityGraph(),
                // QuizGraphPicChart(),
-                QuizGraphBarChart()
+               // QuizGraphPieChart()
                 // SizedBox(
                 //   height: 120,
                 //   width: 120,

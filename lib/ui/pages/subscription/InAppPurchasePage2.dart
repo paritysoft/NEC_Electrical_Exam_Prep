@@ -4,10 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:intl/intl.dart';
-
 import '../../../util/AppColors.dart';
 import '../../../util/app_constants.dart';
-import '../explore_screen/explore_screen.dart';
 
 class InAppPurchasePage2 extends StatefulWidget {
   @override
@@ -21,15 +19,16 @@ class _InAppPurchasePageState extends State<InAppPurchasePage2> {
   bool _available = false;
   bool isSubscribed = false;
   String purchasedPlan = "";
-  String selectedPlan = "";
+  String selectedPlan = inAppPurchases;
   DateTime? subscriptionExpiryDate;
   List<ProductDetails> _products = [];
   final Set<String> _processedPurchaseIds = {};
+  bool isLoading = false;
 
   final Set<String> _productIds = {
-    weeklyPlan, // Replace with your product ID for weekly
-    monthlyPlan, // Replace with your product ID for monthly
-    yearlyPlan, // Replace with your product ID for yearly
+    inAppPurchases, // Replace with your product ID for weekly
+    // monthlyPlan, // Replace with your product ID for monthly
+    // yearlyPlan, // Replace with your product ID for yearly
   };
   bool isProcessing = false;
   bool isProcessingBuy = false;
@@ -79,7 +78,7 @@ class _InAppPurchasePageState extends State<InAppPurchasePage2> {
 
   String getPlanName(String productId) {
     return planNames[productId] ??
-        "Unknown Plan"; // Default to "Unknown Plan" if ID not found
+        "Unlimited Plan"; // Default to "Unknown Plan" if ID not found
   }
 
   Future<void> _clearSubscriptionData() async {
@@ -152,34 +151,48 @@ class _InAppPurchasePageState extends State<InAppPurchasePage2> {
         DateTime now = DateTime.now();
         DateTime expiryDate;
 
-        if (purchaseDetails.productID == weeklyPlan) {
-          expiryDate = now.add(Duration(days: 7));
-        } else if (purchaseDetails.productID == monthlyPlan) {
-          expiryDate = now.add(Duration(days: 30));
-        } else if (purchaseDetails.productID == yearlyPlan) {
-          expiryDate = now.add(Duration(days: 365));
-        } else {
-          return; // Invalid product ID
-        }
+        // if (purchaseDetails.productID == weeklyPlan) {
+        //   expiryDate = now.add(Duration(days: 7));
+        // } else if (purchaseDetails.productID == monthlyPlan) {
+        //   expiryDate = now.add(Duration(days: 30));
+        // } else if (purchaseDetails.productID == yearlyPlan) {
+        //   expiryDate = now.add(Duration(days: 365));
+        // } else {
+        //   return; // Invalid product ID
+        // }
 
         await prefs.setBool('isSubscribed', true);
         await prefs.setString('purchasedPlan', purchaseDetails.productID);
-        await prefs.setString(
-            'subscriptionExpiryDate', expiryDate.toIso8601String());
+      //  await prefs.setString(
+       //     'subscriptionExpiryDate', expiryDate.toIso8601String());
 
         setState(() {
           isSubscribed = true;
           purchasedPlan = purchaseDetails.productID;
-          subscriptionExpiryDate = expiryDate;
+        //  subscriptionExpiryDate = expiryDate;
         });
 
-        print(
-            "Subscription for $purchasedPlan activated. Expiry date: $expiryDate");
+        //print(
+        //    "Subscription for $purchasedPlan activated. Expiry date: $expiryDate");
       }
     }
   }
 
+  void _selectPlan(ProductDetails product) {
+    setState(() {
+      selectedProduct = product;
+      selectedPlan = product.id;
+      _buyProduct(product);
+    });
+  }
+
+  late ProductDetails selectedProduct;
+
   void _buyProduct(ProductDetails product) {
+    setState(() {
+      isLoading = true;
+    });
+    
     if (purchasedPlan == product.id) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("You are already subscribed to this plan.")),
@@ -193,10 +206,11 @@ class _InAppPurchasePageState extends State<InAppPurchasePage2> {
 
     final PurchaseParam purchaseParam = PurchaseParam(productDetails: product);
 
-    _inAppPurchase.buyNonConsumable(purchaseParam: purchaseParam).then((_) {
+    _inAppPurchase.buyConsumable(purchaseParam: purchaseParam).then((_) {
       // Reset isProcessingBuy after success
       setState(() {
         isProcessingBuy = false;
+        isLoading = false;
       });
     }).catchError((error) {
       // Handle error and reset isProcessingBuy
@@ -209,10 +223,12 @@ class _InAppPurchasePageState extends State<InAppPurchasePage2> {
       );
       setState(() {
         isProcessingBuy = false; // Reset after failure
+        isLoading = false;
+
       });
     });
+ 
   }
-
 
   Future<void> _restorePurchases() async {
     setState(() {
@@ -220,15 +236,17 @@ class _InAppPurchasePageState extends State<InAppPurchasePage2> {
     });
 
     bool restoredAny = false;
-    late StreamSubscription<List<PurchaseDetails>> subscription; // Declare subscription earlier
+    late StreamSubscription<List<PurchaseDetails>>
+        subscription; // Declare subscription earlier
 
     try {
       await _inAppPurchase.restorePurchases();
 
-      final Stream<List<PurchaseDetails>> purchaseUpdated = _inAppPurchase.purchaseStream;
+      final Stream<List<PurchaseDetails>> purchaseUpdated =
+          _inAppPurchase.purchaseStream;
 
       subscription = purchaseUpdated.listen(
-            (purchases) async {
+        (purchases) async {
           print("Restored purchases: $purchases");
           for (var purchaseDetails in purchases) {
             if (purchaseDetails.status == PurchaseStatus.restored) {
@@ -241,14 +259,15 @@ class _InAppPurchasePageState extends State<InAppPurchasePage2> {
               if (_productIds.contains(purchaseDetails.productID)) {
                 final prefs = await SharedPreferences.getInstance();
                 await prefs.setBool('isSubscribed', true);
-                await prefs.setString('purchasedPlan', purchaseDetails.productID);
+                await prefs.setString(
+                    'purchasedPlan', purchaseDetails.productID);
 
                 setState(() {
                   isSubscribed = true;
                   purchasedPlan = purchaseDetails.productID;
                 });
               }
-            }else{
+            } else {
               snackBar(context, "No purchases found to restore.");
             }
           }
@@ -280,16 +299,13 @@ class _InAppPurchasePageState extends State<InAppPurchasePage2> {
       setState(() {
         isProcessing = false;
       });
-    }finally{
+    } finally {
       setState(() {
         isProcessing = false;
       });
-    //  snackBar(context, "No purchases found to restore.");
-
+      //  snackBar(context, "No purchases found to restore.");
     }
   }
-
-
 
   @override
   void dispose() {
@@ -299,11 +315,17 @@ class _InAppPurchasePageState extends State<InAppPurchasePage2> {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
+    // Calculate crossAxisCount based on screen width
+    int crossAxisCount = screenWidth > 600 ? 3 : 2; // Example: 3 columns on tablets, 2 on phones
+    double textSize = crossAxisCount == 3 ? 12.0 : 16.0; // Adjust the font size accordingly
+
     return Scaffold(
       appBar: AppBar(
           backgroundColor: primary,
           elevation: 0,
-          title: title15BoldColor(context, "In-App Purchases",
+          title: title15BoldColor(context, "Unlock Your Ultimate NEC Electrical Exam Prep!",
               color: Colors.white),
           iconTheme: const IconThemeData(
             color: Colors.white,
@@ -316,130 +338,309 @@ class _InAppPurchasePageState extends State<InAppPurchasePage2> {
               Navigator.pop(context, true);
             },
           )),
-      body: Column(
+      body: Stack(
         children: [
-          // Promotional Section
-          Container(
-            color: primary,
-            width: double.infinity,
-            padding: EdgeInsets.all(15),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "Achieve Your Goals with Premium Features!",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
+          Column(
+            children: [
+              // Promotional Section
+              Container(
+                color: primary,
+                width: double.infinity,
+                padding: EdgeInsets.all(15),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(height: 8),
+                    smallLabel(
+                        context,
+                    "✅ 1300+ Expert-Crafted Questions\n"
+                    "✅ Unlimited Access, One-Time Purchase – No subscriptions, no hidden fees—pay once, enjoy forever!\n"
+                    "✅ Exclusive Study Features – Track progress, review weak areas, and stay ahead with real-time insights.\n"
+                    "✅ Offline Access – Study anytime, anywhere, even without the internet.\n"
+                    "✅ Support & Updates – Help us improve and add new features! 🚀\n"
+                    "🎯 Invest in Your Future—Get Lifetime Access Today! \n",
+                        textSize: textSize,
+                        color: Colors.white
+                    ),
+                  ],
                 ),
-                SizedBox(height: 8),
-                Text(
-                  "• 2500+ questions and explanations to practice\n"
-                  "• Improve faster with subject-based practice and performance analysis\n"
-                  "• Unlimited access to 6 efficient exercise modes\n"
-                  "• Guaranteed to pass the exam",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 14,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Expanded(
-            child: _available
-                ? (isSubscribed
+              ),
+              SizedBox(height: 10,),
+              Expanded(
+                child: _available
+                    ? (isSubscribed
                     ? Center(
-                        child: Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Text(
-                                  "You are subscribed to: ${getPlanName(purchasedPlan)}"),
-                              Text(
-                                  "Expires on: ${subscriptionExpiryDate != null ? DateFormat.yMMMd().format(subscriptionExpiryDate!) : 'No Expiry Date'}"),
-                              SizedBox(height: 20),
-                              ElevatedButton(
-                                onPressed: () {
-                                  // Navigator.pop(context);
-                                  Navigator.pop(context, true);
-                                },
-                                child: Text("Go Back"),
-                              ),
-                            ],
-                          ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Text(
+                            "You are subscribed to: ${getPlanName(purchasedPlan)}"),
+                        Text(
+                            "Expires on: ${subscriptionExpiryDate != null ? DateFormat.yMMMd().format(subscriptionExpiryDate!) : 'No Expiry Date'}"),
+                        SizedBox(height: 20),
+                        ElevatedButton(
+                          onPressed: () {
+                            // Navigator.pop(context);
+                            Navigator.pop(context, true);
+                          },
+                          child: Text("Go Back"),
                         ),
-                      )
-                    : (_products.isEmpty
-                        ? Center(
-                            child: Text(
-                                "No products available. Check product setup."))
-                        : ListView(
-                            children: [
-                              ..._products.map((product) {
-                                return ListTile(
-                                  onTap: () {
-                                    setState(() {
-                                      selectedPlan = product.id;
-                                    });
-                                  },
-                                  title: Text(product.title),
-                                  subtitle: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                          "Description: ${product.description}"),
-                                      Text("Price: ${product.price}"),
-                                    ],
-                                  ),
-                                  leading: Radio<String>(
-                                    value: product.id,
-                                    groupValue: selectedPlan,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        selectedPlan = value!;
-                                      });
-                                    },
-                                  ),
-                                  trailing: purchasedPlan == product.id
-                                      ? Text(
-                                          "Purchased",
-                                          style: TextStyle(color: Colors.green),
-                                        )
-                                      : isProcessingBuy
-                                          ? CircularProgressIndicator() // Show progress bar
-                                          : ElevatedButton(
-                                              onPressed:
-                                                  selectedPlan == product.id
-                                                      ? () {
-                                                          _buyProduct(product);
-                                                        }
-                                                      : null,
-                                              child: Text('Buy'),
-                                            ),
-                                );
-                              }).toList(),
-                              Divider(),
-                              Center(
-                                child: isProcessing
-                                    ? CircularProgressIndicator() // Show progress bar
-                                    : ElevatedButton(
-                                        onPressed: _restorePurchases,
-                                        child: Text("Restore Purchases"),
-                                      ),
-                              ),
-                            ],
-                          )))
-                : Center(
-                    child: Text('Store unavailable or initialization failed.'),
+                      ],
+                    ),
                   ),
+                )
+                    : (_products.isEmpty
+                    ? Center(child: CircularProgressIndicator())
+                    : Column(
+                  children: [
+                    SizedBox(
+                      height: 15,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: _products.map((product) {
+                        if (product.id == inAppPurchases) {
+                          selectedProduct = product;
+                        }
+                        return SubscriptionCard(
+                          product: product,
+                          isSelected: selectedPlan == product.id,
+                          onTap: () => {_selectPlan(product)},
+                          //onBuy: () => _buyProduct(product),
+                          //selectedPlan: selectedPlan,
+                        );
+                      }).toList(),
+                    ),
+                    SizedBox(
+                      height: 8,
+                    ),
+
+                    Center(
+                      child: isProcessingBuy
+                          ? CircularProgressIndicator() // Show progress bar
+                          : ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.blueAccent,
+                          // Button color
+                          foregroundColor: Colors.white,
+                          // Text color
+                          padding: EdgeInsets.symmetric(
+                              vertical: 12, horizontal: 40),
+                          // Larger padding
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(
+                                12), // Rounded corners
+                          ),
+                          elevation: 8,
+                          // Adds shadow effect for focus
+                          shadowColor: Colors
+                              .black54, // Slight shadow color
+                        ),
+                        onPressed: () =>
+                            _buyProduct(selectedProduct),
+                        child: title15BoldColor(context,
+                          "Purchase Now",
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 8,
+                    ),
+                    Divider(),
+                    SizedBox(
+                      height: 8,
+                    ),
+                    Center(
+                      child: isProcessing
+                          ? CircularProgressIndicator() // Show progress bar
+                          : ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          padding: EdgeInsets.symmetric(
+                              vertical: 12,
+                              horizontal: 24), // Larger padding
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(
+                                12), // Rounded corners
+                          ),
+                          elevation:
+                          2, // Adds shadow effect for focus
+                          shadowColor: Colors
+                              .black54, // Slight shadow color
+                        ),
+                        onPressed: _restorePurchases,
+                        child: Text("Restore Purchases"),
+                      ),
+                    ),
+                  ],
+                )))
+                // : ListView(
+                //     children: [
+                //       ..._products.map((product) {
+                //         return ListTile(
+                //           onTap: () {
+                //             setState(() {
+                //               selectedPlan = product.id;
+                //             });
+                //           },
+                //           title: Text(product.title),
+                //           subtitle: Column(
+                //             crossAxisAlignment:
+                //                 CrossAxisAlignment.start,
+                //             children: [
+                //               Text(
+                //                   "Description: ${product.description}"),
+                //               Text("Price: ${calculateDailyPrice(product)}"),
+                //             ],
+                //           ),
+                //           leading: Radio<String>(
+                //             value: product.id,
+                //             groupValue: selectedPlan,
+                //             onChanged: (value) {
+                //               setState(() {
+                //                 selectedPlan = value!;
+                //               });
+                //             },
+                //           ),
+                //           trailing: purchasedPlan == product.id
+                //               ? Text(
+                //                   "Purchased",
+                //                   style: TextStyle(color: Colors.green),
+                //                 )
+                //               : isProcessingBuy
+                //                   ? CircularProgressIndicator() // Show progress bar
+                //                   : ElevatedButton(
+                //                       onPressed:
+                //                           selectedPlan == product.id
+                //                               ? () {
+                //                                   _buyProduct(product);
+                //                                 }
+                //                               : null,
+                //                       child: Text('Buy'),
+                //                     ),
+                //         );
+                //       }).toList(),
+                //       Divider(),
+                //       Center(
+                //         child: isProcessing
+                //             ? CircularProgressIndicator() // Show progress bar
+                //             : ElevatedButton(
+                //                 onPressed: _restorePurchases,
+                //                 child: Text("Restore Purchases"),
+                //               ),
+                //       ),
+                //     ],
+                //   )))
+
+                    : Center(
+                  child: Text('Store unavailable or initialization failed.'),
+                ),
+              ),
+            ],
           ),
+          if (isLoading)
+            Positioned(
+              top: 50, // Adjust top position
+              left: 0,
+              right: 0,
+              child: Center(
+                child: CircularProgressIndicator(),
+              ),
+            ),
         ],
       ),
     );
   }
 }
+
+class SubscriptionCard extends StatelessWidget {
+  final ProductDetails product;
+  final bool isSelected;
+  final VoidCallback onTap;
+
+  SubscriptionCard({
+    required this.product,
+    required this.isSelected,
+    required this.onTap,
+  });
+
+  String calculatePerDayCost(String price, int duration) {
+    double priceValue =
+        double.tryParse(price.replaceAll(RegExp(r'[^0-9.]'), '')) ?? 0;
+    double perDayCost = priceValue / duration;
+    return "\$${perDayCost.toStringAsFixed(2)}/day";
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    int durationDays = product.id.contains("weekly")
+        ? 7
+        : product.id.contains("monthly")
+            ? 30
+            : 365;
+
+    return GestureDetector(
+      onTap: onTap,
+      child: AnimatedContainer(
+        duration: Duration(milliseconds: 300),
+        padding: EdgeInsets.fromLTRB(23,10, 23, 10),
+        margin: EdgeInsets.symmetric(vertical: 4, horizontal: 2),
+        decoration: BoxDecoration(
+          color: isSelected ? Colors.blueAccent : Colors.white,
+          borderRadius: BorderRadius.circular(4),
+          boxShadow: isSelected
+              ? [
+                  BoxShadow(
+                      color: Colors.blue.shade200,
+                      blurRadius: 10,
+                      spreadRadius: 4)
+                ]
+              : [BoxShadow(color: Colors.grey.shade300, blurRadius: 8)],
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // smallLabel(
+            //   context,
+            //   product.title,
+            //   textSize: isSelected ? 22 : 18,
+            //   color: isSelected ? Colors.white : Colors.black,
+            // ),
+            //SizedBox(height: 4),
+            // smallLabel(
+            //   context,
+            //   product.price,
+            //   textSize: isSelected ? 12 : 10,
+            //   color: isSelected ? Colors.white : Colors.black87,
+            // ),
+
+            SizedBox(height: 12),
+            ElevatedButton(
+              onPressed: onTap,
+              style: ElevatedButton.styleFrom(
+                backgroundColor:
+                     Colors.blueAccent,
+                padding: EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+              child: title15BoldColor(
+                  context, isSelected ? "Life Time Subscription" : "Choose Plan",
+                  color: isSelected ? Colors.white : Colors.white),
+            ),
+            SizedBox(height: 10,),
+            title15BoldColor(
+              context,
+              "Only ${product.price}",
+              color: isSelected ? Colors.white : Colors.black87,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+

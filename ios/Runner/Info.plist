@@ -7,7 +7,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>ACNP Exam Prep - Nurse MCQs</string>
+	<string>NEC Electrical</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -15,7 +15,7 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>ACNP Exam Prep - Nurse MCQs</string>
+	<string>NEC Electrical</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
@@ -26,21 +26,21 @@
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>This app uses NEC Electrical Exam Prep 2025 preparations for purchases and subscriptions.</string>
+	<key>NSUserTrackingUsageDescription</key>
+	<string>We use this data to provide a personalized experience and crash analytics</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
-    <key>NSUserTrackingUsageDescription</key>
-    <string>We use this data to provide a personalized experience and crash analytics</string>
-    <key>NSAppTransportSecurity</key>
-        <dict>
-            <key>NSAllowsArbitraryLoads</key>
-            <true/>
-        </dict>
-        <key>NSAppleMusicUsageDescription</key>
-        <string>This app uses ACNP Exam preparations for purchases and subscriptions.</string>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>

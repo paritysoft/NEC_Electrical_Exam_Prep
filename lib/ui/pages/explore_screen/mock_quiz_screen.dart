@@ -1,19 +1,44 @@
 import 'package:electrician/ui/widgets/common_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../util/AppColors.dart';
 import '../data/QuestionCache.dart';
 import '../data/model/ElectricianQuestion.dart';
 import '../quiz_page.dart';
+import '../subscription/InAppPurchasePage2.dart';
 
 class MockQuizScreen extends StatefulWidget {
+
+  final bool isSubscribed;
+
+  const MockQuizScreen({Key? key, required this.isSubscribed});
+
   @override
   State<MockQuizScreen> createState() => _MockQuizScreenState();
 }
 
 class _MockQuizScreenState extends State<MockQuizScreen> {
   // Example string array
+  bool isSubscribed = false;
+
+  @override
+  void initState() {
+    super.initState();
+    isSubscribed = widget.isSubscribed;
+    _checkSubscriptionStatus();
+  }
+
+
+  Future<void> _checkSubscriptionStatus() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      isSubscribed = prefs.getBool('isSubscribed') ?? false; // Default to false
+      print("isSubscribed  ${isSubscribed}");
+      //  purchasedPlan = prefs.getString('purchasedPlan') ?? ''; // Default to empty string
+    });
+  }
   @override
   Widget build(BuildContext context) {
 
@@ -36,18 +61,29 @@ class _MockQuizScreenState extends State<MockQuizScreen> {
             itemBuilder: (context, index) {
               return InkWell(
                 onTap: (){
-                  List<ElectricianQuestion>? questionsMock =
-                  QuestionCache().getQuestions();
-                  if (questionsMock != null) {
-                    List<ElectricianQuestion>? questions = questionsMock.sublist((index+1)*20,(index+1)*20 + 20);
+                  if (!isSubscribed) {
+                    Navigator.of(context)
+                        .push(
+                      new MaterialPageRoute(
+                          builder: (_) => new InAppPurchasePage2()),
+                    )
+                        .then((val) => val ? _checkSubscriptionStatus() : null);
+                    ;
+                  } else {
+                    List<ElectricianQuestion>? questionsMock =
+                    QuestionCache().getQuestions();
+                    if (questionsMock != null) {
+                      List<ElectricianQuestion>? questions = questionsMock
+                          .sublist((index + 1) * 20, (index + 1) * 20 + 20);
 
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (_) => QuizPage(
-                              questions: questions,
-                              category: "Mock Quiz ${index+1}",
-                            )));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (_) => QuizPage(
+                                questions: questions,
+                                category: "Mock Quiz ${index + 1}",
+                              )));
+                    }
                   }
                 },
                 child: Card(

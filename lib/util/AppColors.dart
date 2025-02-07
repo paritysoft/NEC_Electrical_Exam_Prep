@@ -18,7 +18,7 @@ class AppColors {
   };
 }
 
-MaterialColor primary = MaterialColor(0xFF61C5FA, AppColors.color);
+MaterialColor primary = MaterialColor(0xFF481F3A, AppColors.color);
 MaterialColor background = MaterialColor(0xFFe8e4ff, AppColors.color);
 MaterialColor navigationBottom = MaterialColor(0xFF661d97, AppColors.color);
 MaterialColor bottomNav = MaterialColor(0xFFFFFFFF, AppColors.color);

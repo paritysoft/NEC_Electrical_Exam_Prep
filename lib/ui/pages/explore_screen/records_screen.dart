@@ -24,7 +24,7 @@ class _RecordsScreenState extends State<RecordsScreen> {
 
   Future<void> _fetchUniqueCategories() async {
     UpadanSonghro dbHelper = UpadanSonghro();
-    List<String> categories = await dbHelper.getUniqueTopics();
+    List<String> categories = await dbHelper.getUniqueCategories();
     setState(() {
       _categories = categories; // Update categories list
       _isLoading = false; // Stop the loading indicator
@@ -47,50 +47,53 @@ class _RecordsScreenState extends State<RecordsScreen> {
       appBar: appBarCustom(context, 'All Records List'),
       body: _isLoading
           ? const Center(
-              child:
-                  CircularProgressIndicator()) // Show loading indicator while data is being fetched
+          child:
+          CircularProgressIndicator()) // Show loading indicator while data is being fetched
           : Container(
-              color: background,
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: ListView.builder(
-                  itemCount: _categories.length,
-                  itemBuilder: (context, index) {
-                    return Card(
-                      elevation: 2, // Adds shadow to the card
-                      margin: EdgeInsets.symmetric(vertical: 8.0),
-                      shape: RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.circular(12.0), // Rounded corners
-                      ),
-                      child: ListTile(
-                        title: smallLabel(context, _categories[index]),
-                        trailing: Icon(Icons.arrow_forward_ios),
-                        onTap: () {
-                          // Handle on tap
-                          UpadanSonghro dbHelper = UpadanSonghro();
+        color: background,
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: ListView.builder(
+            itemCount: _categories.length,
+            itemBuilder: (context, index) {
+              return Card(
+                elevation: 2, // Adds shadow to the card
+                margin: EdgeInsets.symmetric(vertical: 8.0),
+                shape: RoundedRectangleBorder(
+                  borderRadius:
+                  BorderRadius.circular(12.0), // Rounded corners
+                ),
+                child: ListTile(
+                  title: smallLabel(context, _categories[index]),
+                  trailing: Icon(Icons.arrow_forward_ios),
+                  onTap: () {
 
-                          Future<List<ElectricianQuestion>?> filterQuestions =
-                          dbHelper.getQuestionsByCategory(_categories[index]);
 
-                          filterQuestions.then((filteredQuestions) {
+                    UpadanSonghro dbHelper = UpadanSonghro();
 
-                            print("filteredQuestions  $filteredQuestions");
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (_) => RecordsAnswersScreen(questions: QuestionCache().filterQuestionsByGivenAnswer(filteredQuestions!),
-                                  ),
-                                )
-                            );
-                          });
-                        },
-                      ),
-                    );
+                    Future<List<ElectricianQuestion>?> filterQuestions =
+                    dbHelper.getQuestionsByCategory(_categories[index]);
+
+                    filterQuestions.then((filteredQuestions) {
+
+                      print("filteredQuestions  $filteredQuestions");
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => RecordsAnswersScreen(questions: QuestionCache().filterQuestionsByGivenAnswer(filteredQuestions!),
+                            ),
+                          )
+                      );
+                    });
+
+
                   },
                 ),
-              ),
-            ),
+              );
+            },
+          ),
+        ),
+      ),
     );
   }
 }

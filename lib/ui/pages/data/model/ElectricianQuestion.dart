@@ -6,7 +6,9 @@ class ElectricianQuestion {
   String uuid;
   String question;
   String explanation;
-  String incorrectAnswer;
+  String incorrectAnswer1;
+  String incorrectAnswer2;
+  String incorrectAnswer3;
   String correctAnswer;
   String topicName;
   String category;
@@ -26,7 +28,9 @@ class ElectricianQuestion {
     required this.uuid,
     required this.question,
     required this.explanation,
-    required this.incorrectAnswer,
+    required this.incorrectAnswer1,
+    required this.incorrectAnswer2,
+    required this.incorrectAnswer3,
     required this.correctAnswer,
     required this.topicName,
     required this.category,
@@ -49,7 +53,9 @@ class ElectricianQuestion {
       'uuid': uuid,
       'question': question,
       'explanation': explanation,
-      'incorrect_answer': incorrectAnswer,
+      'incorrect_answer1': incorrectAnswer1,
+      'incorrect_answer2': incorrectAnswer2,
+      'incorrect_answer3': incorrectAnswer3,
       'correct_answer': correctAnswer,
       'topic_name': topicName,
       'category': category,
@@ -73,7 +79,9 @@ class ElectricianQuestion {
       uuid: map['uuid'],
       question: aesDecrypt(map['question'], myKey),
       explanation: aesDecrypt(map['explanation'], myKey),
-      incorrectAnswer: aesDecrypt(map['incorrect_answer'], myKey),
+      incorrectAnswer1: aesDecrypt(map['incorrect_answer1'], myKey),
+      incorrectAnswer2: aesDecrypt(map['incorrect_answer2'], myKey),
+      incorrectAnswer3: aesDecrypt(map['incorrect_answer3'], myKey),
       correctAnswer: aesDecrypt(map['correct_answer'], myKey),
       topicName: aesDecrypt(map['topic_name'], myKey),
       category: aesDecrypt(map['category'], myKey),

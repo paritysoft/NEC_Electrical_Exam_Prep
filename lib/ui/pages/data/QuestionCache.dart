@@ -93,10 +93,25 @@ Future<List<ElectricianQuestion>> getRandomQuestions(List<ElectricianQuestion> q
 
 List<String> getShuffledOptions(ElectricianQuestion question) {
   // Decode incorrect answers
-  List<String> options = cleanQuizOptions(question.incorrectAnswer +","+" "+ question.correctAnswer);
+  //List<String> options = cleanQuizOptions(question.incorrectAnswer +","+" "+ question.correctAnswer);
+ // List<String> options ="question.incorrectAnswer1+ ", "+ question.incorrectAnswer2+ ", "+ question.incorrectAnswer3 +", "+ question.correctAnswer ";
+  List<String> options = [];
+  if (question.incorrectAnswer1.isNotEmpty) {
+    options.add(question.incorrectAnswer1);
+  }
+  if (question.incorrectAnswer2.isNotEmpty) {
+    options.add(question.incorrectAnswer2);
+  }
+  if (question.incorrectAnswer3.isNotEmpty) {
+    options.add(question.incorrectAnswer3);
+  }
+
+// Always add the correct answer (assuming it's always non-empty)
+  options.add(question.correctAnswer);
+
   // Shuffle the options
   options.shuffle();
-  print("incorrectAnswer  ${question.incorrectAnswer}  ${question.correctAnswer}   $options");
+  //print("incorrectAnswer  ${question.incorrectAnswer}  ${question.correctAnswer}   $options");
 
   return options;
 }
@@ -112,29 +127,29 @@ List<String> getShuffledOptions(ElectricianQuestion question) {
 //   return optionsString.replaceAll(RegExp(r'【\d+】'), '').replaceAll('[', '').replaceAll(']', '').trim();
 // }
 
-List<String> cleanQuizOptions(String optionsString) {
-    print("cleanedString $optionsString      after clean data  ${cleanedString(optionsString)}");
-
-  // Clean the string using the helper function
-  String cleaned = cleanedString(optionsString);
-
-  // Remove enclosing brackets if they are present
-  if (cleaned.startsWith('[') && cleaned.endsWith(']')) {
-    cleaned = cleaned.substring(1, cleaned.length - 1);
-  }
-
-  // Split by the comma, then clean up extra whitespace and quotes
-  // List<String> optionsList = cleaned.split(RegExp(r'","|", "'))
-  //     .map((option) => option.replaceAll('"', '').trim())
-  //     .toList();
-
-    List<String> optionsList = cleaned.split(",")
-        .map((option) => option.replaceAll('"', '').trim())
-        .toList();
-  return optionsList;
-}
-
-String cleanedString(String optionsString) {
-  // Remove unwanted characters 【0】, 【1】, etc., as well as quotes and brackets
-  return optionsString.replaceAll(RegExp(r'【\d+】'), '').replaceAll('[', '').replaceAll(']', '').trim();
-}
+// List<String> cleanQuizOptions(String optionsString) {
+//     print("cleanedString $optionsString      after clean data  ${cleanedString(optionsString)}");
+//
+//   // Clean the string using the helper function
+//   String cleaned = cleanedString(optionsString);
+//
+//   // Remove enclosing brackets if they are present
+//   if (cleaned.startsWith('[') && cleaned.endsWith(']')) {
+//     cleaned = cleaned.substring(1, cleaned.length - 1);
+//   }
+//
+//   // Split by the comma, then clean up extra whitespace and quotes
+//   // List<String> optionsList = cleaned.split(RegExp(r'","|", "'))
+//   //     .map((option) => option.replaceAll('"', '').trim())
+//   //     .toList();
+//
+//     List<String> optionsList = cleaned.split(",")
+//         .map((option) => option.replaceAll('"', '').trim())
+//         .toList();
+//   return optionsList;
+// }
+//
+// String cleanedString(String optionsString) {
+//   // Remove unwanted characters 【0】, 【1】, etc., as well as quotes and brackets
+//   return optionsString.replaceAll(RegExp(r'【\d+】'), '').replaceAll('[', '').replaceAll(']', '').trim();
+// }

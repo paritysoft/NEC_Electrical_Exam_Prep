@@ -1,8 +1,8 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-
 import '../../../models/activity_data.dart';
 import '../../widgets/common_widget.dart';
+import '../data/upadansonghro.dart';
 
 class QuizActivityGraph extends StatefulWidget {
   @override
@@ -11,37 +11,41 @@ class QuizActivityGraph extends StatefulWidget {
 
 class _QuizActivityGraphState extends State<QuizActivityGraph> {
   int selectedDays = 7; // Default to 7 days
-
   List<ActivityData> activityData = [];
 
   @override
   void initState() {
     super.initState();
-    activityData = getActivityData(selectedDays); // Load initial data
+    fetchActivityData(selectedDays); // Load initial data
   }
 
-  List<ActivityData> getActivityData(int days) {
-    final now = DateTime.now();
-    return List.generate(days, (index) {
-      final date = now.subtract(Duration(days: index));
-      final answeredQuestions = (10 + index * 2); // Replace with actual data
-      final accuracyRate = (60 + index % 20).toDouble(); // Replace with actual data
-      return ActivityData(date, answeredQuestions, accuracyRate);
-    });
-  }
-  void updateData(int days) {
+  /// Fetch data from the database
+  Future<void> fetchActivityData(int days) async {
+    UpadanSonghro dbHelper = UpadanSonghro();
+    final data = await dbHelper.getActivityDataByDays(days);
     setState(() {
       selectedDays = days;
-      activityData = getActivityData(days);
+      activityData = data;
     });
   }
 
+  /// Convert activity data into chart points
   List<FlSpot> generateSpots() {
-    return activityData
-        .asMap()
-        .entries
-        .map((entry) => FlSpot(entry.key.toDouble(), entry.value.answeredQuestions.toDouble()))
-        .toList();
+    return activityData.asMap().entries.map((entry) {
+      return FlSpot(entry.key.toDouble(), entry.value.answeredQuestions.toDouble());
+    }).toList();
+  }
+
+  /// Custom button with selection highlight
+  Widget buildFilterButton(int days, String label) {
+    return ElevatedButton(
+      onPressed: () => fetchActivityData(days),
+      style: ElevatedButton.styleFrom(
+        backgroundColor: selectedDays == days ? Colors.teal : Colors.grey[300], // Highlight selected
+        foregroundColor: selectedDays == days ? Colors.white : Colors.black, // Adjust text color
+      ),
+      child: Text(label),
+    );
   }
 
   @override
@@ -79,8 +83,11 @@ class _QuizActivityGraphState extends State<QuizActivityGraph> {
                   sideTitles: SideTitles(
                     showTitles: true,
                     getTitlesWidget: (value, _) {
-                      final date = activityData[value.toInt()].date;
-                      return Text("${date.day}/${date.month}");
+                      if (value.toInt() >= 0 && value.toInt() < activityData.length) {
+                        final date = activityData[value.toInt()].date;
+                        return Text("${date.day}/${date.month}");
+                      }
+                      return Text("");
                     },
                   ),
                 ),
@@ -93,18 +100,9 @@ class _QuizActivityGraphState extends State<QuizActivityGraph> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            ElevatedButton(
-              onPressed: () => updateData(7),
-              child: Text("7 Days"),
-            ),
-            ElevatedButton(
-              onPressed: () => updateData(15),
-              child: Text("15 Days"),
-            ),
-            ElevatedButton(
-              onPressed: () => updateData(30),
-              child: Text("30 Days"),
-            ),
+            buildFilterButton(7, "7 Days"),
+            buildFilterButton(15, "15 Days"),
+            buildFilterButton(30, "30 Days"),
           ],
         ),
       ],

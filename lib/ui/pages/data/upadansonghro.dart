@@ -3,11 +3,13 @@ import 'dart:math';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:intl/intl.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:encrypt/encrypt.dart' as encrypt;
 import 'package:sqflite_sqlcipher/sqflite.dart';
 import 'package:uuid/uuid.dart';
+import '../../../models/activity_data.dart';
 import '../../../util/util.dart';
 import 'DatabaseHelper.dart';
 import 'model/CategoryQuestionData.dart';
@@ -62,7 +64,9 @@ class UpadanSonghro {
         uuid TEXT,
         question TEXT,
         explanation TEXT,
-        incorrect_answer TEXT,
+        incorrect_answer1 TEXT,
+        incorrect_answer2 TEXT,
+        incorrect_answer3 TEXT,
         correct_answer TEXT,
         topic_name TEXT,
         category TEXT,
@@ -157,6 +161,86 @@ class UpadanSonghro {
     }
   }
 
+  Future<List<ActivityData>> getActivityDataByDays(int days) async {
+    final Database db = await database;
+    final String query = '''
+      SELECT 
+        DATE(answered_date) as date, 
+        SUM(correct_count + incorrect_count) as answeredQuestions,
+        CASE 
+          WHEN SUM(correct_count + incorrect_count) = 0 THEN 0.0 
+          ELSE CAST(SUM(correct_count) AS FLOAT) / (SUM(correct_count) + SUM(incorrect_count))
+        END as accuracyRate
+      FROM $tblName
+      WHERE answered_date >= DATE('now', '-$days days')
+      GROUP BY DATE(answered_date)
+      ORDER BY date ASC;
+    ''';
+
+    final List<Map<String, dynamic>> results = await db.rawQuery(query);
+
+    // Debugging Output
+    print("DB Raw Data: $results");
+
+    return results.map((row) {
+      final double accuracy = (row['accuracyRate'] as num?)?.toDouble() ?? 0.0;
+
+      return ActivityData(
+        DateTime.parse(row['date']),
+        row['answeredQuestions'] as int? ?? 0, // Default to 0 if null
+        accuracy * 100, // Convert to percentage
+      );
+    }).toList();
+  }
+
+
+  Future<Map<String, int>> getCompletionStats() async {
+    final db = await database;
+
+    final totalQuery = await db.rawQuery('SELECT COUNT(*) AS total FROM $tblName');
+    final answeredQuery = await db.rawQuery('''
+    SELECT COUNT(*) AS answered 
+    FROM $tblName 
+    WHERE given_answer IS NOT NULL AND given_answer != ''
+  ''');
+
+    int totalQuestions = Sqflite.firstIntValue(totalQuery) ?? 0;
+    int answeredQuestions = Sqflite.firstIntValue(answeredQuery) ?? 0;
+    int remainingQuestions = totalQuestions - answeredQuestions;
+
+    return {
+      'total': totalQuestions,
+      'answered': answeredQuestions,
+      'remaining': remainingQuestions,
+    };
+  }
+
+// Function to retrieve unique categories
+  Future<List<String>> getUniqueCategories() async {
+    final db = await database;
+
+    // Perform a distinct query to get unique categories
+    List<Map<String, dynamic>> result =
+    await db.rawQuery('SELECT DISTINCT category FROM $tblName');
+
+    // Convert the result into a list of category strings
+    // List<String> categories = result
+    //     .map((row) => aesDecrypt(row['topic_name'] , myKey))
+    //     .toList();
+
+    List<String> topics = result
+        .map((row) {
+      final category = row['category'];
+      print("category  ${result.first['category']}");
+
+      return category != null ? aesDecrypt(category, myKey) : null;
+    })
+        .where((decrypted) => decrypted != null)
+        .cast<String>()
+        .toList();
+
+    return topics;
+  }
   // Retrieve all questions from the database
   Future<List<ElectricianQuestion>> getAllQuestions() async {
     final db = await database;

@@ -69,7 +69,7 @@ class _QuizOptionsTimerDialogState extends State<QuizOptionsTimerDialog> {
                     onPressed: () => _selectNumberOfQuestions(5),
                   ),
                   ActionChip(
-                    label: smallLabel(context,"10"),
+                    label: smallLabel(context,"10", color: Colors.white),
                     labelStyle: TextStyle(color: Colors.white),
                     backgroundColor: noOfQuestions == 10
                         ? primary
@@ -77,7 +77,7 @@ class _QuizOptionsTimerDialogState extends State<QuizOptionsTimerDialog> {
                     onPressed: () => _selectNumberOfQuestions(10),
                   ),
                   ActionChip(
-                    label: smallLabel(context,"15"),
+                    label: smallLabel(context,"15", color: Colors.white),
                     labelStyle: TextStyle(color: Colors.white),
                     backgroundColor: noOfQuestions == 15
                         ? primary
@@ -85,7 +85,7 @@ class _QuizOptionsTimerDialogState extends State<QuizOptionsTimerDialog> {
                     onPressed: () => _selectNumberOfQuestions(15),
                   ),
                   ActionChip(
-                    label: smallLabel(context,"20"),
+                    label: smallLabel(context,"20", color: Colors.white),
                     labelStyle: TextStyle(color: Colors.white),
                     backgroundColor: noOfQuestions == 20
                         ? primary
@@ -115,7 +115,7 @@ class _QuizOptionsTimerDialogState extends State<QuizOptionsTimerDialog> {
                 children: <Widget>[
                   SizedBox(width: 0.0),
                   ActionChip(
-                    label: smallLabel(context,"10"),
+                    label: smallLabel(context,"10", color: Colors.white),
                     labelStyle: TextStyle(color: Colors.white),
                     backgroundColor: timeForQuiz == 10
                         ? primary
@@ -123,7 +123,7 @@ class _QuizOptionsTimerDialogState extends State<QuizOptionsTimerDialog> {
                     onPressed: () => _selectTime(10),
                   ),
                   ActionChip(
-                    label: smallLabel(context,"20"),
+                    label: smallLabel(context,"20", color: Colors.white),
                     labelStyle: TextStyle(color: Colors.white),
                     backgroundColor: timeForQuiz == 20
                         ? primary
@@ -131,7 +131,7 @@ class _QuizOptionsTimerDialogState extends State<QuizOptionsTimerDialog> {
                     onPressed: () => _selectTime(20),
                   ),
                   ActionChip(
-                    label: smallLabel(context,"30"),
+                    label: smallLabel(context,"30", color: Colors.white),
                     labelStyle: TextStyle(color: Colors.white),
                     backgroundColor: timeForQuiz == 30
                         ? primary
@@ -139,7 +139,7 @@ class _QuizOptionsTimerDialogState extends State<QuizOptionsTimerDialog> {
                     onPressed: () => _selectTime(30),
                   ),
                   ActionChip(
-                    label: smallLabel(context,"40"),
+                    label: smallLabel(context,"40", color: Colors.white),
                     labelStyle: TextStyle(color: Colors.white),
                     backgroundColor: timeForQuiz == 40
                         ? primary
@@ -245,7 +245,7 @@ class _QuizOptionsTimerDialogState extends State<QuizOptionsTimerDialog> {
     try {
       List<ElectricianQuestion>? questions = QuestionCache().getQuestions();
 
-      print("questions  ${questions?.length}    ${questions?.last.incorrectAnswer} ");
+      print("questions  ${questions?.length}    ${questions?.last.incorrectAnswer1} ");
       Navigator.pop(context);
       if ((questions?.length ?? 0)< 1) {
         Navigator.of(context).push(MaterialPageRoute(

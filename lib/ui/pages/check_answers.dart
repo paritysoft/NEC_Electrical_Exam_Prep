@@ -63,7 +63,7 @@ class CheckAnswersPage extends StatelessWidget {
       );
     }
     ElectricianQuestion question = questions[index];
-    bool correct = cleanedString(question.correctAnswer).replaceAll('"', '') == answers[index];
+    bool correct = question.correctAnswer.replaceAll('"', '') == answers[index];
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -82,16 +82,26 @@ class CheckAnswersPage extends StatelessWidget {
               fontWeight: FontWeight.bold
             ),),
             SizedBox(height: 5.0),
-            correct ? Container(): Text.rich(TextSpan(
+            Text.rich(TextSpan(
               children: [
                 TextSpan(text: "Answer: "),
-                TextSpan(text: HtmlUnescape().convert(cleanedString(question.correctAnswer).replaceAll('"', '')) , style: TextStyle(
+                TextSpan(text: HtmlUnescape().convert(question.correctAnswer.replaceAll('"', '')) , style: TextStyle(
                   fontWeight: FontWeight.w500
                 ))
               ]
             ),style: TextStyle(
               fontSize: 16.0
-            ),)
+            ),),
+            Text.rich(TextSpan(
+                children: [
+                  TextSpan(text: "Explanation: "),
+                  TextSpan(text: HtmlUnescape().convert(question.explanation.replaceAll('"', '')) , style: TextStyle(
+                      fontWeight: FontWeight.w500
+                  ))
+                ]
+            ),style: TextStyle(
+                fontSize: 16.0
+            ),),
           ],
         ),
       ),
