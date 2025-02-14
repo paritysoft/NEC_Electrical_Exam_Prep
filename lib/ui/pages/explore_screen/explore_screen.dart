@@ -9,7 +9,6 @@ import 'package:electrician/ui/widgets/quiz_options_timer_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_inapp_purchase/flutter_inapp_purchase.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../util/app_constants.dart';
 import '../../widgets/common_widget.dart';

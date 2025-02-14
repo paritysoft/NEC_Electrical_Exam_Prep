@@ -61,7 +61,7 @@ class _QuizOptionsTimerDialogState extends State<QuizOptionsTimerDialog> {
                 children: <Widget>[
                   SizedBox(width: 0.0),
                   ActionChip(
-                    label: smallLabel(context,"5"),
+                    label: smallLabel(context,"5",color: Colors.white),
                     labelStyle: TextStyle(color: Colors.white),
                     backgroundColor: noOfQuestions == 5
                         ? primary

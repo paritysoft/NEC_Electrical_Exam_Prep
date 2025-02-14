@@ -310,14 +310,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.2.1"
-  flutter_inapp_purchase:
-    dependency: "direct main"
-    description:
-      name: flutter_inapp_purchase
-      sha256: d67544e703439feefe91cab9cb4920cffc0f1576f7ce51a78e3a0a3c5f7d3f1e
-      url: "https://pub.dev"
-    source: hosted
-    version: "5.6.1"
   flutter_keyboard_visibility:
     dependency: transitive
     description:
@@ -553,7 +545,7 @@ packages:
     source: hosted
     version: "1.4.0"
   in_app_purchase_storekit:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: in_app_purchase_storekit
       sha256: "52caf1051fec8018adabd2d1e775a44cb389972ed868a746c4fc28a301734d41"

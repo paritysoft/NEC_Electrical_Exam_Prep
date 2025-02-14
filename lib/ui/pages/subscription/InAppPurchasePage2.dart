@@ -6,6 +6,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:intl/intl.dart';
 import '../../../util/AppColors.dart';
 import '../../../util/app_constants.dart';
+import 'package:in_app_purchase/in_app_purchase.dart';
+
 
 class InAppPurchasePage2 extends StatefulWidget {
   @override
@@ -101,8 +103,9 @@ class _InAppPurchasePageState extends State<InAppPurchasePage2> {
       return;
     }
 
-    final ProductDetailsResponse response =
-        await _inAppPurchase.queryProductDetails(_productIds);
+    await _checkPendingTransactions(); // 🔥 Call this to complete any pending transactions
+
+    final ProductDetailsResponse response = await _inAppPurchase.queryProductDetails(_productIds);
 
     if (response.error != null) {
       print("Error fetching product details: ${response.error}");
@@ -112,8 +115,7 @@ class _InAppPurchasePageState extends State<InAppPurchasePage2> {
     if (response.productDetails.isEmpty) {
       print("No products found. Check your product IDs in the store.");
     } else {
-      print(
-          "Products fetched: ${response.productDetails.map((p) => p.id).toList()}");
+      print("Products fetched: ${response.productDetails.map((p) => p.id).toList()}");
     }
 
     setState(() {
@@ -121,60 +123,62 @@ class _InAppPurchasePageState extends State<InAppPurchasePage2> {
     });
   }
 
-  void _onPurchaseUpdated(List<PurchaseDetails> purchaseDetailsList) {
+  Future<void> _checkPendingTransactions() async {
+    // Restore past purchases
+    await _inAppPurchase.restorePurchases();
+
+    // Listen for restored purchases
+    final Stream<List<PurchaseDetails>> purchaseUpdates = _inAppPurchase.purchaseStream;
+
+    purchaseUpdates.listen((List<PurchaseDetails> purchases) async {
+      for (var purchase in purchases) {
+        if (purchase.status == PurchaseStatus.purchased && purchase.pendingCompletePurchase) {
+          await _inAppPurchase.completePurchase(purchase);
+          print("Completed pending transaction for ${purchase.productID}");
+        }
+      }
+    }, onError: (error) {
+      print("Error in purchase stream: $error");
+    });
+  }
+
+  void _onPurchaseUpdated(List<PurchaseDetails> purchaseDetailsList) async {
     for (var purchaseDetails in purchaseDetailsList) {
       if (_processedPurchaseIds.contains(purchaseDetails.purchaseID)) {
-        // Skip already processed purchases
-        continue;
+        continue; // Skip already processed purchases
       }
-
       _processedPurchaseIds.add(purchaseDetails.purchaseID ?? "");
 
-      if (purchaseDetails.status == PurchaseStatus.purchased) {
+      if (purchaseDetails.status == PurchaseStatus.purchased ||
+          purchaseDetails.status == PurchaseStatus.restored) {
         print("Purchase successful: ${purchaseDetails.productID}");
-        _verifyPurchase(purchaseDetails);
-      } else if (purchaseDetails.status == PurchaseStatus.restored) {
-        print("Purchase restored: ${purchaseDetails.productID}");
-        _verifyPurchase(purchaseDetails);
+        await _verifyPurchase(purchaseDetails);
       } else if (purchaseDetails.status == PurchaseStatus.error) {
         print("Purchase error: ${purchaseDetails.error}");
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Purchase error: ${purchaseDetails.error?.message}")),
+        );
       }
     }
   }
 
+
   Future<void> _verifyPurchase(PurchaseDetails purchaseDetails) async {
     if (purchaseDetails.pendingCompletePurchase) {
       await _inAppPurchase.completePurchase(purchaseDetails);
+    }
 
-      if (_productIds.contains(purchaseDetails.productID)) {
-        final prefs = await SharedPreferences.getInstance();
-        DateTime now = DateTime.now();
-        DateTime expiryDate;
+    if (_productIds.contains(purchaseDetails.productID)) {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setBool('isSubscribed', true);
+      await prefs.setString('purchasedPlan', purchaseDetails.productID);
 
-        // if (purchaseDetails.productID == weeklyPlan) {
-        //   expiryDate = now.add(Duration(days: 7));
-        // } else if (purchaseDetails.productID == monthlyPlan) {
-        //   expiryDate = now.add(Duration(days: 30));
-        // } else if (purchaseDetails.productID == yearlyPlan) {
-        //   expiryDate = now.add(Duration(days: 365));
-        // } else {
-        //   return; // Invalid product ID
-        // }
+      setState(() {
+        isSubscribed = true;
+        purchasedPlan = purchaseDetails.productID;
+      });
 
-        await prefs.setBool('isSubscribed', true);
-        await prefs.setString('purchasedPlan', purchaseDetails.productID);
-      //  await prefs.setString(
-       //     'subscriptionExpiryDate', expiryDate.toIso8601String());
-
-        setState(() {
-          isSubscribed = true;
-          purchasedPlan = purchaseDetails.productID;
-        //  subscriptionExpiryDate = expiryDate;
-        });
-
-        //print(
-        //    "Subscription for $purchasedPlan activated. Expiry date: $expiryDate");
-      }
+      print("Subscription activated for ${purchaseDetails.productID}");
     }
   }
 
@@ -188,15 +192,47 @@ class _InAppPurchasePageState extends State<InAppPurchasePage2> {
 
   late ProductDetails selectedProduct;
 
-  void _buyProduct(ProductDetails product) {
+  void _buyProduct(ProductDetails product) async {
     setState(() {
       isLoading = true;
     });
-    
+
+    // Check if there's a pending transaction for this product
+    // final QueryPurchaseDetailsResponse response = await _inAppPurchase.queryPastPurchases();
+    // for (var purchase in response.pastPurchases) {
+    //   if (purchase.productID == product.id && purchase.pendingCompletePurchase) {
+    //     print("Pending transaction found. Completing purchase for ${product.id}");
+    //     await _inAppPurchase.completePurchase(purchase);
+    //     setState(() {
+    //       isLoading = false;
+    //     });
+    //     return;
+    //   }
+    // }
+    final Stream<List<PurchaseDetails>> purchaseUpdates = _inAppPurchase.purchaseStream;
+
+    purchaseUpdates.listen((List<PurchaseDetails> purchases) async {
+      for (PurchaseDetails purchase in purchases) {
+        if (purchase.productID == product.id && purchase.pendingCompletePurchase) {
+          print("Pending transaction found. Completing purchase for ${product.id}");
+          await _inAppPurchase.completePurchase(purchase);
+          setState(() {
+            isLoading = false;
+          });
+          return;
+        }
+      }
+    }, onError: (error) {
+      print("Error in purchase stream: $error");
+    });
+
     if (purchasedPlan == product.id) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("You are already subscribed to this plan.")),
       );
+      setState(() {
+        isLoading = false;
+      });
       return;
     }
 
@@ -204,16 +240,10 @@ class _InAppPurchasePageState extends State<InAppPurchasePage2> {
       isProcessingBuy = true;
     });
 
-    final PurchaseParam purchaseParam = PurchaseParam(productDetails: product);
-
-    _inAppPurchase.buyConsumable(purchaseParam: purchaseParam).then((_) {
-      // Reset isProcessingBuy after success
-      setState(() {
-        isProcessingBuy = false;
-        isLoading = false;
-      });
-    }).catchError((error) {
-      // Handle error and reset isProcessingBuy
+    try {
+      final PurchaseParam purchaseParam = PurchaseParam(productDetails: product);
+      await _inAppPurchase.buyNonConsumable(purchaseParam: purchaseParam);
+    } catch (error) {
       print("Error purchasing product: $error");
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -221,13 +251,12 @@ class _InAppPurchasePageState extends State<InAppPurchasePage2> {
           backgroundColor: Colors.red,
         ),
       );
+    } finally {
       setState(() {
-        isProcessingBuy = false; // Reset after failure
+        isProcessingBuy = false;
         isLoading = false;
-
       });
-    });
- 
+    }
   }
 
   Future<void> _restorePurchases() async {
@@ -236,14 +265,12 @@ class _InAppPurchasePageState extends State<InAppPurchasePage2> {
     });
 
     bool restoredAny = false;
-    late StreamSubscription<List<PurchaseDetails>>
-        subscription; // Declare subscription earlier
+    late StreamSubscription<List<PurchaseDetails>> subscription; // Declare subscription earlier
 
     try {
       await _inAppPurchase.restorePurchases();
 
-      final Stream<List<PurchaseDetails>> purchaseUpdated =
-          _inAppPurchase.purchaseStream;
+      final Stream<List<PurchaseDetails>> purchaseUpdated = _inAppPurchase.purchaseStream;
 
       subscription = purchaseUpdated.listen(
         (purchases) async {
@@ -476,64 +503,6 @@ class _InAppPurchasePageState extends State<InAppPurchasePage2> {
                     ),
                   ],
                 )))
-                // : ListView(
-                //     children: [
-                //       ..._products.map((product) {
-                //         return ListTile(
-                //           onTap: () {
-                //             setState(() {
-                //               selectedPlan = product.id;
-                //             });
-                //           },
-                //           title: Text(product.title),
-                //           subtitle: Column(
-                //             crossAxisAlignment:
-                //                 CrossAxisAlignment.start,
-                //             children: [
-                //               Text(
-                //                   "Description: ${product.description}"),
-                //               Text("Price: ${calculateDailyPrice(product)}"),
-                //             ],
-                //           ),
-                //           leading: Radio<String>(
-                //             value: product.id,
-                //             groupValue: selectedPlan,
-                //             onChanged: (value) {
-                //               setState(() {
-                //                 selectedPlan = value!;
-                //               });
-                //             },
-                //           ),
-                //           trailing: purchasedPlan == product.id
-                //               ? Text(
-                //                   "Purchased",
-                //                   style: TextStyle(color: Colors.green),
-                //                 )
-                //               : isProcessingBuy
-                //                   ? CircularProgressIndicator() // Show progress bar
-                //                   : ElevatedButton(
-                //                       onPressed:
-                //                           selectedPlan == product.id
-                //                               ? () {
-                //                                   _buyProduct(product);
-                //                                 }
-                //                               : null,
-                //                       child: Text('Buy'),
-                //                     ),
-                //         );
-                //       }).toList(),
-                //       Divider(),
-                //       Center(
-                //         child: isProcessing
-                //             ? CircularProgressIndicator() // Show progress bar
-                //             : ElevatedButton(
-                //                 onPressed: _restorePurchases,
-                //                 child: Text("Restore Purchases"),
-                //               ),
-                //       ),
-                //     ],
-                //   )))
-
                     : Center(
                   child: Text('Store unavailable or initialization failed.'),
                 ),
@@ -602,20 +571,6 @@ class SubscriptionCard extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            // smallLabel(
-            //   context,
-            //   product.title,
-            //   textSize: isSelected ? 22 : 18,
-            //   color: isSelected ? Colors.white : Colors.black,
-            // ),
-            //SizedBox(height: 4),
-            // smallLabel(
-            //   context,
-            //   product.price,
-            //   textSize: isSelected ? 12 : 10,
-            //   color: isSelected ? Colors.white : Colors.black87,
-            // ),
-
             SizedBox(height: 12),
             ElevatedButton(
               onPressed: onTap,
