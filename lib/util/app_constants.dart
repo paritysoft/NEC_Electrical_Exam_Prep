@@ -32,3 +32,6 @@ const onboardD4 = "Monitor your performance, pinpoint weak areas, and celebrate 
  const String yearlyPlan = "com.paritysoft.acnp_exam_prep_mcqs.yearly";
  const String inAppPurchases = "com.paritysoft.nec_electrical_exam_prep";
 
+const String androidUrl = "https://apps.apple.com/us/app/nec-electrical-exam-prep-2025/id6741515078";
+const String iosUrl = "https://apps.apple.com/us/app/nec-electrical-exam-prep-2025/id6741515078";
+const String webUrl = "https://paritysoft.blogspot.com/p/master-your-licensing-exam-with.html";

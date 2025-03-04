@@ -7,6 +7,7 @@ import 'package:in_app_review/in_app_review.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../../util/app_constants.dart';
 import '../../../util/util.dart';
 
 class SettingsScreen extends StatefulWidget {
@@ -142,7 +143,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 5),
           child: title15BoldColor(context,
             'HELP & SUPPORT',
-             color: Colors.grey,
+            color: Colors.grey,
           ),
         ),
 
@@ -156,12 +157,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
               // Action on tap
 
               if (Platform.isAndroid) {
-                Share.share('Check out this app on Android: https://play.google.com/store/apps/details?id=com.mole.limsp');
+                Share.share("Check out this app on Android: ${androidUrl}");
               } else if (Platform.isIOS) {
-                Share.share('Check out this app on iOS: https://apps.apple.com/app/com.mole.lims');
+                Share.share("Check out this app on iOS: ${iosUrl}");
               } else {
-                // For other platforms, like web or desktop
-                Share.share('Check out this app: https://yourappwebsite.com');
+                Share.share("Check out this website: ${webUrl}");
               }
 
             },
@@ -239,7 +239,7 @@ Future<void> appReview(BuildContext context) async {
           appStoreId: 'com.example.yourapp'); // Replace with your Android package name
     } else if (Platform.isIOS) {
       _inAppReview.openStoreListing(
-          appStoreId: 'XXXXXXXXX'); // Replace with your App Store ID
+          appStoreId: iosUrl); // Replace with your App Store ID
     } else {
       // Handle other platforms (e.g., web)
       ScaffoldMessenger.of(context).showSnackBar(
@@ -252,7 +252,7 @@ Future<void> appReview(BuildContext context) async {
 }
 
 final String email = 'tariqul1993@gmail.com'; // Your support email
-final String subject = 'App Issue Report';
+final String subject = 'App Issue Report for ${app_title}';
 
 void _sendEmail() async {
   final Uri emailUri = Uri(
