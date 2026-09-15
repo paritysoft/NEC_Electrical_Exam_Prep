@@ -1,3 +1,4 @@
+import 'package:electrician/ui/widgets/responsive_layout.dart';
 import 'package:electrician/ui/pages/data/exam_date_management.dart';
 import 'package:electrician/ui/widgets/common_widget.dart';
 import 'package:electrician/util/AppColors.dart';
@@ -76,9 +77,19 @@ class _CalendarPageState extends State<CalendarPage> {
 
     Appointment newAppointment = Appointment(
       startTime: DateTime(
-          _selectedDate.year, _selectedDate.month, _selectedDate.day, 9, 0),
+        _selectedDate.year,
+        _selectedDate.month,
+        _selectedDate.day,
+        9,
+        0,
+      ),
       endTime: DateTime(
-          _selectedDate.year, _selectedDate.month, _selectedDate.day, 10, 0),
+        _selectedDate.year,
+        _selectedDate.month,
+        _selectedDate.day,
+        10,
+        0,
+      ),
       subject: title,
       color: Colors.green,
       isAllDay: true,
@@ -88,14 +99,15 @@ class _CalendarPageState extends State<CalendarPage> {
       _appointments.add(newAppointment);
     });
 
-    SharedPreferenceHelper.setExamDate("${newAppointment.startTime.day}/${newAppointment.startTime.month}/${newAppointment.startTime.year}");
+    SharedPreferenceHelper.setExamDate(
+      "${newAppointment.startTime.day}/${newAppointment.startTime.month}/${newAppointment.startTime.year}",
+    );
     _eventTitleController.clear();
 
     await _examDateManagement.saveEvents(_appointments);
     _scheduleNotification(newAppointment.startTime, title);
 
     snackBar(context, "Successfully added an event");
-
   }
 
   void _showErrorMessage(String message) {
@@ -112,21 +124,29 @@ class _CalendarPageState extends State<CalendarPage> {
     setState(() {
       _appointments.remove(appointment);
       _cancelNotification(
-          _appointments.indexOf(appointment)); // Cancel reminder
+        _appointments.indexOf(appointment),
+      ); // Cancel reminder
     });
     await _examDateManagement.removeEvent(appointment);
 
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: smallLabel(context, "Exam '${appointment.subject}' removed",
-          color: Colors.white),
-      backgroundColor: primary,
-    ));
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: smallLabel(
+          context,
+          "Exam '${appointment.subject}' removed",
+          color: Colors.white,
+        ),
+        backgroundColor: primary,
+      ),
+    );
   }
 
   void _onCalendarTapped(CalendarTapDetails details) {
     if (details.appointments != null && details.appointments!.isNotEmpty) {
       _showConfirmationDialog(
-          context, details.appointments!.first as Appointment);
+        context,
+        details.appointments!.first as Appointment,
+      );
     } else {
       setState(() {
         _selectedDate = details.date!;
@@ -183,7 +203,8 @@ class _CalendarPageState extends State<CalendarPage> {
                       return ListTile(
                         title: Text(appointment.subject),
                         subtitle: Text(
-                            '${appointment.startTime.toLocal()}'.split(' ')[0]),
+                          '${appointment.startTime.toLocal()}'.split(' ')[0],
+                        ),
                       );
                     },
                   ),
@@ -203,7 +224,7 @@ class _CalendarPageState extends State<CalendarPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
       appBar: appBarCustom(context, "Create Exam with Reminder"),
       resizeToAvoidBottomInset: true,
       body: Column(
@@ -219,19 +240,18 @@ class _CalendarPageState extends State<CalendarPage> {
             ),
           ),
           SizedBox(height: 10),
-          GestureDetector(
-            onTap: () => FocusScope.of(context).unfocus(),
-            child: Expanded(
-              flex: 3,
+          Expanded(
+            flex: 3,
+            child: GestureDetector(
+              onTap: () => FocusScope.of(context).unfocus(),
               child: SfCalendar(
                 showNavigationArrow: true,
                 view: CalendarView.month,
                 dataSource: EventDataSource(_appointments),
                 onTap: _onCalendarTapped,
                 monthViewSettings: MonthViewSettings(
-                //  appointmentDisplayMode: MonthAppointmentDisplayMode.appointment,
+                  //  appointmentDisplayMode: MonthAppointmentDisplayMode.appointment,
                   appointmentDisplayMode: MonthAppointmentDisplayMode.indicator,
-
                 ),
               ),
             ),
@@ -243,43 +263,55 @@ class _CalendarPageState extends State<CalendarPage> {
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
                   children: [
-                    SizedBox(
-                      height: 10,
+                    SizedBox(height: 10),
+                    Wrap(
+                      alignment: WrapAlignment.center,
+                      spacing: 12,
+                      runSpacing: 12,
+                      children: [
+                        ElevatedButton(
+                          onPressed: _showAllEvents,
+                          child: smallLabel(
+                            context,
+                            'View Exams',
+                            color: Colors.white,
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: primary,
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 24,
+                              vertical: 15,
+                            ),
+                            textStyle: TextStyle(
+                              fontSize: 20,
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        SizedBox(width: 5),
+                        ElevatedButton(
+                          onPressed: _addEvent,
+                          child: smallLabel(
+                            context,
+                            'Add Exam',
+                            color: Colors.white,
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: primary,
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 24,
+                              vertical: 15,
+                            ),
+                            textStyle: TextStyle(
+                              fontSize: 20,
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                    Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          ElevatedButton(
-                            onPressed: _showAllEvents,
-                            child: smallLabel(context, 'View Exams',
-                                color: Colors.white),
-                            style: ElevatedButton.styleFrom(
-                                backgroundColor: primary,
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 40, vertical: 15),
-                                textStyle: TextStyle(
-                                    fontSize: 20,
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold)),
-                          ),
-                          SizedBox(
-                            width: 5,
-                          ),
-                          ElevatedButton(
-                            onPressed: _addEvent,
-                            child: smallLabel(context, 'Add Exam',
-                                color: Colors.white),
-                            style: ElevatedButton.styleFrom(
-                                backgroundColor: primary,
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 40, vertical: 15),
-                                textStyle: TextStyle(
-                                    fontSize: 20,
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold)),
-                          )
-                        ]),
 
                     SizedBox(height: 10),
                     // smallLabel(context,
@@ -298,8 +330,10 @@ class _CalendarPageState extends State<CalendarPage> {
 
   Future<void> _scheduleNotification(DateTime eventTime, String title) async {
     // Convert DateTime to TZDateTime for timezone support
-    var scheduledTime =
-        tz.TZDateTime.from(eventTime.subtract(Duration(minutes: 10)), tz.local);
+    var scheduledTime = tz.TZDateTime.from(
+      eventTime.subtract(Duration(minutes: 10)),
+      tz.local,
+    );
 
     var androidDetails = const AndroidNotificationDetails(
       'event_channel_id', // Unique channel ID
@@ -310,23 +344,23 @@ class _CalendarPageState extends State<CalendarPage> {
     );
 
     var iosDetails = const DarwinNotificationDetails();
-    var platformChannelDetails =
-        NotificationDetails(android: androidDetails, iOS: iosDetails);
+    var platformChannelDetails = NotificationDetails(
+      android: androidDetails,
+      iOS: iosDetails,
+    );
 
     await flutterLocalNotificationsPlugin.zonedSchedule(
-      _appointments.length, // Unique notification ID for each event
-      'Exam Reminder',
-      'Reminder for your exam: $title',
-      scheduledTime, // Use TZDateTime here
-      platformChannelDetails,
-      uiLocalNotificationDateInterpretation:
-          UILocalNotificationDateInterpretation.absoluteTime,
+      id: _appointments.length, // Unique notification ID for each event
+      title: 'Exam Reminder',
+      body: 'Reminder for your exam: $title',
+      scheduledDate: scheduledTime, // Use TZDateTime here
+      notificationDetails: platformChannelDetails,
       androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
     );
   }
 
   Future<void> _cancelNotification(int id) async {
-    await flutterLocalNotificationsPlugin.cancel(id);
+    await flutterLocalNotificationsPlugin.cancel(id: id);
   }
 }
 

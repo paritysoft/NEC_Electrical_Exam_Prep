@@ -1,3 +1,4 @@
+import '../../widgets/responsive_layout.dart';
 import 'package:electrician/ui/widgets/common_widget.dart';
 import 'package:electrician/util/util.dart';
 import 'package:flutter/material.dart';
@@ -28,48 +29,59 @@ class _CategoryQuestionDataListState extends State<CategoryQuestionDataList> {
       UpadanSonghro dbHelper = UpadanSonghro();
       _categoryQuestionData = await dbHelper.getCategoryQuestionData();
       print("_categoryQuestionData  ${_categoryQuestionData}");
-      setState(() {}); // Trigger a UI update to reflect the data
+      if (mounted) setState(() {}); // Trigger a UI update to reflect the data
     }();
   }
 
   @override
   Widget build(BuildContext context) {
     return Center(
-        child: FutureBuilder<void>(
-      future: _dataFuture,
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return CircularProgressIndicator(); // Loading
-        } else if (snapshot.hasError) {
-          return Text("Error: ${snapshot.error}"); // Error handling
-        } else {
-          return ListView.builder(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            itemCount: _categoryQuestionData?.length ?? 0,
-            itemBuilder: (context, index) {
-              final data = _categoryQuestionData![index];
-              return Card(
-                child: ListTile(
-                  title: smallLabel(context, aesDecrypt(data.category, myKey),
-                      textSize: 16),
-                  subtitle: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      smallLabel(
-                          context, 'Correct Answer: ${data.correctCount}'),
-                      smallLabel(
-                          context, 'Incorrect Answer: ${data.incorrectCount}'),
-                      smallLabel(
-                          context, 'Unanswered: ${data.unansweredCount}'),
-                    ],
+      child: FutureBuilder<void>(
+        future: _dataFuture,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return CircularProgressIndicator(); // Loading
+          } else if (snapshot.hasError) {
+            return Text("Error: ${snapshot.error}"); // Error handling
+          } else {
+            return AdaptiveGrid(
+              minItemWidth: 280,
+              children: [
+                for (final data
+                    in _categoryQuestionData ?? <CategoryQuestionData>[])
+                  Card(
+                    margin: EdgeInsets.zero,
+                    child: Padding(
+                      padding: const EdgeInsets.all(20),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            aesDecrypt(data.category, myKey),
+                            style: const TextStyle(
+                              fontWeight: FontWeight.w600,
+                              fontSize: 17,
+                            ),
+                          ),
+                          const SizedBox(height: 12),
+                          Text(
+                            'Correct: ${data.correctCount}',
+                            style: const TextStyle(color: Color(0xFF237A4D)),
+                          ),
+                          Text('Incorrect: ${data.incorrectCount}'),
+                          Text(
+                            'Unanswered: ${data.unansweredCount}',
+                            style: const TextStyle(color: appMuted),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
-                ),
-              );
-            },
-          );
-        }
-      },
-    ));
+              ],
+            );
+          }
+        },
+      ),
+    );
   }
 }

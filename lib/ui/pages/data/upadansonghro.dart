@@ -33,7 +33,9 @@ class UpadanSonghro {
     return _database!;
   }
 
-  final _secureStorage = const FlutterSecureStorage();
+  final _secureStorage = const FlutterSecureStorage(
+    aOptions: AndroidOptions(resetOnError: false),
+  );
 
   // Future<Database> _initDatabase() async {
   //   // Fetch the encryption password securely

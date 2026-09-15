@@ -10,17 +10,15 @@ class CompletionProgress extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double percentage = total > 0 ? answered / total : 0.0;
+    double percentage = total > 0 ? (answered / total).clamp(0.0, 1.0) : 0.0;
 
     return Column(
-
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        SizedBox(width: double.infinity,),
+        SizedBox(width: double.infinity),
         Text(
           "Completion Progress",
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold,),
-
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
         ),
         SizedBox(height: 20),
         CircularPercentIndicator(
@@ -48,8 +46,10 @@ class CompletionProgress extends StatelessWidget {
         //   "$answered / $total Questions Answered",
         //   style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
         // ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
+        Wrap(
+          alignment: WrapAlignment.center,
+          spacing: 10,
+          runSpacing: 8,
           children: [
             Indicator(color: Colors.green, text: "Completed"),
             SizedBox(width: 10),
@@ -70,6 +70,7 @@ class Indicator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
+      mainAxisSize: MainAxisSize.min,
       children: [
         Container(width: 12, height: 12, color: color),
         SizedBox(width: 4),

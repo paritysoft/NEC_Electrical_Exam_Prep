@@ -1,3 +1,4 @@
+import 'package:electrician/ui/widgets/responsive_layout.dart';
 import 'package:electrician/ui/widgets/common_widget.dart';
 import 'package:electrician/util/AppColors.dart';
 import 'package:flutter/material.dart';
@@ -11,54 +12,45 @@ import 'home_updated.dart';
 
 class CheckAnswersPage extends StatelessWidget {
   final List<ElectricianQuestion> questions;
-  final Map<int,dynamic> answers;
+  final Map<int, dynamic> answers;
 
-  const CheckAnswersPage({Key? key, required this.questions, required this.answers}) : super(key: key);
+  const CheckAnswersPage({
+    Key? key,
+    required this.questions,
+    required this.answers,
+  }) : super(key: key);
 
   @override
-  Widget build(BuildContext context){
-    return Scaffold(
+  Widget build(BuildContext context) {
+    return AppScaffold(
       appBar: appBarCustom(context, "Check Answers"),
-      body: Stack(
-        children: <Widget>[
-          ClipPath(
-            clipper: WaveClipperTwo(),
-            child: Container(
-              decoration: BoxDecoration(
-                color: Theme.of(context).primaryColor
-              ),
-              height: 200,
-            ),
-          ),
-          ListView.builder(
-            padding: const EdgeInsets.all(16.0),
-            itemCount: questions.length+1,
-            itemBuilder: _buildItem,
-
-          )
-        ],
+      maxWidth: 980,
+      body: ListView.builder(
+        padding: const EdgeInsets.all(24),
+        itemCount: questions.length + 1,
+        itemBuilder: _buildItem,
       ),
     );
   }
+
   Widget _buildItem(BuildContext context, int index) {
-    if(index == questions.length) {
+    if (index == questions.length) {
       return Padding(
         padding: const EdgeInsets.fromLTRB(0, 8, 0, 16),
         child: ElevatedButton(
           style: ButtonStyle(
             backgroundColor: MaterialStateProperty.all<Color>(primary),
             shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-              RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8.0),
-              ),
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
             ),
             visualDensity: VisualDensity(vertical: 2),
           ),
           child: title15BoldColor(context, "Done", color: Colors.white),
-          onPressed: (){
-            Navigator.of(context).pushReplacement(MaterialPageRoute(
-              builder: (context) => QuizHomePage(),
-            ));          },
+          onPressed: () {
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(builder: (context) => QuizHomePage()),
+            );
+          },
         ),
       );
     }
@@ -70,38 +62,52 @@ class CheckAnswersPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text(HtmlUnescape().convert(question.question), style: TextStyle(
-              color: Colors.black,
-              fontWeight: FontWeight.w500,
-              fontSize: 16.0
-            ),),
+            Text(
+              HtmlUnescape().convert(question.question),
+              style: TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.w500,
+                fontSize: 16.0,
+              ),
+            ),
             SizedBox(height: 5.0),
-            Text(HtmlUnescape().convert("${answers[index]}"), style: TextStyle(
-              color: correct ? Colors.green : Colors.red,
-              fontSize: 18.0,
-              fontWeight: FontWeight.bold
-            ),),
+            Text(
+              HtmlUnescape().convert("${answers[index]}"),
+              style: TextStyle(
+                color: correct ? Colors.green : Colors.red,
+                fontSize: 18.0,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
             SizedBox(height: 5.0),
-            Text.rich(TextSpan(
-              children: [
-                TextSpan(text: "Answer: "),
-                TextSpan(text: HtmlUnescape().convert(question.correctAnswer.replaceAll('"', '')) , style: TextStyle(
-                  fontWeight: FontWeight.w500
-                ))
-              ]
-            ),style: TextStyle(
-              fontSize: 16.0
-            ),),
-            Text.rich(TextSpan(
+            Text.rich(
+              TextSpan(
+                children: [
+                  TextSpan(text: "Answer: "),
+                  TextSpan(
+                    text: HtmlUnescape().convert(
+                      question.correctAnswer.replaceAll('"', ''),
+                    ),
+                    style: TextStyle(fontWeight: FontWeight.w500),
+                  ),
+                ],
+              ),
+              style: TextStyle(fontSize: 16.0),
+            ),
+            Text.rich(
+              TextSpan(
                 children: [
                   TextSpan(text: "Explanation: "),
-                  TextSpan(text: HtmlUnescape().convert(question.explanation.replaceAll('"', '')) , style: TextStyle(
-                      fontWeight: FontWeight.w500
-                  ))
-                ]
-            ),style: TextStyle(
-                fontSize: 16.0
-            ),),
+                  TextSpan(
+                    text: HtmlUnescape().convert(
+                      question.explanation.replaceAll('"', ''),
+                    ),
+                    style: TextStyle(fontWeight: FontWeight.w500),
+                  ),
+                ],
+              ),
+              style: TextStyle(fontSize: 16.0),
+            ),
           ],
         ),
       ),

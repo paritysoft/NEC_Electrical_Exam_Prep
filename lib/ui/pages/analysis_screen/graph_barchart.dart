@@ -23,7 +23,7 @@ class _QuizActivityGraphState extends State<QuizGraphBarChart> {
     return List.generate(days, (index) {
       final date = now.subtract(Duration(days: index));
       final answeredQuestions = (10 + index * 2); // Replace with actual data
-      return ActivityData(date, answeredQuestions,0);
+      return ActivityData(date, answeredQuestions, 0);
     }).reversed.toList(); // Reverse for chronological order
   }
 
@@ -57,19 +57,13 @@ class _QuizActivityGraphState extends State<QuizGraphBarChart> {
     if (index < 0 || index >= activityData.length) return Container();
     final date = activityData[index].date;
     return SideTitleWidget(
-      axisSide: meta.axisSide,
-      child: Text(
-        "${date.day}/${date.month}",
-        style: TextStyle(fontSize: 10),
-      ),
+      meta: meta,
+      child: Text("${date.day}/${date.month}", style: TextStyle(fontSize: 10)),
     );
   }
 
   Widget getLeftTitles(double value, TitleMeta meta) {
-    return Text(
-      value.toInt().toString(),
-      style: TextStyle(fontSize: 10),
-    );
+    return Text(value.toInt().toString(), style: TextStyle(fontSize: 10));
   }
 
   @override
@@ -100,8 +94,12 @@ class _QuizActivityGraphState extends State<QuizGraphBarChart> {
                     getTitlesWidget: getBottomTitles,
                   ),
                 ),
-                topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                topTitles: AxisTitles(
+                  sideTitles: SideTitles(showTitles: false),
+                ),
+                rightTitles: AxisTitles(
+                  sideTitles: SideTitles(showTitles: false),
+                ),
               ),
               gridData: FlGridData(show: true),
               borderData: FlBorderData(

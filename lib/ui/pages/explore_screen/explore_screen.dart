@@ -1,150 +1,195 @@
+import 'dart:async';
 import 'dart:io';
-
 import 'package:app_tracking_transparency/app_tracking_transparency.dart';
-import 'package:electrician/ui/pages/explore_screen/mock_quiz_screen.dart';
-import 'package:electrician/ui/pages/explore_screen/practice_by_topic_screen.dart';
-import 'package:electrician/ui/pages/explore_screen/records_screen.dart';
-import 'package:electrician/ui/pages/explore_screen/your_questions_screen.dart';
-import 'package:electrician/ui/widgets/quiz_options_timer_dialog.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import '../../../util/app_constants.dart';
+import '../data/today_questions_service.dart';
 import '../../widgets/common_widget.dart';
 import '../../widgets/quiz_options_dialog.dart';
+import '../../widgets/quiz_options_timer_dialog.dart';
+import '../../widgets/responsive_layout.dart';
 import '../data/QuestionCache.dart';
 import '../quiz_page_today.dart';
-import '../subscription/InAppPurchasePage2.dart';
+import '../subscription/PurchasePlanDialog.dart';
+import '../subscription/subscription_service.dart';
+import 'mock_quiz_screen.dart';
+import 'practice_by_topic_screen.dart';
+import 'records_screen.dart';
+import 'your_questions_screen.dart';
 
 class ExploreScreen extends StatefulWidget {
+  const ExploreScreen({super.key});
   @override
   State<ExploreScreen> createState() => _ExploreScreenState();
 }
 
-//TodayQuestionsService? questionService;
-int questionsReadToday = 0;
-bool isSubscribed = false;
-String purchasedPlan = '';
-
-
-//List<ElectricianQuestion>? questions10 = [];
 class _ExploreScreenState extends State<ExploreScreen> {
+  int _readToday = 0;
+  Timer? _dailyTimer;
+  bool get _subscribed => SubscriptionService.instance.isSubscribed;
   @override
   void initState() {
     super.initState();
-
     requestTrackingPermission();
-    _checkSubscriptionStatus();
-    _loadData(); // Call the async function without `await`
-
+    _refresh();
+    _dailyTimer = Timer.periodic(
+      const Duration(seconds: 1),
+      (_) => _refreshDailyProgress(),
+    );
   }
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    _checkSubscriptionStatus(); // Call your method here
+  void dispose() {
+    _dailyTimer?.cancel();
+    super.dispose();
   }
 
-
-  Future<void> _checkSubscriptionStatus() async {
-    final prefs = await SharedPreferences.getInstance();
-    setState(() {
-      isSubscribed = prefs.getBool('isSubscribed') ?? false; // Default to false
-      print("isSubscribed  $isSubscribed");
-      purchasedPlan = prefs.getString('purchasedPlan') ?? ''; // Default to empty string
-    });
-  }
-  Future<void> _loadData() async {
-    final prefs = await SharedPreferences.getInstance();
-    setState(() {
-      questionsReadToday = prefs.getInt('questions_read_today') ?? 0;
-    });
-
-    QuestionCache questionCache = QuestionCache();
-    //questionCache.loadQuestions();
-    //List<ElectricianQuestion>? questionList = questionCache.getQuestions();
-    //  if (questionList != null) {
-    //    questionService = TodayQuestionsService();
-    //    questions10 = await questionService?.getTodaysQuestions(questionList);
-    //  }
-
+  Future<void> _refreshDailyProgress() async {
+    final read = await TodayQuestionsService().getQuestionsReadToday();
+    if (mounted && read != _readToday) setState(() => _readToday = read);
   }
 
-  void gotToSubscriptionPage(BuildContext context) {
-      Navigator.of(context).push(new MaterialPageRoute(builder: (_)=>new InAppPurchasePage2()),)
-          .then((val)=>val?_checkSubscriptionStatus():null);
-
+  Future<void> _refresh() async {
+    await SubscriptionService.instance.refresh();
+    await _refreshDailyProgress();
   }
+
+  Future<void> _open(Widget page) async {
+    await Navigator.of(context).push(MaterialPageRoute(builder: (_) => page));
+    if (mounted) await _refresh();
+  }
+
+  Future<void> _purchase() async {
+    await PurchasePlanDialog.show(context);
+    if (mounted) await _refresh();
+  }
+
+  void _premium(VoidCallback action) {
+    if (_subscribed) {
+      action();
+    } else {
+      _purchase();
+    }
+  }
+
+  Future<void> _options({bool timed = false}) async {
+    await showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      useSafeArea: true,
+      builder: (_) => ConstrainedBox(
+        constraints: BoxConstraints(
+          maxHeight: MediaQuery.sizeOf(context).height * .85,
+        ),
+        child: timed
+            ? const QuizOptionsTimerDialog(category: 'Time Quiz')
+            : QuizOptionsDialog(
+                category: 'Random Question',
+                isSubscribed: _subscribed,
+              ),
+      ),
+    );
+    if (mounted) await _refresh();
+  }
+
   @override
   Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width;
-
-    // Calculate crossAxisCount based on screen width
-    int crossAxisCount = screenWidth > 600 ? 3 : 2; // Example: 3 columns on tablets, 2 on phones
-
-    return WillPopScope(
-
-      onWillPop: () async {
-        _checkSubscriptionStatus(); // Refresh the subscription status when going back
-        return true;
-      },
-      child: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Daily Task Card
-              InkWell(
-                onTap: () {
-                  //
-                  // // Fetch today's 10 questions
-                  //List<ElectricianQuestion> todaysQuestions = questionService!.getTodaysQuestions();
-
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (_) => QuizPageToday(
-                                category: "Today Quiz",
-                              )));
-                },
-                child: Container(
-                  padding: EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(16),
-                  ),
+    final platform = Theme.of(context).platform;
+    final mobile =
+        platform == TargetPlatform.iOS || platform == TargetPlatform.android;
+    final count = QuestionCache().getQuestions()?.length;
+    return LayoutBuilder(
+      builder: (context, bounds) => SingleChildScrollView(
+        padding: EdgeInsets.all(bounds.maxWidth >= 700 ? 32 : 16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ...[
+              Container(
+                width: double.infinity,
+                padding: EdgeInsets.all(bounds.maxWidth >= 700 ? 28 : 22),
+                decoration: BoxDecoration(
+                  color: appNavy,
+                  borderRadius: BorderRadius.circular(18),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Prepare with confidence',
+                      style: TextStyle(
+                        fontSize: bounds.maxWidth >= 700 ? 30 : 25,
+                        fontWeight: FontWeight.w700,
+                        color: Colors.white,
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    const Text(
+                      'Practice, review explanations, and build exam-ready knowledge at your own pace.',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        height: 1.5,
+                      ),
+                    ),
+                    const SizedBox(height: 18),
+                    Wrap(
+                      spacing: 12,
+                      runSpacing: 8,
+                      children: [
+                        _badge(
+                          count == null
+                              ? 'NEC exam practice'
+                              : '$count Questions',
+                        ),
+                        _badge('Learn at your own pace'),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 28),
+              const SectionHeading('Keep learning'),
+            ],
+            Card(
+              margin: EdgeInsets.zero,
+              child: InkWell(
+                borderRadius: BorderRadius.circular(16),
+                onTap: () => _open(const QuizPageToday(category: 'Today Quiz')),
+                child: Padding(
+                  padding: EdgeInsets.all(mobile ? 14 : 22),
                   child: Row(
                     children: [
-                      Icon(Icons.anchor, color: Colors.purple, size: 40),
-                      SizedBox(width: 16),
-                      Flexible(
+                      const Icon(Icons.flag_rounded, color: appNavy, size: 32),
+                      const SizedBox(width: 20),
+                      Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            smallLabel(
-                              context,
+                            const Text(
                               'Daily Task',
+                              style: TextStyle(
+                                fontSize: 17,
+                                fontWeight: FontWeight.w600,
+                              ),
                             ),
-                            smallLabel(context, '10 Questions'),
-                            SizedBox(height: 8),
+                            const Text(
+                              '10 Questions',
+                              style: TextStyle(color: appMuted),
+                            ),
+                            const SizedBox(height: 12),
                             LinearProgressIndicator(
-                              value: questionsReadToday / 10,
-                              backgroundColor: Colors.grey[300],
-                              color: Colors.orangeAccent,
+                              value: (_readToday / 10).clamp(0.0, 1.0),
+                              minHeight: 5,
+                              borderRadius: BorderRadius.circular(8),
                             ),
-                            SizedBox(height: 8),
-                            Row(
+                            const SizedBox(height: 8),
+                            Wrap(
+                              alignment: WrapAlignment.spaceBetween,
+                              spacing: 12,
+                              runSpacing: 6,
                               children: [
-                                Expanded(
-                                    flex: 1,
-                                    child: smallLabel(context, 'Progress: ')),
-                                Expanded(
-                                    flex: 1,
-                                    child: smallLabel(
-                                        context, '$questionsReadToday/10',
-                                        alignment: TextAlign.end))
+                                const Text('Progress'),
+                                Text('$_readToday/10'),
                               ],
                             ),
                           ],
@@ -154,242 +199,94 @@ class _ExploreScreenState extends State<ExploreScreen> {
                   ),
                 ),
               ),
-              SizedBox(height: sizeBox16),
-
-              // Quiz Section
-              // Text('Quiz', style: TextStyle(fontSize: 20)),
-              // SizedBox(height: 10),
-              // Row(
-              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //   children: [
-              //     QuizCategory(icon: Icons.sports_soccer, label: 'Football'),
-              //     QuizCategory(icon: Icons.science, label: 'Science'),
-              //     QuizCategory(icon: Icons.checkroom, label: 'Fashion'),
-              //     QuizCategory(icon: Icons.movie, label: 'Movie'),
-              //     QuizCategory(icon: Icons.music_note, label: 'Music'),
-              //   ],
-              // ),
-
-              InkWell(
-                onTap: (){
-                    if (!isSubscribed) {
-                      gotToSubscriptionPage(context);
-
-                     }else
-                       {
-                         snackBar(context,"Your all features are unlocked");
-                       }
-                },
-                child: Container(
-
-                  padding: EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    color: Colors.amber[600],
-                    borderRadius: BorderRadius.circular(16),
+            ),
+            if (!mobile) ...[
+              const SizedBox(height: 18),
+              SizedBox(
+                width: double.infinity,
+                child: FilledButton.icon(
+                  onPressed: () => _subscribed
+                      ? snackBar(context, 'All your features are unlocked')
+                      : _purchase(),
+                  icon: const Icon(Icons.stars_rounded),
+                  label: Text(
+                    _subscribed
+                        ? 'All features unlocked'
+                        : 'Learn Without Limits',
                   ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    //Center Row contents horizontally,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Opacity(
-                        opacity: 1,
-                        child: Image.asset("assets/images/ic_premium.png",
-                            height: 30, width: 30, fit: BoxFit.cover),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(4, 4, 4, 4),
-                        child: Center(
-                            child: title15BoldColor(context, 'Unlock All Features')),
-                          //  child: title15BoldColor(context, 'All Features')),
-                      ),
-                      Opacity(
-                        opacity: 1,
-                        child: Image.asset("assets/images/ic_premium.png",
-                            height: 30, width: 30, fit: BoxFit.cover),
-                      ),
-                    ],
+                  style: FilledButton.styleFrom(
+                    padding: const EdgeInsets.all(20),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
                   ),
                 ),
-              ),
-              // More Games Section
-              SizedBox(height: sizeBox16),
-              GridView.count(
-                crossAxisCount: crossAxisCount,
-                mainAxisSpacing: 16,
-                crossAxisSpacing: 16,
-                shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                children: [
-                  QuizCard(
-                      title: 'Random Question',
-                      questions: 'Unlimited Questions',
-                      isPremium: false,
-                      icon: Icons.question_mark_sharp,
-                      onTap: () {
-                        // if (!isSubscribed) {
-                        //   gotToSubscriptionPage(context);
-                        // } else {
-                         _categoryPressed(context, "Random Question", isSubscribed);
-                       // }
-                      }),
-                  QuizCard(
-                      title: 'Practice By Topic',
-                      questions: '1300+ Questions',
-                      isPremium: true,
-                      icon: Icons.topic,
-                      onTap: () {
-                        // if (!isSubscribed) {
-                        //   gotToSubscriptionPage(context);
-                        // } else {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (_) => PracticeByTopic(isSubscribed: isSubscribed,))).then((val)=>val?_checkSubscriptionStatus():null);
-                       // }
-                      }),
-                  QuizCard(
-                      title: 'Mock Quiz',
-                      questions: 'Overcome your fears',
-                      isPremium: true,
-                      icon: Icons.quiz_rounded,
-                      onTap: () {
-                        // if (!isSubscribed) {
-                        //   gotToSubscriptionPage(context);
-                        // } else {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (_) => MockQuizScreen(isSubscribed: isSubscribed,))).then((val)=>val?_checkSubscriptionStatus():null);
-                         // }
-                      }),
-                  QuizCard(
-                      title: 'Time Quiz',
-                      questions: 'Beat the Clock',
-                      isPremium: true,
-                      icon: Icons.timelapse,
-                      onTap: () {
-                        if (!isSubscribed) {
-                          gotToSubscriptionPage(context);
-                        } else {
-                          _categoryPressed(context, "Time Quiz", isSubscribed);
-                        }
-                      }),
-                  QuizCard(
-                      title: 'Your Questions',
-                      questions: 'Challenge Your Knowledge',
-                      isPremium: true,
-                      icon: Icons.personal_injury,
-                      onTap: () {
-                        if (!isSubscribed) {
-                          gotToSubscriptionPage(context);
-                        } else {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (_) => YourQuestionsScreen()));
-                        }
-                      }),
-                  QuizCard(
-                      title: 'Records',
-                      questions: 'Preserve Your Achievements',
-                      isPremium: true,
-                      icon: Icons.fiber_smart_record_sharp,
-                      onTap: () {
-                        if (!isSubscribed) {
-                          gotToSubscriptionPage(context);
-                        } else {
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (_) => RecordsScreen()));
-                        }
-                      }),
-                ],
               ),
             ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class QuizCategory extends StatelessWidget {
-  final IconData icon;
-  final String label;
-
-  QuizCategory({required this.icon, required this.label});
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        CircleAvatar(
-          backgroundColor: Colors.purple[100],
-          child: Icon(icon, color: Colors.purple[800]),
-          radius: 30,
-        ),
-        SizedBox(height: 8),
-        Text(label, style: TextStyle(color: Colors.purple[800])),
-      ],
-    );
-  }
-}
-
-class QuizCard extends StatelessWidget {
-  final String title;
-  final String questions;
-  final bool isPremium;
-  final IconData icon;
-  final VoidCallback onTap;
-
-  QuizCard({
-    required this.title,
-    required this.questions,
-    required this.isPremium,
-    required this.icon,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      child: Container(
-        padding: EdgeInsets.all(18),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(16),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            SizedBox(height: mobile ? 18 : 30),
+            if (mobile)
+              const SectionHeading('Study tools')
+            else
+              const SectionHeading(
+                'Choose how you want to study',
+                subtitle:
+                    'Open a study tool and continue your exam preparation.',
+              ),
+            AdaptiveGrid(
+              minItemWidth: 220,
               children: [
-                Icon(icon, size: 40, color: Colors.purple[800]),
-                if (isPremium)
-                  Container(
-                      padding: EdgeInsets.all(4),
-                      decoration: BoxDecoration(
-                        color: Colors.deepOrange,
-                        borderRadius: BorderRadius.circular(4),
-                      ),
-                      child: smallLabel(context, " Premium ",
-                          color: Colors.white, textSize: 8))
-              ],
-            ),
-            SizedBox(height: 10),
-            smallLabel(context, title, textSize: 14),
-            SizedBox(height: 10),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Flexible(
-                  child: smallLabel(context, questions, textSize: 12),
+                StudyTile(
+                  compact: mobile,
+                  title: 'Random Question',
+                  subtitle: _subscribed
+                      ? 'Unlimited practice'
+                      : '5 Easy questions, anytime',
+                  icon: Icons.shuffle_rounded,
+                  onTap: _options,
                 ),
-                Icon(Icons.bolt, color: Colors.orangeAccent, size: 16),
+                StudyTile(
+                  compact: mobile,
+                  title: 'Practice By Topic',
+                  subtitle: count == null
+                      ? 'Explore your question bank'
+                      : '$count Questions',
+                  icon: Icons.topic_outlined,
+                  premium: true,
+                  onTap: () =>
+                      _open(PracticeByTopic(isSubscribed: _subscribed)),
+                ),
+                StudyTile(
+                  compact: mobile,
+                  title: 'Mock Quiz',
+                  subtitle: 'Build confidence for exam day',
+                  icon: Icons.quiz_outlined,
+                  premium: true,
+                  onTap: () => _open(MockQuizScreen(isSubscribed: _subscribed)),
+                ),
+                StudyTile(
+                  compact: mobile,
+                  title: 'Time Quiz',
+                  subtitle: 'Practice against the clock',
+                  icon: Icons.timelapse,
+                  premium: true,
+                  onTap: () => _premium(() => _options(timed: true)),
+                ),
+                StudyTile(
+                  compact: mobile,
+                  title: 'Your Questions',
+                  subtitle: 'Review your saved questions',
+                  icon: Icons.bookmark_outline,
+                  premium: true,
+                  onTap: () => _premium(() => _open(YourQuestionsScreen())),
+                ),
+                StudyTile(
+                  compact: mobile,
+                  title: 'Records',
+                  subtitle: 'Review your achievements',
+                  icon: Icons.inventory_2_outlined,
+                  premium: true,
+                  onTap: () => _premium(() => _open(RecordsScreen())),
+                ),
               ],
             ),
           ],
@@ -397,32 +294,24 @@ class QuizCard extends StatelessWidget {
       ),
     );
   }
-}
 
-_categoryPressed(BuildContext context, String category, bool isSubscribed) {
-  showModalBottomSheet(
-    context: context,
-    builder: (sheetContext) => BottomSheet(
-      builder: (_) => category != "Time Quiz"
-          ? QuizOptionsDialog(
-        category: category,
-        isSubscribed: isSubscribed,
-      )
-          : QuizOptionsTimerDialog(
-        category: category,
-      ),
-      onClosing: () {},
+  Widget _badge(String text) => Container(
+    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+    decoration: BoxDecoration(
+      color: Colors.white.withValues(alpha: .14),
+      borderRadius: BorderRadius.circular(10),
+    ),
+    child: Text(
+      text,
+      style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
     ),
   );
 }
+
 Future<void> requestTrackingPermission() async {
+  if (!Platform.isIOS) return;
   if (await AppTrackingTransparency.trackingAuthorizationStatus ==
       TrackingStatus.notDetermined) {
-    final status =
     await AppTrackingTransparency.requestTrackingAuthorization();
-    debugPrint('Tracking status: $status');
-  } else {
-    debugPrint(
-        'Tracking status: ${await AppTrackingTransparency.trackingAuthorizationStatus}');
   }
 }

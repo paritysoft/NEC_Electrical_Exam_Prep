@@ -1,3 +1,4 @@
+import 'package:electrician/ui/widgets/responsive_layout.dart';
 import 'package:electrician/ui/widgets/common_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -7,10 +8,10 @@ import '../../../util/AppColors.dart';
 import '../data/QuestionCache.dart';
 import '../data/model/ElectricianQuestion.dart';
 import '../quiz_page.dart';
-import '../subscription/InAppPurchasePage2.dart';
+import '../subscription/PurchasePlanDialog.dart';
+import '../subscription/subscription_service.dart';
 
 class MockQuizScreen extends StatefulWidget {
-
   final bool isSubscribed;
 
   const MockQuizScreen({Key? key, required this.isSubscribed});
@@ -30,8 +31,9 @@ class _MockQuizScreenState extends State<MockQuizScreen> {
     _checkSubscriptionStatus();
   }
 
-
   Future<void> _checkSubscriptionStatus() async {
+    await SubscriptionService.instance.refresh();
+    if (!mounted) return;
     final prefs = await SharedPreferences.getInstance();
     setState(() {
       isSubscribed = prefs.getBool('isSubscribed') ?? false; // Default to false
@@ -39,68 +41,57 @@ class _MockQuizScreenState extends State<MockQuizScreen> {
       //  purchasedPlan = prefs.getString('purchasedPlan') ?? ''; // Default to empty string
     });
   }
+
   @override
   Widget build(BuildContext context) {
-
-    List<ElectricianQuestion>? questions =
-    QuestionCache().getQuestions();
-
-    double totalItem = ((questions?.length ?? 0)  / 20);
-    return Scaffold(
-        appBar: appBarCustom(context, 'Mock Quiz'),
-        body: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: GridView.builder(
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2, // Number of columns
-              crossAxisSpacing: 8.0, // Spacing between columns
-              mainAxisSpacing: 8.0, // Spacing between rows
-              childAspectRatio: 3 / 2, // Aspect ratio for each grid item
+    final questions = QuestionCache().getQuestions() ?? <ElectricianQuestion>[];
+    final total = questions.length ~/ 20;
+    return AppScaffold(
+      appBar: appBarCustom(context, 'Mock Quiz'),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(24),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SectionHeading(
+              'Choose a mock test',
+              subtitle: 'Practice with a focused set of 20 questions.',
             ),
-            itemCount:  totalItem.toInt(),
-            itemBuilder: (context, index) {
-              return InkWell(
-                onTap: (){
-                  if (!isSubscribed) {
-                    Navigator.of(context)
-                        .push(
-                      new MaterialPageRoute(
-                          builder: (_) => new InAppPurchasePage2()),
-                    )
-                        .then((val) => val ? _checkSubscriptionStatus() : null);
-                    ;
-                  } else {
-                    List<ElectricianQuestion>? questionsMock =
-                    QuestionCache().getQuestions();
-                    if (questionsMock != null) {
-                      List<ElectricianQuestion>? questions = questionsMock
-                          .sublist((index + 1) * 20, (index + 1) * 20 + 20);
-
-                      Navigator.push(
+            AdaptiveGrid(
+              children: [
+                for (var index = 0; index < total; index++)
+                  StudyTile(
+                    title: 'Mock Test ${index + 1}',
+                    subtitle: '20 questions',
+                    icon: Icons.quiz_outlined,
+                    premium: true,
+                    onTap: () {
+                      if (!isSubscribed) {
+                        PurchasePlanDialog.show(context).then((_) {
+                          if (mounted) _checkSubscriptionStatus();
+                        });
+                      } else {
+                        Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (_) => QuizPage(
-                                questions: questions,
-                                category: "Mock Quiz ${index + 1}",
-                              )));
-                    }
-                  }
-                },
-                child: Card(
-                  color: randomColor(),
-                  elevation: 2, // Shadow effect
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12.0), // Rounded corners
+                            builder: (_) => QuizPage(
+                              questions: questions.sublist(
+                                index * 20,
+                                (index + 1) * 20,
+                              ),
+                              category: 'Mock Quiz ${index + 1}',
+                            ),
+                          ),
+                        );
+                      }
+                    },
                   ),
-                  child: index != totalItem  ? Center(
-                      child: titleLabel(context,
-                        "Mock Test ${index + 1}",
-                      )) : null,
-                ),
-              );
-            },
-          ),
+              ],
+            ),
+            if (total == 0) const Text('No mock tests available yet.'),
+          ],
         ),
+      ),
     );
   }
 }

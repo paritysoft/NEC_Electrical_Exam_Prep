@@ -14,3 +14,49 @@ A few resources to get you started if this is your first Flutter project:
 For help getting started with Flutter development, view the
 [online documentation](https://docs.flutter.dev/), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
+
+## Windows build
+
+The Windows app is named **Electrician Exam Prep: NEC**. There is one app,
+with no flavors or build variants.
+
+The **Windows Build** GitHub Actions workflow runs on pushes to `main` and
+`master`, or manually with an optional MSIX version (default `1.0.3.0`). It uses
+Flutter 3.41.2 on Windows Server 2022, installs locked dependencies, runs the
+tests, and uploads the Windows release folder and MSIX as separate artifacts.
+Download and extract the entire release artifact to run `commonquiz.exe`.
+
+Configure these repository secrets before running the workflow:
+
+- `API_KEY`
+- `YOUR_KEY`
+- `YOUR_DB_KEY`
+- `YOUR_DB_PASS_KEY`
+
+The workflow creates the required `.env` asset from these secrets. The asset is
+bundled in both outputs, including the hidden file in the release artifact.
+
+MSIX packages are unsigned. The package identity is `ParisoftAI.NECElectricalExamPrep`.
+The default publisher in `pubspec.yaml` is a development placeholder. Before submitting to Microsoft Store, set these
+repository variables to the exact values from Partner Center's Product identity:
+
+- `NEC_MSIX_IDENTITY_NAME`: optional override for Package/Identity/Name (defaults to `ParisoftAI.NECElectricalExamPrep`)
+- `NEC_MSIX_PUBLISHER`: Package/Identity/Publisher
+- `NEC_MSIX_PUBLISHER_NAME`: Package/Properties/PublisherDisplayName
+
+Store distribution supplies signing; direct MSIX distribution requires a trusted
+signature. See the [MSIX packaging configuration](https://pub.dev/packages/msix/example).
+
+For a local build, use Windows with Visual Studio's Desktop development with C++
+workload, Flutter 3.41.2, PowerShell 7, and the required `.env` file:
+
+```powershell
+flutter config --enable-windows-desktop
+flutter pub get --enforce-lockfile
+flutter test
+./scripts/build_windows.ps1 -Msix -MsixVersion 1.0.3.0
+```
+
+Omit `-Msix` to build just the release folder. For a Store package, also pass
+`-IdentityName`, `-Publisher`, and `-PublisherDisplayName` with your registered
+values. Outputs are under `build/windows/x64/runner/Release/`.

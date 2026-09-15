@@ -1,0 +1,95 @@
+name: Windows Build
+
+on:
+  workflow_dispatch:
+    inputs:
+      msix_version:
+        description: MSIX version (major.minor.patch.0)
+        type: string
+        default: '1.0.3.0'
+  push:
+    branches:
+      - main
+      - master
+
+permissions:
+  contents: read
+
+jobs:
+  build-windows:
+    name: Build Electrician Exam Prep NEC Windows Release
+    runs-on: windows-2022
+    timeout-minutes: 45
+    env:
+      MSIX_VERSION: ${{ inputs.msix_version || '1.0.3.0' }}
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.41.2'
+          channel: stable
+          cache: true
+
+      - name: Enable Windows desktop
+        run: flutter config --enable-windows-desktop
+
+      - name: Create env asset
+        env:
+          API_KEY: ${{ secrets.API_KEY }}
+          YOUR_KEY: ${{ secrets.YOUR_KEY }}
+          YOUR_DB_KEY: ${{ secrets.YOUR_DB_KEY }}
+          YOUR_DB_PASS_KEY: ${{ secrets.YOUR_DB_PASS_KEY }}
+        run: |
+          foreach ($name in @('API_KEY', 'YOUR_KEY', 'YOUR_DB_KEY', 'YOUR_DB_PASS_KEY')) {
+            if ([string]::IsNullOrWhiteSpace([Environment]::GetEnvironmentVariable($name))) {
+              throw "Missing required repository secret: $name"
+            }
+          }
+          @(
+            "API_KEY=$env:API_KEY"
+            "YOUR_KEY=$env:YOUR_KEY"
+            "YOUR_DB_KEY=$env:YOUR_DB_KEY"
+            "YOUR_DB_PASS_KEY=$env:YOUR_DB_PASS_KEY"
+          ) | Set-Content -Path .env -Encoding utf8NoBOM
+
+      - name: Install dependencies
+        run: flutter pub get --enforce-lockfile
+
+      - name: Run tests
+        run: flutter test
+
+      - name: Build Windows release and MSIX
+        env:
+          NEC_IDENTITY_NAME: ${{ vars.NEC_MSIX_IDENTITY_NAME }}
+          NEC_PUBLISHER: ${{ vars.NEC_MSIX_PUBLISHER }}
+          NEC_PUBLISHER_NAME: ${{ vars.NEC_MSIX_PUBLISHER_NAME }}
+        run: |
+          $options = @{ Msix = $true; MsixVersion = $env:MSIX_VERSION }
+          if ($env:NEC_IDENTITY_NAME) { $options.IdentityName = $env:NEC_IDENTITY_NAME }
+          if ($env:NEC_PUBLISHER) { $options.Publisher = $env:NEC_PUBLISHER }
+          if ($env:NEC_PUBLISHER_NAME) { $options.PublisherDisplayName = $env:NEC_PUBLISHER_NAME }
+          ./scripts/build_windows.ps1 @options
+
+      - name: Upload Windows release folder
+        uses: actions/upload-artifact@v4
+        with:
+          name: electrician-exam-prep-nec-windows-release
+          # Required by flutter_dotenv at startup; included in this app artifact.
+          include-hidden-files: true
+          path: |
+            build/windows/x64/runner/Release/**
+            !build/windows/x64/runner/Release/*.msix
+          if-no-files-found: error
+
+      - name: Upload MSIX package
+        uses: actions/upload-artifact@v4
+        with:
+          name: electrician-exam-prep-nec-msix
+          path: build/windows/x64/runner/Release/*.msix
+          if-no-files-found: error

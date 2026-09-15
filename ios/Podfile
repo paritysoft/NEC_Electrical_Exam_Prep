@@ -1,5 +1,5 @@
 # Uncomment this line to define a global platform for your project
- platform :ios, '13.0'
+ platform :ios, '15.0'
 
 # CocoaPods analytics sends network stats synchronously affecting flutter build latency.
 ENV['COCOAPODS_DISABLE_STATS'] = 'true'
@@ -50,6 +50,24 @@ post_install do |installer|
       end
     end
     flutter_additional_ios_build_settings(target)
+
+    # Include privacy bundle targets when applying the app's minimum iOS version.
+    target.build_configurations.each do |config|
+      deployment_target = config.build_settings['IPHONEOS_DEPLOYMENT_TARGET']
+      if deployment_target.nil? || Gem::Version.new(deployment_target) < Gem::Version.new('15.0')
+        config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '15.0'
+      end
+    end
+
+    # The plugin's source glob includes its manifest, which is already packaged
+    # in in_app_review_privacy.bundle. It must not also be compiled as source.
+    if target.name == 'in_app_review'
+      target.source_build_phase.files.to_a.each do |build_file|
+        if build_file.file_ref&.path&.end_with?('.xcprivacy')
+          build_file.remove_from_project
+        end
+      end
+    end
   end
 end
 

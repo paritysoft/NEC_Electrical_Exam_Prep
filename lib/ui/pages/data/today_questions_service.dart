@@ -1,62 +1,97 @@
+import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import 'model/ElectricianQuestion.dart';
 
+/// A stable batch for each local calendar day, in database ID order.
 class TodayQuestionsService {
-  static const String _lastDateKey = 'last_access_date';
-  static const String _lastIndexKey = 'last_question_index';
-  static const String _questionsReadTodayKey = 'questions_read_today';
-  static const int _questionsPerDay = 10;
+  TodayQuestionsService({DateTime Function()? now})
+    : _now = now ?? DateTime.now;
+  final DateTime Function() _now;
+  static const _key = 'daily_quiz_v2';
+  Map<String, dynamic>? _session;
 
-  // Method to fetch today's questions
-  Future<List<ElectricianQuestion>> getTodaysQuestions(List<ElectricianQuestion> questionList) async {
+  String get currentDay {
+    final now = _now();
+    return '${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}';
+  }
+
+  Map<int, dynamic> get answers => {
+    for (final entry in ((_session?['answers'] as Map?) ?? {}).entries)
+      int.parse(entry.key.toString()): entry.value,
+  };
+
+  Future<List<ElectricianQuestion>> getTodaysQuestions(
+    List<ElectricianQuestion> questions,
+  ) async {
+    if (questions.isEmpty) return [];
+    final ordered = List<ElectricianQuestion>.of(questions)
+      ..sort((a, b) {
+        final result = (a.id ?? 0).compareTo(b.id ?? 0);
+        return result == 0 ? a.uuid.compareTo(b.uuid) : result;
+      });
     final prefs = await SharedPreferences.getInstance();
-
-    // Get the stored last access date and last index
-    String? lastAccessDateStr = prefs.getString(_lastDateKey);
-    int lastIndex = prefs.getInt(_lastIndexKey) ?? 0;
-
-    DateTime today = DateTime.now();
-    DateTime? lastAccessDate = lastAccessDateStr != null ? DateTime.parse(lastAccessDateStr) : null;
-
-    // If the last access date is null or different from today, reset the index and choose new questions
-    if (lastAccessDate == null || !_isSameDay(today, lastAccessDate)) {
-      // Pick the next 10 questions starting from lastIndex
-      int endIndex = (lastIndex + _questionsPerDay) > questionList.length
-          ? questionList.length
-          : lastIndex + _questionsPerDay;
-
-      List<ElectricianQuestion> todaysQuestions = questionList.sublist(lastIndex, endIndex);
-
-      // Update index for the next day or wrap around if needed
-      int newIndex = endIndex == questionList.length ? 0 : endIndex;
-      prefs.setInt(_lastIndexKey, newIndex); // Save the new index
-
-      // Store today's questions in SharedPreferences as a JSON string
-      prefs.setString(_lastDateKey, today.toIso8601String()); // Store today's date
-
-      return todaysQuestions;
-    }else{
-      List<ElectricianQuestion> todaysQuestions = questionList.sublist(lastIndex, lastIndex + _questionsPerDay);
-      return todaysQuestions;
+    final saved = prefs.getString(_key);
+    _session = saved == null
+        ? null
+        : Map<String, dynamic>.from(jsonDecode(saved));
+    var start = (_session?['start'] as int?) ?? 0;
+    if (_session == null) {
+      // The old cursor stored the NEXT day's start, even on the same day.
+      final legacyDate = DateTime.tryParse(
+        prefs.getString('last_access_date') ?? '',
+      );
+      final next = prefs.getInt('last_question_index') ?? 0;
+      if (legacyDate != null) {
+        final legacyDay = DateTime(
+          legacyDate.year,
+          legacyDate.month,
+          legacyDate.day,
+        ).toString().substring(0, 10);
+        start = legacyDay == currentDay
+            ? (next == 0 ? ((ordered.length - 1) ~/ 10) * 10 : next - 10)
+            : next;
+      }
+    } else if (_session!['day'] != currentDay) {
+      // UTC date-only arithmetic avoids daylight-saving 23/25-hour days.
+      final previous = DateTime.parse('${_session!['day']}T00:00:00Z');
+      final today = DateTime.parse('${currentDay}T00:00:00Z');
+      final days = today.difference(previous).inDays;
+      start += (days > 0 ? days : 0) * 10;
     }
-
-    // Fallback: return empty list if something went wrong
-
+    start %= ordered.length;
+    if (_session == null || _session!['day'] != currentDay) {
+      _session = {
+        'day': currentDay,
+        'start': start,
+        'answers': <String, dynamic>{},
+      };
+      await prefs.setString(_key, jsonEncode(_session));
+      await prefs.setInt('questions_read_today', 0);
+    }
+    // Wrap only after exhausting the bank; never duplicate within a small bank.
+    final count = ordered.length < 10 ? ordered.length : 10;
+    return List.generate(count, (i) => ordered[(start + i) % ordered.length]);
   }
 
-  // Helper method to check if two dates are the same day
-
-  // Helper method to check if two dates are the same day
-  bool _isSameDay(DateTime date1, DateTime date2) {
-
-    return date1.year == date2.year && date1.month == date2.month && date1.day == date2.day;
-  }
-
-  // Separate method to update questionsReadToday value
-  Future<void> updateQuestionsReadToday(int questionsRead) async {
+  Future<int> getQuestionsReadToday() async {
     final prefs = await SharedPreferences.getInstance();
-    prefs.setInt(_questionsReadTodayKey, questionsRead);
+    final saved = prefs.getString(_key);
+    if (saved == null) return 0;
+    final session = jsonDecode(saved) as Map;
+    return session['day'] == currentDay
+        ? (session['answers'] as Map).length
+        : 0;
   }
 
+  /// Ignore a submission from yesterday if midnight passed while it was open.
+  Future<bool> saveAnswers(Map<int, dynamic> answers) async {
+    if (_session == null || _session!['day'] != currentDay) return false;
+    final prefs = await SharedPreferences.getInstance();
+    _session!['answers'] = {
+      for (final entry in answers.entries) '${entry.key}': entry.value,
+    };
+    await prefs.setString(_key, jsonEncode(_session));
+    await prefs.setInt('questions_read_today', answers.length);
+    return true;
+  }
 }

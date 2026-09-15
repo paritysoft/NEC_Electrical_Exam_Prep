@@ -3,120 +3,125 @@ import 'package:flutter/painting.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../util/AppColors.dart';
 import '../../util/app_constants.dart';
-import '../pages/subscription/InAppPurchasePage2.dart';
 
 snackBar(BuildContext context, String message) {
   return ScaffoldMessenger.of(context).showSnackBar(
-    SnackBar(
-      content: Text(message),
-      duration: Duration(seconds: 2),
-    ),
+    SnackBar(content: Text(message), duration: Duration(seconds: 2)),
   );
 }
 
-smallLabel(BuildContext context, String title,
-        {Color? color, TextAlign? alignment, double? textSize}) =>
-    Text(
-      title,
-      style: GoogleFonts.montserrat(
-        textStyle: TextStyle(
-            fontSize: AdaptiveFontSize.getFontSize(context, textSize ?? 14),
-            fontWeight: FontWeight.normal,
-            color: color ?? Colors.black),
-      ),
-      textAlign: alignment ?? TextAlign.start,
-    );
-
-label(
+smallLabel(
   BuildContext context,
-  String title,
-) =>
-    Text(
-      title,
-      style: GoogleFonts.montserrat(
-          textStyle:
-              TextStyle(fontSize: AdaptiveFontSize.getFontSize(context, 17))),
-      textAlign: TextAlign.center,
-    );
+  String title, {
+  Color? color,
+  TextAlign? alignment,
+  double? textSize,
+}) => Text(
+  title,
+  style: GoogleFonts.montserrat(
+    textStyle: TextStyle(
+      fontSize: AdaptiveFontSize.getFontSize(context, textSize ?? 14),
+      fontWeight: FontWeight.normal,
+      color: color ?? Colors.black,
+    ),
+  ),
+  textAlign: alignment ?? TextAlign.start,
+);
 
-labelFullWidth(
-  BuildContext context,
-  String title,
-) =>
-    Text(
-      title,
-      style: GoogleFonts.montserrat(
-          textStyle:
-              TextStyle(fontSize: AdaptiveFontSize.getFontSize(context, 17))),
-      textAlign: TextAlign.start,
-    );
+label(BuildContext context, String title) => Text(
+  title,
+  style: GoogleFonts.montserrat(
+    textStyle: TextStyle(fontSize: AdaptiveFontSize.getFontSize(context, 17)),
+  ),
+  textAlign: TextAlign.center,
+);
+
+labelFullWidth(BuildContext context, String title) => Text(
+  title,
+  style: GoogleFonts.montserrat(
+    textStyle: TextStyle(fontSize: AdaptiveFontSize.getFontSize(context, 17)),
+  ),
+  textAlign: TextAlign.start,
+);
 
 labelColor(BuildContext context, String title, {Color? color}) => Text(
-      title,
-      style: GoogleFonts.montserrat(
-          textStyle: TextStyle(
-              fontSize: AdaptiveFontSize.getFontSize(context, 17),
-              color: color)),
-      textAlign: TextAlign.center,
-    );
+  title,
+  style: GoogleFonts.montserrat(
+    textStyle: TextStyle(
+      fontSize: AdaptiveFontSize.getFontSize(context, 17),
+      color: color,
+    ),
+  ),
+  textAlign: TextAlign.center,
+);
 
 title15BoldColor(BuildContext context, String title, {Color? color}) => Text(
-      title,
-      style: GoogleFonts.montserrat(
-          textStyle: TextStyle(
-              fontSize: AdaptiveFontSize.getFontSize(context, 15),
-              color: color,
-              fontWeight: FontWeight.bold)),
-      textAlign: TextAlign.justify,
-    );
+  title,
+  style: GoogleFonts.montserrat(
+    textStyle: TextStyle(
+      fontSize: AdaptiveFontSize.getFontSize(context, 15),
+      color: color,
+      fontWeight: FontWeight.bold,
+    ),
+  ),
+  textAlign: TextAlign.start,
+);
 
 label13Color(BuildContext context, String title, {Color? color}) => Text(
-      title,
-      style: GoogleFonts.montserrat(
-          textStyle: TextStyle(
-              fontSize: AdaptiveFontSize.getFontSize(context, 13),
-              color: color)),
-      textAlign: TextAlign.start,
-    );
+  title,
+  style: GoogleFonts.montserrat(
+    textStyle: TextStyle(
+      fontSize: AdaptiveFontSize.getFontSize(context, 13),
+      color: color,
+    ),
+  ),
+  textAlign: TextAlign.start,
+);
 
 titleLabel(BuildContext context, String title, {Color? color}) => Text(
-      title,
-      style: GoogleFonts.montserrat(
-          textStyle: TextStyle(
-              fontSize: AdaptiveFontSize.getFontSize(context, 18),
-              fontWeight: FontWeight.w600,
-              color: color ?? Colors.black)),
-      textAlign: TextAlign.start,
-    );
+  title,
+  style: GoogleFonts.montserrat(
+    textStyle: TextStyle(
+      fontSize: AdaptiveFontSize.getFontSize(context, 18),
+      fontWeight: FontWeight.w600,
+      color: color ?? Colors.black,
+    ),
+  ),
+  textAlign: TextAlign.start,
+);
 
 bigTitle(BuildContext context, String title, {Color? color}) => Text(
-      title,
-      style: GoogleFonts.montserrat(
-        textStyle: TextStyle(
-            fontSize: AdaptiveFontSize.getFontSize(context, 25),
-            fontWeight: FontWeight.bold,
-            color: color ?? Colors.black),
-      ),
-      textAlign: TextAlign.start,
-    );
+  title,
+  style: GoogleFonts.montserrat(
+    textStyle: TextStyle(
+      fontSize: AdaptiveFontSize.getFontSize(context, 25),
+      fontWeight: FontWeight.bold,
+      color: color ?? Colors.black,
+    ),
+  ),
+  textAlign: TextAlign.start,
+);
 final TextStyle titleStyle = TextStyle(
-    color: Colors.black87, fontSize: 16.0, fontWeight: FontWeight.w500);
+  color: Colors.black87,
+  fontSize: 16.0,
+  fontWeight: FontWeight.w500,
+);
 
 trailingStyle(BuildContext context, String title, {Color? color}) => Text(
   title,
   style: GoogleFonts.montserrat(
     textStyle: TextStyle(
-        fontSize: AdaptiveFontSize.getFontSize(context, 20),
-        fontWeight: FontWeight.bold,
-        color: color ?? Theme.of(context).primaryColor),
+      fontSize: AdaptiveFontSize.getFontSize(context, 20),
+      fontWeight: FontWeight.bold,
+      color: color ?? Theme.of(context).primaryColor,
+    ),
   ),
   textAlign: TextAlign.start,
 );
 
-
 class Countdown extends AnimatedWidget {
   Countdown({Key? key, required this.animation})
-      : super(key: key, listenable: animation);
+    : super(key: key, listenable: animation);
   Animation<int> animation;
 
   @override
@@ -130,15 +135,17 @@ class Countdown extends AnimatedWidget {
     print('inMinutes ${clockTimer.inMinutes.toString()}');
     print('inSeconds ${clockTimer.inSeconds.toString()}');
     print(
-        'inSeconds.remainder ${clockTimer.inSeconds.remainder(60).toString()}');
+      'inSeconds.remainder ${clockTimer.inSeconds.remainder(60).toString()}',
+    );
 
     return Text(
       "$timerText",
       style: GoogleFonts.lato(
-          textStyle: TextStyle(
-        fontSize: AdaptiveFontSize.getFontSize(context, 20),
-        color: Theme.of(context).primaryColor,
-      )),
+        textStyle: TextStyle(
+          fontSize: AdaptiveFontSize.getFontSize(context, 20),
+          color: Theme.of(context).primaryColor,
+        ),
+      ),
     );
   }
 }
@@ -153,12 +160,13 @@ appBarCustom(BuildContext context, String message) {
     ),
   );
 }
+
 // void gotToSubscriptionPage(BuildContext context) {
 //
 //   Future.delayed(const Duration(seconds: 1)).then((val) {
 //     Navigator.push(
 //         context,
 //         MaterialPageRoute(
-//             builder: (context) => InAppPurchasePage2()));
+//             builder: (context) => PurchasePlanDialog()));
 //   });
 // }

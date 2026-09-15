@@ -5,10 +5,10 @@
 // 'flutter create' template.
 
 // The application's name. By default this is also the title of the Flutter window.
-PRODUCT_NAME = commonquiz
+PRODUCT_NAME = NEC Electrical Exam Prep 2027
 
 // The application's bundle identifier
-PRODUCT_BUNDLE_IDENTIFIER = com.quizplay.commonquiz.commonquiz
+PRODUCT_BUNDLE_IDENTIFIER = com.paritysoft.nec-electrical-exam-prep
 
 // The copyright displayed in application information
-PRODUCT_COPYRIGHT = Copyright © 2024 com.quizplay.commonquiz. All rights reserved.
+PRODUCT_COPYRIGHT = Copyright © 2024 com.paritysoft.nec-electrical-exam-prep. All rights reserved.

@@ -16,10 +16,11 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 # In Windows, build-name is used as the major, minor, and patch parts
 # of the product and file versions while build-number is used as the build suffix.
-version: 1.0.0+1
+version: 1.0.3+2
 
 environment:
-  sdk: '>=3.3.3 <4.0.0'
+  sdk: '>=3.11.0 <4.0.0'
+  flutter: '>=3.41.2'
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -32,52 +33,56 @@ dependencies:
     sdk: flutter
   font_awesome_flutter: ^10.7.0
   http: ^1.2.2
-  intl: ^0.18.1
+  intl: ^0.20.2
   flutter_custom_clippers: ^2.1.0
   html_unescape: ^2.0.0
+  flutter_html: ^3.0.0
+  # flutter_html 3.0 uses query-selector APIs removed in html 0.15.7.
+  html: 0.15.6
   auto_size_text: ^3.0.0
   sqflite: ^2.3.3+1
  # sqflite_darwin: ^2.4.1+1 # Use the latest version
   path: ^1.8.0
   path_provider: ^2.0.14
-  google_fonts: ^6.2.1
-  fl_chart: ^0.69.0
-  syncfusion_flutter_gauges: ^27.2.5
-  introduction_screen: ^3.1.14
+  google_fonts: ^8.0.2
+  fl_chart: ^1.1.1
+  syncfusion_flutter_gauges: ^32.2.7
+  introduction_screen: ^4.0.0
   encrypt: ^5.0.3
-  flutter_dotenv: ^5.1.0
+  flutter_dotenv: ^6.0.0
   percent_indicator: ^4.2.2
   loading_indicator: ^3.1.1
 
   #flutter_pdfview: ^1.3.3
  # syncfusion_flutter_pdf: ^27.1.50
-  syncfusion_flutter_pdfviewer: ^27.1.50
-  device_info_plus: ^10.1.0
+  syncfusion_flutter_pdfviewer: ^32.2.7
+  device_info_plus: ^12.3.0
   shared_preferences: ^2.0.13
-  sqflite_sqlcipher: ^3.0.0
-  flutter_secure_storage: ^9.2.2
+  sqflite_sqlcipher: ^3.2.0
+  flutter_secure_storage: ^10.0.0
   uuid: ^4.5.1
   webview_flutter: ^4.0.0
-  share_plus: ^10.1.0
+  share_plus: ^12.0.1
   in_app_review: ^2.0.9
   url_launcher: ^6.3.1
-  syncfusion_flutter_calendar: ^27.1.53
-  flutter_local_notifications: ^17.2.3
-  timezone: ^0.9.4 # Add this package for timezone support
-  permission_handler: ^11.3.1
-  get_it: ^8.0.3
-  flutter_bloc: ^8.1.5
-  in_app_purchase: ^3.2.0
-  in_app_purchase_storekit: ^0.3.7
+  syncfusion_flutter_calendar: ^32.2.7
+  flutter_local_notifications: ^21.0.0
+  timezone: ^0.11.0 # Add this package for timezone support
+  permission_handler: ^12.0.1
+  get_it: ^9.2.1
+  flutter_bloc: ^9.1.1
+  in_app_purchase: ^3.3.0
+  in_app_purchase_android: ^0.5.0
+  in_app_purchase_storekit: ^0.4.8+1
   dartz: ^0.10.1
-  fluttertoast: ^8.2.5
-  package_info_plus: ^8.0.2
-  googleapis_auth: ^1.3.1
+  fluttertoast: ^9.0.0
+  package_info_plus: ^9.0.0
+  googleapis_auth: ^2.0.0
   dio: ^5.1.1
   provider: ^6.0.5
   rflutter_alert: ^2.0.7
-  firebase_core: ^3.10.0
-  firebase_analytics: ^11.4.0
+  firebase_core: ^4.4.0
+  firebase_analytics: ^12.1.2
   app_tracking_transparency: ^2.0.3
 
   # The following adds the Cupertino Icons font to your application.
@@ -85,6 +90,8 @@ dependencies:
   cupertino_icons: ^1.0.8
 
 dev_dependencies:
+  msix: 3.16.13
+  in_app_purchase_platform_interface: ^1.4.0
   flutter_test:
     sdk: flutter
 
@@ -93,12 +100,25 @@ dev_dependencies:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^5.0.0
+  flutter_lints: ^6.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
 # The following section is specific to Flutter packages.
+msix_config:
+  display_name: 'Electrician Exam Prep: NEC'
+  publisher_display_name: Electrician Exam Prep
+  identity_name: ParisoftAI.NECElectricalExamPrep
+  publisher: CN=ElectricianExamPrep
+  msix_version: 1.0.3.0
+  logo_path: windows/runner/resources/app_icon.png
+  capabilities: internetClient
+  architecture: x64
+  output_name: electrician-exam-prep-nec
+  sign_msix: false
+  install_certificate: false
+
 flutter:
 
   # The following line ensures that the Material Icons font is

@@ -10,7 +10,6 @@ import '../pages/error.dart';
 import '../pages/quiz_page.dart';
 import '../pages/quiz_page_timer.dart';
 
-
 class QuizOptionsTimerDialog extends StatefulWidget {
   final String? category;
   const QuizOptionsTimerDialog({super.key, this.category});
@@ -45,8 +44,10 @@ class _QuizOptionsTimerDialogState extends State<QuizOptionsTimerDialog> {
               width: double.infinity,
               padding: const EdgeInsets.all(16.0),
               color: Colors.grey.shade200,
-              child: title15BoldColor(context,
-                widget.category ?? "", color: Colors.black87
+              child: title15BoldColor(
+                context,
+                widget.category ?? "",
+                color: Colors.black87,
               ),
             ),
             SizedBox(height: 10.0),
@@ -61,7 +62,7 @@ class _QuizOptionsTimerDialogState extends State<QuizOptionsTimerDialog> {
                 children: <Widget>[
                   SizedBox(width: 0.0),
                   ActionChip(
-                    label: smallLabel(context,"5",color: Colors.white),
+                    label: smallLabel(context, "5", color: Colors.white),
                     labelStyle: TextStyle(color: Colors.white),
                     backgroundColor: noOfQuestions == 5
                         ? primary
@@ -69,7 +70,7 @@ class _QuizOptionsTimerDialogState extends State<QuizOptionsTimerDialog> {
                     onPressed: () => _selectNumberOfQuestions(5),
                   ),
                   ActionChip(
-                    label: smallLabel(context,"10", color: Colors.white),
+                    label: smallLabel(context, "10", color: Colors.white),
                     labelStyle: TextStyle(color: Colors.white),
                     backgroundColor: noOfQuestions == 10
                         ? primary
@@ -77,7 +78,7 @@ class _QuizOptionsTimerDialogState extends State<QuizOptionsTimerDialog> {
                     onPressed: () => _selectNumberOfQuestions(10),
                   ),
                   ActionChip(
-                    label: smallLabel(context,"15", color: Colors.white),
+                    label: smallLabel(context, "15", color: Colors.white),
                     labelStyle: TextStyle(color: Colors.white),
                     backgroundColor: noOfQuestions == 15
                         ? primary
@@ -85,7 +86,7 @@ class _QuizOptionsTimerDialogState extends State<QuizOptionsTimerDialog> {
                     onPressed: () => _selectNumberOfQuestions(15),
                   ),
                   ActionChip(
-                    label: smallLabel(context,"20", color: Colors.white),
+                    label: smallLabel(context, "20", color: Colors.white),
                     labelStyle: TextStyle(color: Colors.white),
                     backgroundColor: noOfQuestions == 20
                         ? primary
@@ -115,7 +116,7 @@ class _QuizOptionsTimerDialogState extends State<QuizOptionsTimerDialog> {
                 children: <Widget>[
                   SizedBox(width: 0.0),
                   ActionChip(
-                    label: smallLabel(context,"10", color: Colors.white),
+                    label: smallLabel(context, "10", color: Colors.white),
                     labelStyle: TextStyle(color: Colors.white),
                     backgroundColor: timeForQuiz == 10
                         ? primary
@@ -123,7 +124,7 @@ class _QuizOptionsTimerDialogState extends State<QuizOptionsTimerDialog> {
                     onPressed: () => _selectTime(10),
                   ),
                   ActionChip(
-                    label: smallLabel(context,"20", color: Colors.white),
+                    label: smallLabel(context, "20", color: Colors.white),
                     labelStyle: TextStyle(color: Colors.white),
                     backgroundColor: timeForQuiz == 20
                         ? primary
@@ -131,7 +132,7 @@ class _QuizOptionsTimerDialogState extends State<QuizOptionsTimerDialog> {
                     onPressed: () => _selectTime(20),
                   ),
                   ActionChip(
-                    label: smallLabel(context,"30", color: Colors.white),
+                    label: smallLabel(context, "30", color: Colors.white),
                     labelStyle: TextStyle(color: Colors.white),
                     backgroundColor: timeForQuiz == 30
                         ? primary
@@ -139,7 +140,7 @@ class _QuizOptionsTimerDialogState extends State<QuizOptionsTimerDialog> {
                     onPressed: () => _selectTime(30),
                   ),
                   ActionChip(
-                    label: smallLabel(context,"40", color: Colors.white),
+                    label: smallLabel(context, "40", color: Colors.white),
                     labelStyle: TextStyle(color: Colors.white),
                     backgroundColor: timeForQuiz == 40
                         ? primary
@@ -207,13 +208,18 @@ class _QuizOptionsTimerDialogState extends State<QuizOptionsTimerDialog> {
             processing
                 ? CircularProgressIndicator()
                 : ElevatedButton(
-                    child: title15BoldColor(context, "Start Quiz", color: Colors.white),
+                    child: title15BoldColor(
+                      context,
+                      "Start Quiz",
+                      color: Colors.white,
+                    ),
                     onPressed: _startQuiz,
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all<Color>(Colors.amber[600]!),
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all<Color>(
+                        primary,
+                      ),
+                    ),
                   ),
-
-                ),
             SizedBox(height: 40.0),
           ],
         ),
@@ -226,11 +232,13 @@ class _QuizOptionsTimerDialogState extends State<QuizOptionsTimerDialog> {
       noOfQuestions = i;
     });
   }
+
   _selectTime(int i) {
     setState(() {
       timeForQuiz = i;
     });
   }
+
   _selectDifficulty(String? s) {
     setState(() {
       _difficulty = s;
@@ -245,51 +253,69 @@ class _QuizOptionsTimerDialogState extends State<QuizOptionsTimerDialog> {
     try {
       List<ElectricianQuestion>? questions = QuestionCache().getQuestions();
 
-      print("questions  ${questions?.length}    ${questions?.last.incorrectAnswer1} ");
+      print(
+        "questions  ${questions?.length}    ${questions?.last.incorrectAnswer1} ",
+      );
       Navigator.pop(context);
-      if ((questions?.length ?? 0)< 1) {
-        Navigator.of(context).push(MaterialPageRoute(
+      if ((questions?.length ?? 0) < 1) {
+        Navigator.of(context).push(
+          MaterialPageRoute(
             builder: (_) => ErrorPage(
-                  message:
-                      "There are not enough questions in the category, with the options you selected.",
-                )));
+              message:
+                  "There are not enough questions in the category, with the options you selected.",
+            ),
+          ),
+        );
         return;
       }
-      if(questions != null) {
+      if (questions != null) {
         loadRandomQuestions(questions, noOfQuestions ?? 10);
       }
     } on SocketException catch (_) {
       Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-              builder: (_) => ErrorPage(
-                    message:
-                        "Can't reach the servers, \n Please check your internet connection.",
-                  )));
+        context,
+        MaterialPageRoute(
+          builder: (_) => ErrorPage(
+            message:
+                "Can't reach the servers, \n Please check your internet connection.",
+          ),
+        ),
+      );
     } catch (e) {
       print(e.toString());
       Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-              builder: (_) => ErrorPage(
-                    message: "Unexpected error trying to connect to the API",
-                  )));
+        context,
+        MaterialPageRoute(
+          builder: (_) => ErrorPage(
+            message: "Unexpected error trying to connect to the API",
+          ),
+        ),
+      );
     }
     setState(() {
       processing = false;
     });
   }
-  void loadRandomQuestions(List<ElectricianQuestion> questions, int count) async {
-    List<ElectricianQuestion> randomQuestions = await getRandomQuestions(questions, count);
+
+  void loadRandomQuestions(
+    List<ElectricianQuestion> questions,
+    int count,
+  ) async {
+    List<ElectricianQuestion> randomQuestions = await getRandomQuestions(
+      questions,
+      count,
+    );
 
     Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (_) => QuizPageTimer(
-              questions: randomQuestions,
-              category: widget.category ?? "",
-              playTime: (noOfQuestions ?? 1) * (timeForQuiz ?? 1),
-            )));
+      context,
+      MaterialPageRoute(
+        builder: (_) => QuizPageTimer(
+          questions: randomQuestions,
+          category: widget.category ?? "",
+          playTime: (noOfQuestions ?? 1) * (timeForQuiz ?? 1),
+        ),
+      ),
+    );
     print(randomQuestions);
   }
 }

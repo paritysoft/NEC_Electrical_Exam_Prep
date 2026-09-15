@@ -6,7 +6,7 @@
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM"/>
 
     <application
-        android:label="ACNP Exam Prep - Nurse MCQs"
+        android:label="NEC Electrical Exam Prep 2027"
         android:name="${applicationName}"
         android:icon="@drawable/logo_acnp"
         android:roundIcon="@drawable/logo_ancp_round"

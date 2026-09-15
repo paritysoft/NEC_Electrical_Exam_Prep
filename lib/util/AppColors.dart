@@ -3,8 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 
 class AppColors {
-
-  static const  Map<int, Color> color = {
+  static const Map<int, Color> color = {
     50: Color.fromRGBO(66, 165, 245, .1),
     100: Color.fromRGBO(66, 165, 245, .2),
     200: Color.fromRGBO(66, 165, 245, .3),
@@ -18,15 +17,13 @@ class AppColors {
   };
 }
 
-MaterialColor primary = MaterialColor(0xFFB6001B, AppColors.color);
-MaterialColor background = MaterialColor(0xFFe8e4ff, AppColors.color);
-MaterialColor navigationBottom = MaterialColor(0xFF661d97, AppColors.color);
+MaterialColor primary = MaterialColor(0xFF0C3158, AppColors.color);
+MaterialColor background = MaterialColor(0xFFF3F5F9, AppColors.color);
+MaterialColor navigationBottom = MaterialColor(0xFF0C3158, AppColors.color);
 MaterialColor bottomNav = MaterialColor(0xFFFFFFFF, AppColors.color);
 
-
 const Color white = Color(0xFFFFFFFF);
-const Color bgColor = Color(0xFF4448FF);
-
+const Color bgColor = Color(0xFF0C3158);
 
 Color randomColor() {
   return Color(0xFFFFFFFF & Random().nextInt(0xFFFFFFFF)).withOpacity(0.4);

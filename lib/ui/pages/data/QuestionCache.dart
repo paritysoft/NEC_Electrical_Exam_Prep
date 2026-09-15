@@ -31,19 +31,26 @@ class QuestionCache {
     _cachedQuestions = null;
   }
 
-
-  List<ElectricianQuestion> filterQuestionsByCategory(List<ElectricianQuestion> questions, String topic) {
+  List<ElectricianQuestion> filterQuestionsByCategory(
+    List<ElectricianQuestion> questions,
+    String topic,
+  ) {
     // Use the .where() method to filter by category
     return questions.where((question) => question.topicName == topic).toList();
   }
-  List<ElectricianQuestion> filterQuestionsByGivenAnswer(List<ElectricianQuestion> questions) {
+
+  List<ElectricianQuestion> filterQuestionsByGivenAnswer(
+    List<ElectricianQuestion> questions,
+  ) {
     // Return questions where the givenAnswer is empty
-    return questions.where((question) => question.givenAnswer.isNotEmpty).toList();
+    return questions
+        .where((question) => question.givenAnswer.isNotEmpty)
+        .toList();
   }
 }
 
 // Usage in your app
-void loadQuestions() async {
+Future<void> loadQuestions() async {
   var questionCache = QuestionCache();
 
   // If questions are already cached, use them
@@ -52,19 +59,26 @@ void loadQuestions() async {
     print('Using cached questions ${questions?.length}');
   } else {
     // Otherwise, fetch from the database and cache them
-    List<ElectricianQuestion> questions = await UpadanSonghro().getAllQuestions();
+    List<ElectricianQuestion> questions = await UpadanSonghro()
+        .getAllQuestions();
     questionCache.cacheQuestions(questions);
     print('Caching new questions  ${questions.length}');
   }
 }
 
-
-List<ElectricianQuestion> splitListAtIndices(List<ElectricianQuestion> questions, int start, int index) {
+List<ElectricianQuestion> splitListAtIndices(
+  List<ElectricianQuestion> questions,
+  int start,
+  int index,
+) {
   return questions.sublist(start, index);
 }
 
 // Assuming ElectricianQuestion is your model class and db.getAllQuestions() returns a Future<List<ElectricianQuestion>>
-Future<List<ElectricianQuestion>> getRandomQuestions(List<ElectricianQuestion> questions, int count) async {
+Future<List<ElectricianQuestion>> getRandomQuestions(
+  List<ElectricianQuestion> questions,
+  int count,
+) async {
   // Fetch all the questions
   // List<ElectricianQuestion> questions = await db.getAllQuestions();
 
@@ -85,16 +99,17 @@ Future<List<ElectricianQuestion>> getRandomQuestions(List<ElectricianQuestion> q
   }
 
   // Get the random 10 questions
-  List<ElectricianQuestion> randomQuestions = selectedIndices.map((index) => questions[index]).toList();
+  List<ElectricianQuestion> randomQuestions = selectedIndices
+      .map((index) => questions[index])
+      .toList();
 
   return randomQuestions;
 }
 
-
 List<String> getShuffledOptions(ElectricianQuestion question) {
   // Decode incorrect answers
   //List<String> options = cleanQuizOptions(question.incorrectAnswer +","+" "+ question.correctAnswer);
- // List<String> options ="question.incorrectAnswer1+ ", "+ question.incorrectAnswer2+ ", "+ question.incorrectAnswer3 +", "+ question.correctAnswer ";
+  // List<String> options ="question.incorrectAnswer1+ ", "+ question.incorrectAnswer2+ ", "+ question.incorrectAnswer3 +", "+ question.correctAnswer ";
   List<String> options = [];
   if (question.incorrectAnswer1.isNotEmpty) {
     options.add(question.incorrectAnswer1);
@@ -106,7 +121,7 @@ List<String> getShuffledOptions(ElectricianQuestion question) {
     options.add(question.incorrectAnswer3);
   }
 
-// Always add the correct answer (assuming it's always non-empty)
+  // Always add the correct answer (assuming it's always non-empty)
   options.add(question.correctAnswer);
 
   // Shuffle the options

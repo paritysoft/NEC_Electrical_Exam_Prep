@@ -1,3 +1,4 @@
+import 'package:electrician/ui/widgets/responsive_layout.dart';
 import 'package:electrician/ui/widgets/common_widget.dart';
 import 'package:electrician/util/AppColors.dart';
 import 'package:flutter/material.dart';
@@ -7,53 +8,39 @@ import 'package:html_unescape/html_unescape.dart';
 import '../data/QuestionCache.dart';
 import '../data/model/ElectricianQuestion.dart';
 
-
 class RecordsAnswersScreen extends StatelessWidget {
   final List<ElectricianQuestion> questions;
 
-  const RecordsAnswersScreen({Key? key, required this.questions}) : super(key: key);
+  const RecordsAnswersScreen({Key? key, required this.questions})
+    : super(key: key);
 
   @override
-  Widget build(BuildContext context){
-    return Scaffold(
+  Widget build(BuildContext context) {
+    return AppScaffold(
       appBar: appBarCustom(context, "Check Answers"),
-      body: Stack(
-        children: <Widget>[
-          ClipPath(
-            clipper: WaveClipperTwo(),
-            child: Container(
-              decoration: BoxDecoration(
-                color: Theme.of(context).primaryColor
-              ),
-              height: 200,
-            ),
-          ),
-          ListView.builder(
-            padding: const EdgeInsets.all(16.0),
-            itemCount: questions.length+1,
-            itemBuilder: _buildItem,
-
-          )
-        ],
+      maxWidth: 980,
+      body: ListView.builder(
+        padding: const EdgeInsets.all(24),
+        itemCount: questions.length + 1,
+        itemBuilder: _buildItem,
       ),
     );
   }
+
   Widget _buildItem(BuildContext context, int index) {
-    if(index == questions.length) {
+    if (index == questions.length) {
       return Padding(
         padding: const EdgeInsets.all(8.0),
         child: ElevatedButton(
           style: ButtonStyle(
             backgroundColor: MaterialStateProperty.all<Color>(primary),
             shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-              RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8.0),
-              ),
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
             ),
             visualDensity: VisualDensity(vertical: 2),
           ),
           child: title15BoldColor(context, "Go Home", color: Colors.white),
-          onPressed: (){
+          onPressed: () {
             if (Navigator.canPop(context)) {
               Navigator.of(context, rootNavigator: true).pop(context);
             }
@@ -74,51 +61,80 @@ class RecordsAnswersScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text(HtmlUnescape().convert(question.question), style: TextStyle(
-              color: Colors.black,
-              fontWeight: FontWeight.w500,
-              fontSize: 16.0
-            ),),
+            Text(
+              HtmlUnescape().convert(question.question),
+              style: TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.w500,
+                fontSize: 16.0,
+              ),
+            ),
             SizedBox(height: 5.0),
             SizedBox(height: 5.0),
-            question.correctCount == 1 ? Container(): Text.rich(TextSpan(
-                children: [
-                  TextSpan(text: "Given Answer: ",style: TextStyle(
-                      color: question.correctCount == 1 ? Colors.green : Colors.red,
-                      fontSize: 18.0,
-                      fontWeight: FontWeight.bold
-                  ),),
-                  TextSpan(text: HtmlUnescape().convert(question.givenAnswer.replaceAll('"', '')) , style: TextStyle(
-                      color: question.correctCount == 1 ? Colors.green : Colors.red,
-                      fontSize: 18.0,
-                      fontWeight: FontWeight.bold
-                  ),),
-
-                ]
-            ),style: TextStyle(
-                fontSize: 16.0
-            ),),
+            question.correctCount == 1
+                ? Container()
+                : Text.rich(
+                    TextSpan(
+                      children: [
+                        TextSpan(
+                          text: "Given Answer: ",
+                          style: TextStyle(
+                            color: question.correctCount == 1
+                                ? Colors.green
+                                : Colors.red,
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        TextSpan(
+                          text: HtmlUnescape().convert(
+                            question.givenAnswer.replaceAll('"', ''),
+                          ),
+                          style: TextStyle(
+                            color: question.correctCount == 1
+                                ? Colors.green
+                                : Colors.red,
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                    style: TextStyle(fontSize: 16.0),
+                  ),
             SizedBox(height: 5.0),
-            question.correctCount == 1 ? Container(): Text.rich(TextSpan(
-              children: [
-                TextSpan(text: "Correct Answer: "),
-                TextSpan(text: HtmlUnescape().convert(question.correctAnswer.replaceAll('"', '')) , style: TextStyle(
-                  fontWeight: FontWeight.w500
-                ))
-              ]
-            ),style: TextStyle(
-              fontSize: 16.0
-            ),),
-            question.correctCount == 1 ? Container(): Text.rich(TextSpan(
-                children: [
-                  TextSpan(text: "Explanation: "),
-                  TextSpan(text: HtmlUnescape().convert(question.explanation.replaceAll('"', '')) , style: TextStyle(
-                      fontWeight: FontWeight.w500
-                  ))
-                ]
-            ),style: TextStyle(
-                fontSize: 16.0
-            ),)
+            question.correctCount == 1
+                ? Container()
+                : Text.rich(
+                    TextSpan(
+                      children: [
+                        TextSpan(text: "Correct Answer: "),
+                        TextSpan(
+                          text: HtmlUnescape().convert(
+                            question.correctAnswer.replaceAll('"', ''),
+                          ),
+                          style: TextStyle(fontWeight: FontWeight.w500),
+                        ),
+                      ],
+                    ),
+                    style: TextStyle(fontSize: 16.0),
+                  ),
+            question.correctCount == 1
+                ? Container()
+                : Text.rich(
+                    TextSpan(
+                      children: [
+                        TextSpan(text: "Explanation: "),
+                        TextSpan(
+                          text: HtmlUnescape().convert(
+                            question.explanation.replaceAll('"', ''),
+                          ),
+                          style: TextStyle(fontWeight: FontWeight.w500),
+                        ),
+                      ],
+                    ),
+                    style: TextStyle(fontSize: 16.0),
+                  ),
           ],
         ),
       ),

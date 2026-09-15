@@ -10,12 +10,14 @@ import 'model/ElectricianQuestion.dart';
 class DatabaseHelper {
   static final _databaseName = "mydb.db";
   static final _databaseVersion = 1; // Increment this when upgrading schema
-  static final tblName = "tbl_acnp_questions";
+  static final tblName = "tbl_acnp_questions";// by mistake name can't change
 
   // Singleton pattern
   DatabaseHelper._privateConstructor();
   static final DatabaseHelper instance = DatabaseHelper._privateConstructor();
-  final _secureStorage = const FlutterSecureStorage();
+  final _secureStorage = const FlutterSecureStorage(
+    aOptions: AndroidOptions(resetOnError: false),
+  );
   static Database? _database;
 
   // Access the database, create it if it doesn't exist
