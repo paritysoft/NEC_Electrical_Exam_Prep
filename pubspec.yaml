@@ -108,7 +108,7 @@ dev_dependencies:
 # The following section is specific to Flutter packages.
 msix_config:
   display_name: 'Electrician Exam Prep: NEC'
-  publisher_display_name: Electrician Exam Prep
+  publisher_display_name: ParisoftAI
   identity_name: ParisoftAI.NECElectricalExamPrep
   publisher: CN=ElectricianExamPrep
   msix_version: 1.0.3.0

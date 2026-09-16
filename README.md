@@ -42,7 +42,7 @@ repository variables to the exact values from Partner Center's Product identity:
 
 - `NEC_MSIX_IDENTITY_NAME`: optional override for Package/Identity/Name (defaults to `ParisoftAI.NECElectricalExamPrep`)
 - `NEC_MSIX_PUBLISHER`: Package/Identity/Publisher
-- `NEC_MSIX_PUBLISHER_NAME`: Package/Properties/PublisherDisplayName
+- `NEC_MSIX_PUBLISHER_NAME`: optional override for Package/Properties/PublisherDisplayName (defaults to `ParisoftAI`; remove any stale override or set it to `ParisoftAI`)
 
 Store distribution supplies signing; direct MSIX distribution requires a trusted
 signature. See the [MSIX packaging configuration](https://pub.dev/packages/msix/example).
@@ -60,3 +60,18 @@ flutter test
 Omit `-Msix` to build just the release folder. For a Store package, also pass
 `-IdentityName`, `-Publisher`, and `-PublisherDisplayName` with your registered
 values. Outputs are under `build/windows/x64/runner/Release/`.
+
+### Replacing a rejected Store package
+
+The publisher display name must be `ParisoftAI`, matching the Partner Center
+account. The app display name remains `Electrician Exam Prep: NEC`.
+After updating the configuration, rebuild the MSIX with the Windows workflow
+or the local Windows command above; an existing MSIX will still contain the old
+manifest. Ensure `NEC_MSIX_PUBLISHER_NAME` does not override the corrected value.
+The separate `NEC_MSIX_PUBLISHER` value must match Product identity exactly;
+do not use the development placeholder `CN=ElectricianExamPrep` for submission.
+
+Delete the rejected package in Partner Center, upload the newly built
+`electrician-exam-prep-nec.msix`, and resolve any remaining validation errors.
+Select the Windows Desktop device family for this Windows desktop app. If using
+market groups, upload at least one valid package to each group before submitting.
