@@ -79,6 +79,8 @@ void main() {
   setUp(() async {
     GoogleFonts.config.allowRuntimeFetching = false;
     SharedPreferences.setMockInitialValues({});
+    // Initialize without registering a native store. Widget tests use Android
+    // by default, regardless of the operating system running the tests.
     debugDefaultTargetPlatformOverride = TargetPlatform.linux;
     InAppPurchase.instance;
     debugDefaultTargetPlatformOverride = null;
@@ -133,6 +135,25 @@ void main() {
     expect(store.queriedIds, {monthlyPlan, unlimitedPlan});
     expect(find.textContaining('Monthly Access'), findsOneWidget);
     expect(find.textContaining('Lifetime Access'), findsOneWidget);
+  }
+
+  for (final platform in [TargetPlatform.windows, TargetPlatform.linux]) {
+    testWidgets('$platform does not query an unsupported store', (tester) async {
+      await tester.pumpWidget(
+        const MaterialApp(home: PurchasePlanDialog()),
+      );
+      await tester.pumpAndSettle();
+      expect(
+        find.text('In-app purchases are not available on this platform.'),
+        findsOneWidget,
+      );
+      expect(store.queriedIds, isNull);
+      expect(find.text('Purchase'), findsNothing);
+      await tester.tap(find.text('Restore'));
+      await tester.pumpAndSettle();
+      expect(SubscriptionService.instance.isSubscribed, isFalse);
+      expect(tester.takeException(), isNull);
+    }, variant: TargetPlatformVariant({platform}));
   }
 
   testWidgets('Cancel does not grant access', (tester) async {

@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
@@ -59,7 +58,7 @@ class _PurchasePlanDialogState extends State<PurchasePlanDialog> {
     super.initState();
     _selectedProductId = _defaultSelectedProductId;
     _loadSubscriptionStatus();
-    if (Platform.isWindows || Platform.isLinux) {
+    if (_isUnsupportedPlatform) {
       _isLoading = false;
       _errorMessage = 'In-app purchases are not available on this platform.';
       _purchaseSubscription = const Stream<List<PurchaseDetails>>.empty().listen((_) {});
@@ -147,7 +146,14 @@ class _PurchasePlanDialogState extends State<PurchasePlanDialog> {
     });
   }
 
-  bool get _isApplePlatform => Platform.isIOS || Platform.isMacOS;
+  bool get _isUnsupportedPlatform =>
+      kIsWeb ||
+      defaultTargetPlatform == TargetPlatform.windows ||
+      defaultTargetPlatform == TargetPlatform.linux;
+
+  bool get _isApplePlatform =>
+      defaultTargetPlatform == TargetPlatform.iOS ||
+      defaultTargetPlatform == TargetPlatform.macOS;
 
   String _selectionKeyForProduct(ProductDetails product) {
     if (product is GooglePlayProductDetails &&
@@ -223,7 +229,7 @@ class _PurchasePlanDialogState extends State<PurchasePlanDialog> {
   }
 
   List<ProductDetails> _preferTrialOffers(List<ProductDetails> products) {
-    if (!Platform.isAndroid) return products;
+    if (defaultTargetPlatform != TargetPlatform.android) return products;
 
     final productsWithTrial = products
         .where(_hasGoogleFreeTrialOffer)
@@ -520,7 +526,7 @@ class _PurchasePlanDialogState extends State<PurchasePlanDialog> {
           )
         : PurchaseParam(productDetails: product);
     // Use buyConsumable for points or buyNonConsumable Education subscription based on your product type.
-    if (_isProcessing || Platform.isWindows || Platform.isLinux) return;
+    if (_isProcessing || _isUnsupportedPlatform) return;
     setState(() {
       _isProcessing = true;
       _errorMessage = null;
@@ -541,7 +547,7 @@ class _PurchasePlanDialogState extends State<PurchasePlanDialog> {
 
   /// Restore previous purchases.
   Future<void> _restorePurchases() async {
-    if (_isProcessing || Platform.isWindows || Platform.isLinux) return;
+    if (_isProcessing || _isUnsupportedPlatform) return;
     setState(() {
       _isProcessing = true;
       _errorMessage = null;
@@ -612,7 +618,9 @@ class _PurchasePlanDialogState extends State<PurchasePlanDialog> {
   String _trialBodyForProduct(ProductDetails? product) {
     final days = freeTrialDays;
     final dayWord = days == 1 ? 'day' : 'days';
-    final storeName = Platform.isAndroid ? 'Google Play' : 'the App Store';
+    final storeName = defaultTargetPlatform == TargetPlatform.android
+        ? 'Google Play'
+        : 'the App Store';
     if (product == null) {
       return 'Start your $days-$dayWord free trial. '
           'Cancel anytime in $storeName before the trial ends.';
@@ -623,7 +631,7 @@ class _PurchasePlanDialogState extends State<PurchasePlanDialog> {
   }
 
   String get _emptyProductsMessage {
-    if (kDebugMode && Platform.isAndroid) {
+    if (kDebugMode && defaultTargetPlatform == TargetPlatform.android) {
       return 'No subscription plans available right now. For Android purchase '
           'testing, install this app from a Google Play testing track with a '
           'license tester account.';
