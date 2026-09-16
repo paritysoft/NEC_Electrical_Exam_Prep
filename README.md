@@ -36,19 +36,23 @@ Configure these repository secrets before running the workflow:
 The workflow creates the required `.env` asset from these secrets. The asset is
 bundled in both outputs, including the hidden file in the release artifact.
 
-MSIX packages are unsigned. The package identity is `ParisoftAI.NECElectricalExamPrep`.
-The default publisher in `pubspec.yaml` is a development placeholder. Before submitting to Microsoft Store, set these
-repository variables to the exact values from Partner Center's Product identity:
+MSIX packages use the registered Microsoft Store identity:
 
-- `NEC_MSIX_IDENTITY_NAME`: optional override for Package/Identity/Name (defaults to `ParisoftAI.NECElectricalExamPrep`)
-- `NEC_MSIX_PUBLISHER`: Package/Identity/Publisher
-- `NEC_MSIX_PUBLISHER_NAME`: optional override for Package/Properties/PublisherDisplayName (defaults to `ParisoftAI`; remove any stale override or set it to `ParisoftAI`)
+- Identity name: `ParisoftAI.ElectricianExamPrepNEC`
+- Publisher: `CN=BAFD5734-F723-4C9B-9352-3ED618975B07`
+- Publisher display name: `ParisoftAI`
+- Package family name: `ParisoftAI.ElectricianExamPrepNEC_pxzj9qxns246m`
+
+The family name is derived from the identity name and publisher. The workflow
+uses the checked-in values; old `NEC_MSIX_*` repository variables are no longer
+used. After packaging, the build checks the actual MSIX manifest and required
+files before uploading artifacts. A failed check stops the build.
 
 Store distribution supplies signing; direct MSIX distribution requires a trusted
 signature. See the [MSIX packaging configuration](https://pub.dev/packages/msix/example).
 
 For a local build, use Windows with Visual Studio's Desktop development with C++
-workload, Flutter 3.41.2, PowerShell 7, and the required `.env` file:
+workload, Flutter 3.41.2, PowerShell 7, Python 3, and the required `.env` file:
 
 ```powershell
 flutter config --enable-windows-desktop
@@ -57,19 +61,15 @@ flutter test
 ./scripts/build_windows.ps1 -Msix -MsixVersion 1.0.3.0
 ```
 
-Omit `-Msix` to build just the release folder. For a Store package, also pass
-`-IdentityName`, `-Publisher`, and `-PublisherDisplayName` with your registered
-values. Outputs are under `build/windows/x64/runner/Release/`.
+Omit `-Msix` to build just the release folder. Store identity parameters default
+to the registered values and reject other identities. Outputs are under
+`build/windows/x64/runner/Release/`.
 
 ### Replacing a rejected Store package
 
-The publisher display name must be `ParisoftAI`, matching the Partner Center
-account. The app display name remains `Electrician Exam Prep: NEC`.
-After updating the configuration, rebuild the MSIX with the Windows workflow
-or the local Windows command above; an existing MSIX will still contain the old
-manifest. Ensure `NEC_MSIX_PUBLISHER_NAME` does not override the corrected value.
-The separate `NEC_MSIX_PUBLISHER` value must match Product identity exactly;
-do not use the development placeholder `CN=ElectricianExamPrep` for submission.
+Rebuild using the updated Windows workflow or local Windows command above.
+An existing MSIX still contains the old manifest; retrying that file will fail.
+Download the MSIX artifact from the new successful run and extract it.
 
 Delete the rejected package in Partner Center, upload the newly built
 `electrician-exam-prep-nec.msix`, and resolve any remaining validation errors.

@@ -109,13 +109,14 @@ dev_dependencies:
 msix_config:
   display_name: 'Electrician Exam Prep: NEC'
   publisher_display_name: ParisoftAI
-  identity_name: ParisoftAI.NECElectricalExamPrep
-  publisher: CN=ElectricianExamPrep
+  identity_name: ParisoftAI.ElectricianExamPrepNEC
+  publisher: CN=BAFD5734-F723-4C9B-9352-3ED618975B07
   msix_version: 1.0.3.0
   logo_path: windows/runner/resources/app_icon.png
   capabilities: internetClient
   architecture: x64
   output_name: electrician-exam-prep-nec
+  store: true
   sign_msix: false
   install_certificate: false
 

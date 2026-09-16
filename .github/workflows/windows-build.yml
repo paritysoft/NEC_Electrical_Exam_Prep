@@ -29,6 +29,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Setup package validator
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
@@ -65,16 +70,7 @@ jobs:
         run: flutter test
 
       - name: Build Windows release and MSIX
-        env:
-          NEC_IDENTITY_NAME: ${{ vars.NEC_MSIX_IDENTITY_NAME }}
-          NEC_PUBLISHER: ${{ vars.NEC_MSIX_PUBLISHER }}
-          NEC_PUBLISHER_NAME: ${{ vars.NEC_MSIX_PUBLISHER_NAME }}
-        run: |
-          $options = @{ Msix = $true; MsixVersion = $env:MSIX_VERSION }
-          if ($env:NEC_IDENTITY_NAME) { $options.IdentityName = $env:NEC_IDENTITY_NAME }
-          if ($env:NEC_PUBLISHER) { $options.Publisher = $env:NEC_PUBLISHER }
-          if ($env:NEC_PUBLISHER_NAME) { $options.PublisherDisplayName = $env:NEC_PUBLISHER_NAME }
-          ./scripts/build_windows.ps1 @options
+        run: ./scripts/build_windows.ps1 -Msix -MsixVersion $env:MSIX_VERSION
 
       - name: Upload Windows release folder
         uses: actions/upload-artifact@v4

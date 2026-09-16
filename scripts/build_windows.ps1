@@ -3,9 +3,12 @@ param(
     [switch]$Msix,
     [ValidatePattern('^[1-9][0-9]*\.[0-9]+\.[0-9]+\.0$')]
     [string]$MsixVersion = '1.0.3.0',
-    [string]$IdentityName,
-    [string]$Publisher,
-    [string]$PublisherDisplayName
+    [ValidateSet('ParisoftAI.ElectricianExamPrepNEC')]
+    [string]$IdentityName = 'ParisoftAI.ElectricianExamPrepNEC',
+    [ValidateSet('CN=BAFD5734-F723-4C9B-9352-3ED618975B07')]
+    [string]$Publisher = 'CN=BAFD5734-F723-4C9B-9352-3ED618975B07',
+    [ValidateSet('ParisoftAI')]
+    [string]$PublisherDisplayName = 'ParisoftAI'
 )
 
 $ErrorActionPreference = 'Stop'
@@ -23,15 +26,14 @@ try {
     if ($LASTEXITCODE -ne 0) { throw 'Windows release build failed.' }
 
     if ($Msix) {
-        $arguments = @('run', 'msix:create', '--build-windows', 'false', '--version', $MsixVersion)
+        $arguments = @('run', 'msix:create', '--store', '--build-windows', 'false', '--version', $MsixVersion)
         if ($IdentityName) { $arguments += @('--identity-name', $IdentityName) }
         if ($Publisher) { $arguments += @('--publisher', $Publisher) }
         if ($PublisherDisplayName) { $arguments += @('--publisher-display-name', $PublisherDisplayName) }
         & dart @arguments
         if ($LASTEXITCODE -ne 0) { throw 'MSIX packaging failed.' }
-        if (-not (Test-Path 'build/windows/x64/runner/Release/*.msix')) {
-            throw 'MSIX packaging did not produce a package in the release folder.'
-        }
+        & python ./scripts/validate_windows_package.py 'build/windows/x64/runner/Release/electrician-exam-prep-nec.msix' $MsixVersion
+        if ($LASTEXITCODE -ne 0) { throw 'MSIX validation failed.' }
     }
 } finally {
     Pop-Location
