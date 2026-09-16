@@ -34,6 +34,9 @@ jobs:
         with:
           python-version: '3.12'
 
+      - name: Test package validator
+        run: python -m unittest discover -s scripts -p 'test_*.py'
+
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
