@@ -2,7 +2,7 @@
 param(
     [switch]$Msix,
     [ValidatePattern('^[1-9][0-9]*\.[0-9]+\.[0-9]+\.0$')]
-    [string]$MsixVersion = '1.0.3.0',
+    [string]$MsixVersion = '1.0.4.0',
     [ValidateSet('ParisoftAI.ElectricianExamPrepNEC')]
     [string]$IdentityName = 'ParisoftAI.ElectricianExamPrepNEC',
     [ValidateSet('CN=BAFD5734-F723-4C9B-9352-3ED618975B07')]

@@ -6,7 +6,7 @@ on:
       msix_version:
         description: MSIX version (major.minor.patch.0)
         type: string
-        default: '1.0.3.0'
+        default: '1.0.4.0'
   push:
     branches:
       - main
@@ -21,7 +21,7 @@ jobs:
     runs-on: windows-2022
     timeout-minutes: 45
     env:
-      MSIX_VERSION: ${{ inputs.msix_version || '1.0.3.0' }}
+      MSIX_VERSION: ${{ inputs.msix_version || '1.0.4.0' }}
     defaults:
       run:
         shell: pwsh

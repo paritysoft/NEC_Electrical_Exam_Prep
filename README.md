@@ -21,7 +21,7 @@ The Windows app is named **Electrician Exam Prep: NEC**. There is one app,
 with no flavors or build variants.
 
 The **Windows Build** GitHub Actions workflow runs on pushes to `main` and
-`master`, or manually with an optional MSIX version (default `1.0.3.0`). It uses
+`master`, or manually with an optional MSIX version (default `1.0.4.0`). It uses
 Flutter 3.41.2 on Windows Server 2022, installs locked dependencies, runs the
 tests, and uploads the Windows release folder and MSIX as separate artifacts.
 Download and extract the entire release artifact to run `commonquiz.exe`.
@@ -58,7 +58,7 @@ workload, Flutter 3.41.2, PowerShell 7, Python 3, and the required `.env` file:
 flutter config --enable-windows-desktop
 flutter pub get --enforce-lockfile
 flutter test
-./scripts/build_windows.ps1 -Msix -MsixVersion 1.0.3.0
+./scripts/build_windows.ps1 -Msix -MsixVersion 1.0.4.0
 ```
 
 Omit `-Msix` to build just the release folder. Store identity parameters default
@@ -67,11 +67,18 @@ to the registered values and reject other identities. Outputs are under
 
 ### Replacing a rejected Store package
 
+The next Windows package version is `1.0.4.0`. Partner Center has already seen
+`1.0.3.0`; uploading different contents with that same package identity and
+version causes a duplicate full-name error. Renaming the `.msix` file does not
+change its identity. For later changed uploads, increment the package version
+again and keep the Store revision (fourth component) at `0`.
+
 Rebuild using the updated Windows workflow or local Windows command above.
 An existing MSIX still contains the old manifest; retrying that file will fail.
 Download the MSIX artifact from the new successful run and extract it.
 
-Delete the rejected package in Partner Center, upload the newly built
+Remove the conflicting uploaded package from the current submission in Partner
+Center and click **Save** to confirm its removal. Upload the newly built
 `electrician-exam-prep-nec.msix`, and resolve any remaining validation errors.
 Select the Windows Desktop device family for this Windows desktop app. If using
 market groups, upload at least one valid package to each group before submitting.
