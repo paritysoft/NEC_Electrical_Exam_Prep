@@ -13,8 +13,11 @@ class QuizSessionView extends StatelessWidget {
     required this.onSelected,
     required this.onNext,
     this.timer,
+    this.correctAnswer,
+    this.explanation,
   });
   final String question;
+  final String? correctAnswer, explanation;
   final List<String> options;
   final int index, total;
   final String? selected;
@@ -86,9 +89,11 @@ class QuizSessionView extends StatelessWidget {
                           RadioListTile<String>(
                             value: options[i],
                             groupValue: selected,
-                            onChanged: (value) {
-                              if (value != null) onSelected(value);
-                            },
+                            onChanged: correctAnswer != null && selected != null
+                                ? null
+                                : (value) {
+                                    if (value != null) onSelected(value);
+                                  },
                             selected: selected == options[i],
                             selectedTileColor: appNavy.withValues(alpha: .045),
                             contentPadding: const EdgeInsets.symmetric(
@@ -96,7 +101,7 @@ class QuizSessionView extends StatelessWidget {
                               vertical: 12,
                             ),
                             title: Text(
-                              options[i],
+                              HtmlUnescape().convert(options[i]),
                               style: const TextStyle(
                                 fontSize: 16,
                                 height: 1.5,
@@ -125,6 +130,48 @@ class QuizSessionView extends StatelessWidget {
                 ),
               ),
             ),
+            if (correctAnswer != null && selected != null) ...[
+              const SizedBox(height: 16),
+              Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        selected == correctAnswer ? 'Correct!' : 'Incorrect',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                          color: selected == correctAnswer
+                              ? Colors.green.shade800
+                              : Colors.red.shade800,
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+                      Text('Your answer: ${HtmlUnescape().convert(selected!)}'),
+                      const SizedBox(height: 8),
+                      Text(
+                        'Correct answer: ${HtmlUnescape().convert(correctAnswer!)}',
+                      ),
+                      const SizedBox(height: 16),
+                      const Text(
+                        'Explanation',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        HtmlUnescape().convert(
+                          explanation == null || explanation!.trim().isEmpty
+                              ? 'No explanation available for this question.'
+                              : explanation!,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
           ],
         ),
       ),

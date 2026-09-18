@@ -56,12 +56,16 @@ class _QuizPageState extends State<QuizPage> {
             ? const Center(child: Text('No questions available.'))
             : QuizSessionView(
                 question: widget.questions[_currentIndex].question,
+                correctAnswer: widget.questions[_currentIndex].correctAnswer,
+                explanation: widget.questions[_currentIndex].explanation,
                 options: options,
                 index: _currentIndex,
                 total: widget.questions.length,
                 selected: _answers[_currentIndex] as String?,
-                onSelected: (value) =>
-                    setState(() => _answers[_currentIndex] = value),
+                onSelected: (value) {
+                  if (_answers[_currentIndex] != null) return;
+                  setState(() => _answers[_currentIndex] = value);
+                },
                 onNext: _nextSubmit,
               ),
       ),

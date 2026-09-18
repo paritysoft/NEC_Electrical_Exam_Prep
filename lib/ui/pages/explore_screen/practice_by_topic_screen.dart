@@ -3,7 +3,7 @@ import 'package:electrician/ui/pages/data/upadansonghro.dart';
 import 'package:electrician/ui/widgets/common_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../../util/AppColors.dart';
+import '../../widgets/quiz_options_dialog_topic.dart';
 import '../data/QuestionCache.dart';
 import '../data/model/ElectricianQuestion.dart';
 import '../quiz_page.dart';
@@ -55,7 +55,7 @@ class _PracticeByTopicState extends State<PracticeByTopic> {
     });
   }
 
-  void _openTopic(String topic) {
+  Future<void> _openTopic(String topic) async {
     if (!isSubscribed) {
       PurchasePlanDialog.show(context).then((_) {
         if (mounted) _checkSubscriptionStatus();
@@ -64,16 +64,23 @@ class _PracticeByTopicState extends State<PracticeByTopic> {
     }
     final questions = QuestionCache().getQuestions();
     if (questions == null) return;
+    final selectedQuestions = await showDialog<List<ElectricianQuestion>>(
+      context: context,
+      builder: (_) => QuizOptionsDialogTopic(
+        category: topic,
+        allQuestions: QuestionCache().filterQuestionsByCategory(
+          questions,
+          topic,
+        ),
+      ),
+    );
+    if (!mounted || selectedQuestions == null || selectedQuestions.isEmpty) {
+      return;
+    }
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (_) => QuizPage(
-          questions: QuestionCache().filterQuestionsByCategory(
-            questions,
-            topic,
-          ),
-          category: topic,
-        ),
+        builder: (_) => QuizPage(questions: selectedQuestions, category: topic),
       ),
     );
   }

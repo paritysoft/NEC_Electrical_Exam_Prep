@@ -89,12 +89,16 @@ class _QuizPageTodayState extends State<QuizPageToday> {
               )
             : QuizSessionView(
                 question: questions10[_currentIndex].question,
+                correctAnswer: questions10[_currentIndex].correctAnswer,
+                explanation: questions10[_currentIndex].explanation,
                 options: options,
                 index: _currentIndex,
                 total: questions10.length,
                 selected: _answers[_currentIndex] as String?,
-                onSelected: (value) =>
-                    setState(() => _answers[_currentIndex] = value),
+                onSelected: (value) {
+                  if (_answers[_currentIndex] != null) return;
+                  setState(() => _answers[_currentIndex] = value);
+                },
                 onNext: _nextSubmit,
               ),
       ),

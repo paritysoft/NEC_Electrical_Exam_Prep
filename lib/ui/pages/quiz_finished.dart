@@ -120,7 +120,7 @@ class _QuizFinishedPageState extends State<QuizFinishedPage> {
               spacing: 16,
               runSpacing: 12,
               children: [
-                OutlinedButton(
+                FilledButton(
                   onPressed: () => Navigator.pop(context),
                   child: const Text('Go to Home'),
                 ),
