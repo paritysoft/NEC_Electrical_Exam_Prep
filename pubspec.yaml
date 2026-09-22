@@ -59,6 +59,13 @@ dependencies:
   device_info_plus: ^12.3.0
   shared_preferences: ^2.0.13
   sqflite_sqlcipher: ^3.2.0
+  # Windows only: sqflite_sqlcipher has no Windows implementation, so
+  # UpadanSonghro._openWindowsDatabase() uses this instead (see
+  # lib/ui/pages/data/upadansonghro.dart). sqlite3_flutter_libs bundles the
+  # native sqlite3 library sqflite_common_ffi needs on Windows (pinned to
+  # 0.6.0+eol, the last version that still bundles native libs).
+  sqflite_common_ffi: ^2.4.0+3
+  sqlite3_flutter_libs: ^0.6.0+eol
   flutter_secure_storage: ^10.0.0
   uuid: ^4.5.1
   webview_flutter: ^4.0.0

@@ -106,3 +106,19 @@ install(DIRECTORY "${PROJECT_BUILD_DIR}/${FLUTTER_ASSET_DIR_NAME}"
 install(FILES "${AOT_LIBRARY}" DESTINATION "${INSTALL_BUNDLE_DATA_DIR}"
   CONFIGURATIONS Profile;Release
   COMPONENT Runtime)
+
+# Bundle the Windows-only plain SQLite database. sqflite_sqlcipher has no
+# Windows implementation, so lib/ui/pages/data/upadansonghro.dart opens this
+# copy via sqflite_common_ffi instead of assets/db/mydb.db (which stays
+# SQLCipher-encrypted for Android/iOS/macOS). See
+# UpadanSonghro._openWindowsDatabase().
+set(WINDOWS_DB_SOURCE "${CMAKE_CURRENT_SOURCE_DIR}/db/mydb.db")
+if(EXISTS "${WINDOWS_DB_SOURCE}")
+  install(FILES "${WINDOWS_DB_SOURCE}"
+    DESTINATION "${INSTALL_BUNDLE_DATA_DIR}/windows_db"
+    COMPONENT Runtime)
+else()
+  message(WARNING
+    "windows/db/mydb.db is missing - the Windows build will have no "
+    "question data until it is added.")
+endif()

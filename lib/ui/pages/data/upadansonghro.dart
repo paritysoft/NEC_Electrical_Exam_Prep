@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:encrypt/encrypt.dart' as encrypt;
+import 'package:sqflite_common_ffi/sqflite_ffi.dart' as sqlite_ffi;
 import 'package:sqflite_sqlcipher/sqflite.dart';
 import 'package:uuid/uuid.dart';
 import '../../../models/activity_data.dart';
@@ -103,6 +104,13 @@ class UpadanSonghro {
 
   // Initialize the database
   Future<Database> _initDatabase() async {
+    // sqflite_sqlcipher has no Windows implementation, so Windows uses a
+    // plain (non-SQLCipher) copy of the same data via sqflite_common_ffi
+    // instead. See _openWindowsDatabase() below.
+    if (Platform.isWindows) {
+      return _openWindowsDatabase();
+    }
+
     // Get the path to the app's document directory
 
     String? password = await _secureStorage.read(key: your_db_pass);
@@ -135,6 +143,39 @@ class UpadanSonghro {
       onCreate: _onCreate,
       onUpgrade: _onUpgrade,
     );
+  }
+
+  // Windows: open a plain SQLite copy of the same table/rows (the per-field
+  // AES encryption from encryptAES/aesDecrypt still applies, unchanged; only
+  // the outer SQLCipher container is removed, since sqflite_sqlcipher does
+  // not support Windows). The bundled copy is read-only next to the exe, so
+  // it is copied once into a writable per-user location first, matching the
+  // "copy from assets" step already used for Android/iOS/macOS above -
+  // otherwise recording quiz progress (updateQuestion) would fail on Windows.
+  Future<Database> _openWindowsDatabase() async {
+    sqlite_ffi.sqfliteFfiInit();
+
+    Directory documentsDirectory = await getApplicationDocumentsDirectory();
+    String dbPath = join(documentsDirectory.path, _databaseName);
+
+    if (!await File(dbPath).exists()) {
+      final executableDir = File(Platform.resolvedExecutable).parent;
+      final bundledPath =
+          join(executableDir.path, 'data', 'windows_db', _databaseName);
+      final bundledFile = File(bundledPath);
+      if (!await bundledFile.exists()) {
+        throw StateError(
+          'Windows database not found at "$bundledPath". Add '
+          'windows/db/$_databaseName to the project so it is bundled into '
+          'the Windows build (see windows/CMakeLists.txt).',
+        );
+      }
+      await bundledFile.copy(dbPath);
+    }
+
+    // No version/onCreate/onUpgrade here: the bundled file already has the
+    // final schema and data, so there is nothing to create or migrate.
+    return sqlite_ffi.databaseFactoryFfi.openDatabase(dbPath);
   }
 
   Future<void> checkTables() async {
