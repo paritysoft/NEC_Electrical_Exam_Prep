@@ -137,11 +137,10 @@ void main() {
     expect(find.textContaining('Lifetime Access'), findsOneWidget);
   }
 
-  for (final platform in [TargetPlatform.windows, TargetPlatform.linux]) {
-    testWidgets('$platform does not query an unsupported store', (tester) async {
-      await tester.pumpWidget(
-        const MaterialApp(home: PurchasePlanDialog()),
-      );
+  testWidgets(
+    '${TargetPlatform.linux} does not query an unsupported store',
+    (tester) async {
+      await tester.pumpWidget(const MaterialApp(home: PurchasePlanDialog()));
       await tester.pumpAndSettle();
       expect(
         find.text('In-app purchases are not available on this platform.'),
@@ -153,8 +152,38 @@ void main() {
       await tester.pumpAndSettle();
       expect(SubscriptionService.instance.isSubscribed, isFalse);
       expect(tester.takeException(), isNull);
-    }, variant: TargetPlatformVariant({platform}));
-  }
+    },
+    variant: TargetPlatformVariant({TargetPlatform.linux}),
+  );
+
+  // Windows no longer falls back to the Android/Apple in_app_purchase store
+  // (see WindowsIapService) -- it queries the Microsoft Store instead, which
+  // has no native plugin registered under flutter test, so the fetch fails
+  // safely and the dialog reports "no plans configured" rather than crashing
+  // or claiming purchases are unsupported.
+  testWidgets(
+    '${TargetPlatform.windows} queries the Microsoft Store, not the '
+    'Android/Apple store',
+    (tester) async {
+      await tester.pumpWidget(const MaterialApp(home: PurchasePlanDialog()));
+      await tester.pumpAndSettle();
+      expect(
+        find.text('In-app purchases are not available on this platform.'),
+        findsNothing,
+      );
+      expect(store.queriedIds, isNull);
+      expect(
+        find.text('No subscription plans are configured for Windows yet.'),
+        findsOneWidget,
+      );
+      expect(find.text('Purchase'), findsNothing);
+      await tester.tap(find.text('Restore'));
+      await tester.pumpAndSettle();
+      expect(SubscriptionService.instance.isSubscribed, isFalse);
+      expect(tester.takeException(), isNull);
+    },
+    variant: TargetPlatformVariant({TargetPlatform.windows}),
+  );
 
   testWidgets('Cancel does not grant access', (tester) async {
     await openDialog(tester);
