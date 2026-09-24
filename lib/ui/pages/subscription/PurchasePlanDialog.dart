@@ -12,6 +12,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../../util/app_constants.dart';
 import '../../widgets/common_widget.dart';
 import 'subscription_service.dart';
+import 'windows_iap_service.dart';
 
 class PurchasePlanDialog extends StatefulWidget {
   const PurchasePlanDialog({Key? key}) : super(key: key);
@@ -64,6 +65,14 @@ class _PurchasePlanDialogState extends State<PurchasePlanDialog> {
       _purchaseSubscription = const Stream<List<PurchaseDetails>>.empty().listen((_) {});
       return;
     }
+    if (_isWindowsPlatform) {
+      // Windows purchases go through the Microsoft Store purchase UI
+      // (WindowsIapService), not the in_app_purchase purchaseStream used by
+      // Android/Apple below, so there's nothing to subscribe to here.
+      _purchaseSubscription = const Stream<List<PurchaseDetails>>.empty().listen((_) {});
+      _initStoreInfo();
+      return;
+    }
     _initStoreInfo();
 
     // Listen to purchase updates.
@@ -95,6 +104,19 @@ class _PurchasePlanDialogState extends State<PurchasePlanDialog> {
 
   /// Query the store for product details.
   Future<void> _initStoreInfo() async {
+    if (_isWindowsPlatform) {
+      try {
+        await _queryWindowsStoreInfo();
+      } catch (_) {
+        if (mounted)
+          setState(() {
+            _isLoading = false;
+            _errorMessage =
+                'Unable to connect to the Microsoft Store. Please try again.';
+          });
+      }
+      return;
+    }
     try {
       await _queryStoreInfo();
     } catch (_) {
@@ -104,6 +126,27 @@ class _PurchasePlanDialogState extends State<PurchasePlanDialog> {
           _errorMessage = 'Unable to connect to the store. Please try again.';
         });
     }
+  }
+
+  /// Fetches Windows Store product listings for whichever plans have a
+  /// Store ID configured in app_constants.dart. WindowsIapService already
+  /// adapts them to the same [ProductDetails] shape the Android/Apple UI
+  /// below renders, so no windows_store_iap types appear in this file.
+  Future<void> _queryWindowsStoreInfo() async {
+    final products = await WindowsIapService.instance.fetchProducts();
+    if (!mounted) return;
+    if (products.isEmpty) {
+      setState(() => _isLoading = false);
+      return;
+    }
+    setState(() {
+      _products = products.values.toList()..sort(_compareProductsForDisplay);
+      final defaultProduct = _defaultProductForSelection(_products);
+      if (defaultProduct != null) {
+        _selectedProductId = _selectionKeyForProduct(defaultProduct);
+      }
+      _isLoading = false;
+    });
   }
 
   Future<void> _queryStoreInfo() async {
@@ -147,9 +190,10 @@ class _PurchasePlanDialogState extends State<PurchasePlanDialog> {
   }
 
   bool get _isUnsupportedPlatform =>
-      kIsWeb ||
-      defaultTargetPlatform == TargetPlatform.windows ||
-      defaultTargetPlatform == TargetPlatform.linux;
+      kIsWeb || defaultTargetPlatform == TargetPlatform.linux;
+
+  bool get _isWindowsPlatform =>
+      defaultTargetPlatform == TargetPlatform.windows;
 
   bool get _isApplePlatform =>
       defaultTargetPlatform == TargetPlatform.iOS ||
@@ -519,6 +563,34 @@ class _PurchasePlanDialogState extends State<PurchasePlanDialog> {
       orElse: () => throw Exception('Product not found'),
     );
 
+    if (_isWindowsPlatform) {
+      if (_isProcessing) return;
+      setState(() {
+        _isProcessing = true;
+        _errorMessage = null;
+      });
+      try {
+        final success = await WindowsIapService.instance.purchase(product.id);
+        if (success) {
+          await SubscriptionService.instance.refresh();
+          await _loadSubscriptionStatus();
+          _closeDialog(result: true);
+        } else if (mounted) {
+          setState(() {
+            _isProcessing = false;
+            _errorMessage = 'Purchase was not completed.';
+          });
+        }
+      } catch (_) {
+        if (mounted)
+          setState(() {
+            _isProcessing = false;
+            _errorMessage = 'Unable to start purchase. Please try again.';
+          });
+      }
+      return;
+    }
+
     final purchaseParam = product is GooglePlayProductDetails
         ? GooglePlayPurchaseParam(
             productDetails: product,
@@ -552,6 +624,26 @@ class _PurchasePlanDialogState extends State<PurchasePlanDialog> {
       _isProcessing = true;
       _errorMessage = null;
     });
+    if (_isWindowsPlatform) {
+      try {
+        await SubscriptionService.instance.refresh();
+        await _loadSubscriptionStatus();
+        if (_isSubscribed) {
+          _closeDialog(result: true);
+        } else if (mounted) {
+          setState(() => _errorMessage = 'No previous purchase found.');
+        }
+      } catch (_) {
+        if (mounted)
+          setState(
+            () => _errorMessage =
+                'Unable to restore purchases. Please try again.',
+          );
+      } finally {
+        if (mounted) setState(() => _isProcessing = false);
+      }
+      return;
+    }
     try {
       await _inAppPurchase.restorePurchases();
     } catch (_) {
@@ -635,6 +727,13 @@ class _PurchasePlanDialogState extends State<PurchasePlanDialog> {
       return 'No subscription plans available right now. For Android purchase '
           'testing, install this app from a Google Play testing track with a '
           'license tester account.';
+    }
+    if (_isWindowsPlatform && WindowsIapService.instance.configuredPlans.isEmpty) {
+      return 'No subscription plans are configured for Windows yet.';
+    }
+    if (_isWindowsPlatform) {
+      return 'No subscription plans available right now. Install this app '
+          'from the Microsoft Store to purchase.';
     }
     return 'No subscription plans available right now. Please check your store '
         'setup and try again.';

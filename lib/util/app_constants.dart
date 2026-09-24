@@ -47,3 +47,14 @@ const String webUrl =
 const String unlimitedPlan = inAppPurchases;
 const bool hasFreeTrial = false;
 const int freeTrialDays = 0;
+
+// Microsoft Store Product Store IDs for the Windows build, configured as
+// add-ons under this app in Partner Center. These are NOT the same as the
+// Android/Apple product IDs above; a Windows Store ID looks like
+// "9NBLGGH4R315". Leave a plan blank if you haven't created that add-on yet
+// -- WindowsIapService skips unconfigured plans instead of failing, and the
+// purchase dialog just won't offer that plan on Windows.
+const String windowsWeeklyPlanStoreId = '';
+const String windowsMonthlyPlanStoreId = '';
+const String windowsYearlyPlanStoreId = '';
+const String windowsUnlimitedPlanStoreId = '';

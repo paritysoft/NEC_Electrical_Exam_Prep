@@ -81,6 +81,10 @@ dependencies:
   in_app_purchase: ^3.3.0
   in_app_purchase_android: ^0.5.0
   in_app_purchase_storekit: ^0.4.8+1
+  # Windows-only Microsoft Store IAP (no Windows implementation exists in
+  # the in_app_purchase family above). Safe to keep as a normal dependency
+  # on other platforms: Flutter simply skips its Windows plugin registration.
+  windows_store_iap: ^0.2.2
   dartz: ^0.10.1
   fluttertoast: ^9.0.0
   package_info_plus: ^9.0.0

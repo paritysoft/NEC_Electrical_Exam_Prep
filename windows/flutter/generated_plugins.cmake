@@ -9,6 +9,7 @@ list(APPEND FLUTTER_PLUGIN_LIST
   share_plus
   syncfusion_pdfviewer_windows
   url_launcher_windows
+  windows_store_iap
 )
 
 list(APPEND FLUTTER_FFI_PLUGIN_LIST

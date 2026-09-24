@@ -1490,6 +1490,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.0"
+  windows_store_iap:
+    dependency: "direct main"
+    description:
+      name: windows_store_iap
+      sha256: d9eac4be9a1014db323ae31a8bb71e7fd0e846f2f012000293fee5820b83acc1
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.2.2"
   xdg_directories:
     dependency: transitive
     description:
